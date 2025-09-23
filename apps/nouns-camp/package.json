@@ -24,7 +24,8 @@
     "eslint-config-next": "15.3.2",
     "eslint-config-prettier": "^9.1.0",
     "jsdom": "^24.0.0",
-    "vitest": "^2.1.9"
+    "vitest": "^2.1.9",
+    "wrangler": "^4.39.0"
   },
   "dependencies": {
     "@emotion/cache": "^11.14.0",
