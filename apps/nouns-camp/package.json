@@ -3,6 +3,10 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
+    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
+    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "upload": "opennextjs-cloudflare build && opennextjs-cloudflare upload",
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
     "start": "next start",
     "format": "prettier . --write",
     "lint": "next lint && prettier . --check",
@@ -24,7 +28,8 @@
     "eslint-config-next": "15.3.2",
     "eslint-config-prettier": "^9.1.0",
     "jsdom": "^24.0.0",
-    "vitest": "^2.1.9"
+    "vitest": "^2.1.9",
+    "wrangler": "^4.39.0"
   },
   "dependencies": {
     "@emotion/cache": "^11.14.0",
@@ -34,6 +39,7 @@
     "@nomonouns/assets": "^0.12.0",
     "@nouns/contracts": "^0.3.0",
     "@nouns/sdk": "^0.4.0",
+    "@opennextjs/cloudflare": "^1.8.5",
     "@radix-ui/react-toolbar": "^1.1.1",
     "@radix-ui/react-tooltip": "^1.1.7",
     "@sentry/nextjs": "^8.53.0",

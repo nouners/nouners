@@ -158,3 +158,6 @@ export default withSentry(
     },
   }),
 );
+
+import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
+initOpenNextCloudflareForDev();

@@ -1,6 +1,6 @@
 import { track } from "@vercel/analytics/server";
 
-export const runtime = "edge";
+// export const runtime = "edge";
 
 export async function POST(request) {
   const { name, data } = await request.json();
