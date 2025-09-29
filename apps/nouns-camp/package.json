@@ -29,7 +29,7 @@
     "eslint-config-prettier": "^9.1.0",
     "jsdom": "^24.0.0",
     "vitest": "^2.1.9",
-    "wrangler": "^4.39.0"
+    "wrangler": "4.16.1"
   },
   "dependencies": {
     "@emotion/cache": "^11.14.0",
