@@ -1,37 +1,34 @@
+/* global KVNamespace */
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 
 const DEFAULT_BINDING_NAME = "EDGE_CONFIG";
-const GET_OPTIONS = { type: "json" } as const;
+const GET_TYPE = "json" as const;
 
-type KVNamespaceGetOptions = {
-  type?: "text" | "json" | "arrayBuffer" | "stream";
-  cacheTtl?: number;
-};
-
-type CloudflareKVNamespace = {
-  get<T>(key: string, type: "json"): Promise<T | null>;
-  get<T>(key: string, options?: KVNamespaceGetOptions): Promise<T | null>;
-};
-
-async function resolveNamespace(): Promise<CloudflareKVNamespace> {
+async function resolveNamespace(): Promise<KVNamespace> {
   const { env } = await getCloudflareContext({ async: true });
   if (!env) {
-    throw new Error("Cloudflare environment bindings are not available in the current context.");
+    throw new Error(
+      "Cloudflare environment bindings are not available in the current context.",
+    );
   }
 
-  const bindingName = process.env.CLOUDFLARE_EDGE_CONFIG_BINDING ?? DEFAULT_BINDING_NAME;
-  const candidate = env[bindingName];
+  const bindingName =
+    process.env.CLOUDFLARE_EDGE_CONFIG_BINDING ?? DEFAULT_BINDING_NAME;
+  const runtimeEnv = env as unknown as Record<string, unknown>;
+  const candidate = runtimeEnv[bindingName];
 
-  if (!candidate || typeof (candidate as CloudflareKVNamespace).get !== "function") {
-    throw new Error(`Cloudflare KV binding \"${bindingName}\" is not available in the current context.`);
+  if (!isKVNamespace(candidate)) {
+    throw new Error(
+      `Cloudflare KV binding '${bindingName}' is not available in the current context.`,
+    );
   }
 
-  return candidate as CloudflareKVNamespace;
+  return candidate;
 }
 
 export async function get<T = unknown>(key: string): Promise<T | undefined> {
   const namespace = await resolveNamespace();
-  const value = await namespace.get<T>(key, GET_OPTIONS);
+  const value = await namespace.get<T>(key, GET_TYPE);
   if (value === null || value === undefined) {
     return undefined;
   }
@@ -62,6 +59,14 @@ function deepFreezeInternal(value: unknown, seen: WeakSet<object>): void {
   }
 
   Object.freeze(objectValue);
+}
+
+function isKVNamespace(value: unknown): value is KVNamespace {
+  return (
+    value != null &&
+    typeof value === "object" &&
+    typeof (value as KVNamespace).get === "function"
+  );
 }
 
 const defaultExport = { get };
