@@ -36,7 +36,8 @@
     "@types/react-dom": "^19.2.0",
     "@tailwindcss/postcss": "^4.1.14",
     "tailwindcss": "^4.1.14",
-    "@eslint/eslintrc": "^3.3.1"
+    "@eslint/eslintrc": "^3.3.1",
+    "@cloudflare/workers-types": "^4.20251004.0"
   },
   "dependencies": {
     "@emotion/cache": "^11.14.0",
