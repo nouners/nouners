@@ -19,7 +19,8 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@vercel/edge-config": ["./src/utils/cloudflare-edge-config"]
     },
     "types": ["node", "@cloudflare/workers-types", "./cloudflare-env.d.ts"]
   },
