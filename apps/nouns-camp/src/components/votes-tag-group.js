@@ -1,5 +1,5 @@
 import React from "react";
-import { css } from "@emotion/react";
+import clsx from "clsx";
 import { ArrowDownSmall as ArrowDownSmallIcon } from "@shades/ui-web/icons";
 
 const VotesTagGroup = React.memo(
@@ -11,70 +11,39 @@ const VotesTagGroup = React.memo(
     highlight,
     component: Component = "span",
     ...props
-  }) => (
-    <Component
-      css={(t) =>
-        css({
-          display: "inline-flex",
-          gap: "0.1rem",
-          whiteSpace: "nowrap",
-          fontSize: t.text.sizes.micro,
-          lineHeight: 1.2,
-          color: t.colors.textDimmed,
-          borderRadius: "0.2rem",
-          "& > *": {
-            display: "flex",
-            padding: "0.3em 0.5em",
-            background: t.colors.backgroundModifierNormal,
-            minWidth: "1.86rem",
-            justifyContent: "center",
-          },
-          "& > *:first-of-type": {
-            borderTopLeftRadius: "0.2rem",
-            borderBottomLeftRadius: "0.2rem",
-          },
-          "& > *:last-of-type": {
-            borderTopRightRadius: "0.2rem",
-            borderBottomRightRadius: "0.2rem",
-          },
-          ".quorum": {
-            marginLeft: "0.3em",
-          },
-          '[data-highlight="true"]': {
-            color: t.colors.textNormal,
-            fontWeight: t.text.weights.smallTextEmphasis,
-            background: t.colors.backgroundModifierStrong,
-            ".quorum": {
-              color: t.colors.textDimmed,
-              fontWeight: t.text.weights.normal,
-            },
-          },
-          "[data-arrow]": {
-            width: "0.9rem",
-            marginLeft: "0.2rem",
-            marginRight: "-0.1rem",
-          },
-          '[data-arrow="up"]': {
-            transform: "scaleY(-1)",
-          },
-        })
-      }
-      {...props}
-    >
-      <span data-for={for_} data-highlight={highlight === "for"}>
-        {for_}
-        <ArrowDownSmallIcon data-arrow="up" />
-        {quorum != null && <span className="quorum"> / {quorum}</span>}
-      </span>
-      <span data-abstain={abstain} data-highlight={highlight === "abstain"}>
-        {abstain}
-      </span>
-      <span data-against={against} data-highlight={highlight === "against"}>
-        {against}
-        <ArrowDownSmallIcon data-arrow="down" />
-      </span>
-    </Component>
-  ),
+  }) => {
+    const containerClassName = clsx(
+      "inline-flex gap-[0.1rem] whitespace-nowrap text-xs leading-[1.2] text-text-dimmed rounded-[0.2rem]",
+      "[&>*]:flex [&>*]:items-center [&>*]:justify-center [&>*]:min-w-[1.86rem]",
+      "[&>*]:bg-[var(--color-surface-muted)] [&>*]:px-[0.5em] [&>*]:py-[0.3em]",
+      "[&>*:first-of-type]:rounded-l-[0.2rem] [&>*:last-of-type]:rounded-r-[0.2rem]",
+      "[&_.quorum]:ml-[0.3em]",
+    );
+
+    const highlightedClassName =
+      "bg-[var(--color-surface-strong)] text-text-normal font-semibold [&_.quorum]:text-text-dimmed [&_.quorum]:font-normal";
+
+    const arrowClassName = "ml-[0.2rem] mr-[-0.1rem] w-[0.9rem]";
+
+    return (
+      <Component className={containerClassName} {...props}>
+        <span className={clsx(highlight === "for" && highlightedClassName)}>
+          {for_}
+          <ArrowDownSmallIcon
+            className={clsx(arrowClassName, "-scale-y-100")}
+          />
+          {quorum != null && <span className="quorum"> / {quorum}</span>}
+        </span>
+        <span className={clsx(highlight === "abstain" && highlightedClassName)}>
+          {abstain}
+        </span>
+        <span className={clsx(highlight === "against" && highlightedClassName)}>
+          {against}
+          <ArrowDownSmallIcon className={arrowClassName} />
+        </span>
+      </Component>
+    );
+  },
 );
 
 export default VotesTagGroup;
