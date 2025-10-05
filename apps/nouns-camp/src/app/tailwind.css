@@ -132,6 +132,27 @@
   --size-sidebar: 40rem;
 }
 
+@layer theme {
+  :root {
+    --color-background-primary: var(--color-surface-primary);
+    --color-background-secondary: var(--color-surface-secondary);
+    --color-background-tertiary: var(--color-surface-tertiary);
+    --color-background-quaternary: var(--color-surface-quaternary);
+    --color-background-overlay: var(--color-surface-overlay);
+    --color-background-popover: var(--color-surface-popover);
+    --color-background-tooltip: var(--color-surface-tooltip);
+    --shadow-focusSmall: var(--shadow-focus-sm);
+    --shadow-elevationLow: var(--shadow-elevation-low);
+    --shadow-elevationHigh: var(--shadow-elevation-high);
+    --text-size-micro: var(--text-xs);
+    --text-size-tiny: var(--text-sm);
+    --text-size-base: var(--text-base);
+    --text-size-large: var(--text-lg);
+    --text-size-larger: var(--text-xl);
+    --text-size-huge: var(--text-3xl);
+  }
+}
+
 [data-theme="dark"],
 .theme-dark {
   --color-surface-primary: var(--color-surface-primary-dark);
