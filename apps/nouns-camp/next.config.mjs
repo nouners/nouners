@@ -72,7 +72,7 @@ const withSentry = (config) =>
     },
   );
 
-const BUILD_ID = process.env.VERCEL_GIT_COMMIT_SHA?.slice(0, 7) ?? "dev";
+const BUILD_ID = process.env.WORKERS_CI_COMMIT_SHA?.slice(0, 7) ?? "dev";
 const APP_HOST = (() => {
   if (process.env.APP_HOST != null) return process.env.APP_HOST;
   if (process.env.VERCEL == null && !isLintJob)
