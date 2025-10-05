@@ -15,7 +15,6 @@
         "EDGE_CONFIG",
         "ETHERSCAN_API_KEY",
         "FARCASTER_HUB_HTTP_ENDPOINT",
-        "KV_REST_API_READ_ONLY_TOKEN",
         "KV_REST_API_TOKEN",
         "KV_REST_API_URL",
         "KV_URL",
@@ -26,7 +25,8 @@
         "SENTRY_AUTH_TOKEN",
         "SESSION_SEAL_SECRET",
         "TENDERLY_API_KEY",
-        "TENDERLY_PROJECT_SLUG"
+        "TENDERLY_PROJECT_SLUG",
+        "CLOUDFLARE_EDGE_CONFIG_BINDING"
       ],
       "outputs": [".next/**", "!.next/cache/**"]
     },
