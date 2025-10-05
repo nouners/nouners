@@ -1192,6 +1192,7 @@ export const ProposalHeader = ({
           case "eth":
           case "weth":
           case "steth":
+          case "meth":
             return sum + amount;
           case "usdc":
             return sum + usdcToEth(amount);
@@ -1208,11 +1209,14 @@ export const ProposalHeader = ({
 
     const stEthAprBps = BigInt(Math.round(aprs.lido * 10_000));
     const rEthAprBps = BigInt(Math.round(aprs.rocketPool * 10_000));
+    const mEthAprBps =
+      aprs.mantle == null ? 0n : BigInt(Math.round(aprs.mantle * 10_000));
     const stEthYield =
       ((balances.executor.steth + balances.executor.wsteth) * stEthAprBps) /
       10_000n;
     const rEthYield = ((balances.executor.reth ?? 0n) * rEthAprBps) / 10_000n;
-    const totalStakingYield = stEthYield + rEthYield;
+    const mEthYield = ((balances.executor.meth ?? 0n) * mEthAprBps) / 10_000n;
+    const totalStakingYield = stEthYield + rEthYield + mEthYield;
 
     const projectedOneYearAuctionProceeds = avgAuctionPrice * 365n;
     const oneYearIncomeForecast =
@@ -1601,6 +1605,14 @@ const RequestedAmounts = ({ amounts }) => (
               <FormattedEthWithConditionalTooltip
                 value={amount}
                 tokenSymbol="stETH"
+              />
+            );
+
+          case "meth":
+            return (
+              <FormattedEthWithConditionalTooltip
+                value={amount}
+                tokenSymbol="mETH"
               />
             );
 

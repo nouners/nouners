@@ -43,6 +43,7 @@ import { buildEtherscanLink } from "@/utils/etherscan";
 const decimalsByCurrency = {
   eth: 18,
   weth: 18,
+  meth: 18,
   usdc: 6,
 };
 
@@ -204,6 +205,7 @@ const parseAmount = (amount, currency) => {
   switch (currency.toLowerCase()) {
     case "eth":
     case "weth":
+    case "meth":
     case "usdc":
       return parseUnits(amount.toString(), decimalsByCurrency[currency]);
     default:
@@ -826,6 +828,7 @@ const formConfigByActionType = {
             setCurrency={(currency) => setState({ currency })}
             currencyOptions={[
               { value: "eth", label: "ETH" },
+              { value: "meth", label: "mETH" },
               { value: "usdc", label: "USDC" },
             ]}
           />
@@ -1719,7 +1722,7 @@ const AmountWithCurrencyInput = ({
     amount !== "" && parseFloat(amount) > 0 && parseFloat(amount) < Infinity;
 
   const convertedEthToUsdValue =
-    currency !== "eth" || ethToUsdRate == null || !hasAmount
+    !["eth", "meth"].includes(currency) || ethToUsdRate == null || !hasAmount
       ? null
       : parseFloat(amount) * ethToUsdRate;
 

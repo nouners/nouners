@@ -626,6 +626,7 @@ const FixedBottomToolbar = ({ isVisible = false, onFocus, onBlur }) => {
 const currencyFractionDigits = {
   eth: [1, 4],
   weth: [1, 4],
+  meth: [1, 4],
   usdc: [2, 2],
 };
 
@@ -923,6 +924,7 @@ const ActionListItem = ({
       case "usdc-approval":
       case "weth-transfer":
       case "steth-transfer":
+      case "meth-transfer":
       case "weth-approval":
       case "payer-top-up":
       case "treasury-noun-transfer":

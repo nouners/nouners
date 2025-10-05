@@ -26,6 +26,7 @@ import { buildEtherscanLink } from "@/utils/etherscan";
 const decimalsByCurrency = {
   eth: 18,
   weth: 18,
+  meth: 18,
   usdc: 6,
 };
 
@@ -239,6 +240,7 @@ const ListItem = ({ transaction, isSimulationRunning }) => {
       case "transfer":
       case "weth-transfer":
       case "steth-transfer":
+      case "meth-transfer":
       case "weth-deposit":
       case "weth-approval":
       case "stream":
@@ -255,6 +257,7 @@ const ListItem = ({ transaction, isSimulationRunning }) => {
     switch (t.type) {
       case "weth-transfer":
       case "steth-transfer":
+      case "meth-transfer":
       case "weth-deposit":
       case "weth-approval":
       case "usdc-approval":
@@ -632,6 +635,23 @@ export const TransactionExplanation = ({ transaction: t }) => {
             <FormattedEthWithConditionalTooltip
               value={t.stethAmount}
               tokenSymbol="stETH"
+            />
+          </em>{" "}
+          to{" "}
+          <em>
+            <AddressDisplayNameWithTooltip address={t.receiverAddress} />
+          </em>
+        </>
+      );
+
+    case "meth-transfer":
+      return (
+        <>
+          Transfer{" "}
+          <em>
+            <FormattedEthWithConditionalTooltip
+              value={t.methAmount}
+              tokenSymbol="mETH"
             />
           </em>{" "}
           to{" "}
