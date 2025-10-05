@@ -1,11 +1,12 @@
 import React from "react";
-import { css } from "@emotion/react";
+import clsx from "clsx";
 import { message as messageUtils } from "@shades/common/utils";
 import Input from "./input.js";
 import RichTextEditor from "./rich-text-editor.js";
 import DialogHeader from "./dialog-header.js";
 import DialogFooter from "./dialog-footer.js";
 import Select from "./select.js";
+import { twMerge } from "tailwind-merge";
 
 const FormDialog = ({
   title,
@@ -17,15 +18,17 @@ const FormDialog = ({
   cancelLabel = "Cancel",
   noFooter = false,
   children,
+  className,
 }) => {
   const firstInputRef = React.useRef();
 
   const [hasPendingSubmit, setPendingSubmit] = React.useState(false);
 
   const [state, setState] = React.useState(() =>
-    controls.reduce((acc, c) => {
-      return { ...acc, [c.key]: c.initialValue ?? "" };
-    }, {}),
+    controls.reduce(
+      (acc, c) => ({ ...acc, [c.key]: c.initialValue ?? "" }),
+      {},
+    ),
   );
 
   const hasRequiredInput = controls.every((c) => {
@@ -42,9 +45,8 @@ const FormDialog = ({
     setPendingSubmit(true);
     try {
       await submit(state);
-    } catch (e) {
-      console.error(e);
-      // TODO
+    } catch (error) {
+      console.error(error);
       alert("Something went wrong!");
     } finally {
       setPendingSubmit(false);
@@ -52,51 +54,36 @@ const FormDialog = ({
   };
 
   React.useEffect(() => {
-    firstInputRef.current.focus();
+    firstInputRef.current?.focus();
   }, []);
 
   const hasChanges = controls.some((c) => {
     const value = c.value ?? state[c.key];
+    if (c.initialValue === undefined) return true;
 
-    switch (c.type) {
-      case "rich-text":
-        return (
-          c.initialValue === undefined ||
-          !messageUtils.isEqual(value, c.initialValue)
-        );
-
-      default:
-        return c.initialValue === undefined || value !== c.initialValue;
+    if (c.type === "rich-text") {
+      return !messageUtils.isEqual(value, c.initialValue);
     }
+    return value !== c.initialValue;
   });
 
   return (
     <div
-      css={css({
-        display: "flex",
-        flexDirection: "column",
-        minHeight: 0,
-        padding: "1.5rem",
-        "@media (min-width: 600px)": {
-          padding: "2rem",
-        },
-      })}
+      className={twMerge(
+        clsx("flex min-h-0 flex-col", "p-[1.5rem] md:p-[2rem]"),
+        className,
+      )}
     >
       <DialogHeader title={title} titleProps={titleProps} dismiss={dismiss} />
 
-      <main
-        css={css({
-          flex: 1,
-          minHeight: 0,
-          overflow: "auto",
-          // Offset of make the focus box shadow visible
-          margin: "-0.3rem",
-          padding: "0.3rem",
-        })}
-      >
-        <form id="dialog-form" onSubmit={handleSubmit}>
+      <main className="flex min-h-0 flex-1 overflow-auto p-[0.3rem] -m-[0.3rem]">
+        <form
+          id="dialog-form"
+          onSubmit={handleSubmit}
+          className="flex w-full flex-col"
+        >
           {controls.map((c, i) => (
-            <div key={c.key} css={css({ "& + &": { marginTop: "2rem" } })}>
+            <div key={c.key} className={clsx(i > 0 && "mt-8")}>
               {c.type === "select" ? (
                 <Select
                   ref={i === 0 ? firstInputRef : undefined}
@@ -121,8 +108,9 @@ const FormDialog = ({
                   }
                   value={c.value === undefined ? state[c.key] : c.value}
                   disabled={hasPendingSubmit}
-                  onChange={(e) => {
-                    const value = c.type === "rich-text" ? e : e.target.value;
+                  onChange={(event) => {
+                    const value =
+                      c.type === "rich-text" ? event : event.target.value;
                     setState((s) => ({ ...s, [c.key]: value }));
                     if (c.onChange) c.onChange(value);
                   }}
@@ -133,17 +121,7 @@ const FormDialog = ({
               )}
 
               {c.hint != null && (
-                <div
-                  css={(t) =>
-                    css({
-                      fontSize: t.text.sizes.small,
-                      color: t.colors.textDimmed,
-                      marginTop: "0.7rem",
-                      strong: { fontWeight: t.text.weights.emphasis },
-                      "p + p": { marginTop: "0.7em" },
-                    })
-                  }
-                >
+                <div className="mt-(0.7rem) text-sm text-text-dimmed [&_strong]:font-semibold [&>p+p]:mt-[0.7em]">
                   {c.hint}
                 </div>
               )}
@@ -163,7 +141,7 @@ const FormDialog = ({
             form: "dialog-form",
             isLoading: hasPendingSubmit,
             disabled: !hasChanges || !hasRequiredInput || hasPendingSubmit,
-            style: { minWidth: "8rem" },
+            className: "min-w-[8rem]",
           }}
         />
       )}

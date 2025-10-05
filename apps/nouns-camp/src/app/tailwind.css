@@ -343,6 +343,10 @@
   line-height: 1.2;
 }
 
+@utility form-spacing {
+  margin-top: 2rem;
+}
+
 @utility shadow-dropdown {
   box-shadow: var(--dropdown-shadow);
 }
