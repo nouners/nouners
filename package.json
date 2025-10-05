@@ -13,5 +13,8 @@
     "prettier": "^3.4.2",
     "turbo": "^2.5.3"
   },
-  "version": "1.0.0-alpha.6"
+  "version": "1.0.0-alpha.6",
+  "dependencies": {
+    "tailwindcss": "^4.1.14"
+  }
 }
