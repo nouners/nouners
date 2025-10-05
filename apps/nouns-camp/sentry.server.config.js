@@ -4,8 +4,10 @@
 
 import * as Sentry from "@sentry/nextjs";
 
+const enableSentry = process.env.NEXT_PUBLIC_ENABLE_SENTRY === "true";
+
 Sentry.init({
   dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
   tracesSampleRate: 0,
-  enabled: process.env.NODE_ENV === "production",
+  enabled: enableSentry && process.env.NODE_ENV === "production",
 });

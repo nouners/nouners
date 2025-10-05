@@ -44,8 +44,12 @@ const withSerwist = serwist({
   disable: process.env.NODE_ENV !== "production",
 });
 
-const withSentry = (config) =>
-  withSentryConfig(
+const enableSentry = process.env.NEXT_PUBLIC_ENABLE_SENTRY === "true";
+
+const withSentry = (config) => {
+  if (!enableSentry) return config;
+
+  return withSentryConfig(
     config,
     {
       // silent: true, // Suppresses source map uploading logs during build
@@ -71,6 +75,7 @@ const withSentry = (config) =>
       automaticVercelMonitors: true,
     },
   );
+};
 
 const BUILD_ID = process.env.WORKERS_CI_COMMIT_SHA?.slice(0, 7) ?? "dev";
 const APP_HOST = (() => {
