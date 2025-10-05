@@ -1,5 +1,6 @@
 import React from "react";
-import { css } from "@emotion/react";
+import clsx from "clsx";
+import { twMerge } from "tailwind-merge";
 
 const Avatar = React.forwardRef(
   (
@@ -12,75 +13,61 @@ const Avatar = React.forwardRef(
       borderRadius,
       background,
       isLoading,
+      className,
       style,
       ...props
     },
     ref,
   ) => {
-    const sharedProps = {
-      ref,
-      "data-avatar": true,
-      css: (t) =>
-        css({
-          borderRadius: `var(--custom-border-radius, ${t.avatars.borderRadius})`,
-          background: `var(--custom-background, ${t.avatars.background})`,
-          width: "var(--size)",
-          height: "var(--size)",
-          objectFit: "cover",
-        }),
-      style: {
-        "--size": size,
-        "--custom-background": background,
-        "--custom-border-radius": borderRadius,
-        ...style,
-      },
-      ...props,
+    const baseStyle = {
+      width: size,
+      height: size,
+      borderRadius: borderRadius ?? "var(--avatar-radius)",
+      background: background ?? "var(--avatar-background)",
+      ...style,
     };
 
-    if (url != null) return <img src={url} loading="lazy" {...sharedProps} />;
+    if (url != null) {
+      return (
+        <img
+          ref={ref}
+          data-avatar
+          src={url}
+          loading="lazy"
+          className={twMerge(clsx("block object-cover"), className)}
+          style={baseStyle}
+          {...props}
+        />
+      );
+    }
 
     return (
       <div
-        {...sharedProps}
-        css={[
-          sharedProps.css,
-          css({
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            position: "relative",
-          }),
-        ]}
+        ref={ref}
+        data-avatar
+        className={twMerge(
+          clsx(
+            "relative flex items-center justify-center text-text-dimmed uppercase",
+            "select-none",
+          ),
+          className,
+        )}
+        style={baseStyle}
+        {...props}
       >
         {!isLoading && signature != null && (
           <div
-            css={(t) =>
-              css({
-                position: "absolute",
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                textTransform: "uppercase",
-                fontSize: `var(--custom-signature-font-size, 1.1rem)`,
-                color: t.colors.textDimmed,
-                lineHeight: 1,
-              })
-            }
-            style={{ "--custom-signature-font-size": signatureFontSize }}
+            className="absolute inset-0 flex items-center justify-center text-[var(--signature-size,1.1rem)] leading-none"
+            style={{ "--signature-size": signatureFontSize }}
           >
-            {
-              // Emojis: https://dev.to/acanimal/how-to-slice-or-get-symbols-from-a-unicode-string-with-emojis-in-javascript-lets-learn-how-javascript-represent-strings-h3a
-              [...String(signature)].slice(0, signatureLength)
-            }
+            {[...String(signature)].slice(0, signatureLength)}
           </div>
         )}
       </div>
     );
   },
 );
+
+Avatar.displayName = "Avatar";
 
 export default Avatar;
