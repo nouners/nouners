@@ -1,5 +1,5 @@
 import React from "react";
-import { css, keyframes } from "@emotion/react";
+import clsx from "clsx";
 import NextLink from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { invariant } from "@shades/common/utils";
@@ -38,14 +38,16 @@ import { formatEther } from "viem";
 import useTreasuryData from "@/hooks/treasury-data";
 import useEnsName from "@/hooks/ens-name";
 
-const flipAnimation = keyframes({
-  "0%,52%,100%": {
-    transform: "rotate3d(1,1,1,0deg)",
-  },
-  "2%, 50%": {
-    transform: "rotate3d(0.4,1,0,180deg)",
-  },
-});
+const NAV_LINK_BASE_CLASS = clsx(
+  "inline-block h-(2.8rem) min-w-(2.8rem)",
+  "overflow-hidden text-ellipsis no-underline",
+  "rounded-[0.6rem] px-(0.5rem) py-(0.3rem)",
+  "text-base text-text-normal",
+  "transition-colors duration-100 ease-linear",
+  "hover:bg-(--color-surface-muted) hover:cursor-pointer",
+  "data-[index='0']:inline-flex data-[index='0']:items-center data-[index='0']:min-w-max",
+  "data-[disabled=true]:pointer-events-none",
+);
 
 const Layout = ({
   scrollContainerRef,
@@ -56,70 +58,23 @@ const Layout = ({
   ...props
 }) => (
   <div
-    css={(t) =>
-      css({
-        position: "relative",
-        zIndex: 0,
-        flex: 1,
-        minWidth: "min(30.6rem, 100vw)",
-        background: t.colors.backgroundPrimary,
-        display: "flex",
-        flexDirection: "column",
-        height: "100%",
-      })
-    }
+    className="relative z-0 flex h-full min-h-full min-w-[min(30.6rem,100vw)] flex-1 flex-col bg-surface-primary text-text-normal"
     {...props}
   >
     <NavBar navigationStack={navigationStack} actions={actions} />
     {scrollView ? (
-      <div
-        css={css({
-          position: "relative",
-          flex: 1,
-          display: "flex",
-          minHeight: 0,
-          minWidth: 0,
-        })}
-      >
+      <div className="relative flex flex-1 min-h-0 min-w-0">
         <div
           ref={scrollContainerRef}
-          css={css({
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            overflowY: "scroll",
-            overflowX: "hidden",
-            minHeight: 0,
-            flex: 1,
-            overflowAnchor: "none",
-          })}
+          className="absolute inset-0 flex-1 overflow-y-scroll overflow-x-hidden [overflow-anchor:none]"
         >
-          <main
-            css={css({
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "flex-start",
-              alignItems: "stretch",
-              minHeight: "100%",
-            })}
-          >
+          <main className="flex min-h-full flex-col items-stretch justify-start">
             {children}
           </main>
         </div>
       </div>
     ) : (
-      <main
-        css={css({
-          flex: 1,
-          display: "flex",
-          minHeight: 0,
-          minWidth: 0,
-        })}
-      >
-        {children}
-      </main>
+      <main className="flex flex-1 min-h-0 min-w-0">{children}</main>
     )}
   </div>
 );
@@ -134,7 +89,9 @@ const TreasuryDialogTrigger = React.forwardRef((props, ref) => {
 
   return (
     <Button ref={ref} {...props} onClick={() => openDialog()}>
-      <span data-desktop-only>Treasury </span>
+      <span data-desktop-only className="hidden sm:inline">
+        Treasury
+      </span>{" "}
       {data == null ? (
         "..."
       ) : (
@@ -164,66 +121,39 @@ const AuctionDialogTrigger = React.forwardRef((props, ref) => {
       onClick={() => openDialog()}
       icon={
         <>
-          <AuctionNounImage
-            className="noun-image"
+          <AuctionNounImage className="noun-image block size-(2.4rem) rounded-[0.4rem] bg-(--color-surface-strong)" />
+          <svg
+            className="progress-outline pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 group-hover:[&>rect]:stroke-accent-primary group-focus-visible:[&>rect]:stroke-accent-primary"
+            viewBox="0 0 32 32"
             style={{
-              display: "block",
-              width: "2.4rem",
-              height: "2.4rem",
-              borderRadius: "0.4rem",
+              width: "calc(100% + 0.4rem)",
+              height: "calc(100% + 0.4rem)",
             }}
-          />
-          <svg className="progress-outline" viewBox="0 0 32 32">
-            <rect width="30" height="30" rx="7" x="1" y="1" pathLength="99" />
+          >
+            <rect
+              width="30"
+              height="30"
+              rx="7"
+              x="1"
+              y="1"
+              pathLength="99"
+              style={{
+                fill: "none",
+                stroke: "var(--color-accent-primary-soft)",
+                strokeWidth: 2,
+                strokeDasharray:
+                  "calc(var(--progress) * 100) calc((1 - var(--progress)) * 100)",
+                strokeDashoffset: -9,
+                transition: "stroke-dashoffset 1s linear, stroke 0.1s ease-out",
+              }}
+            />
           </svg>
         </>
       }
-      css={(t) =>
-        css({
-          display: "flex",
-          marginLeft: "0.4rem",
-          marginRight: "0.8rem",
-          borderRadius: "0.6rem",
-          position: "relative",
-          overflow: "visible",
-          "&:focus-visible": {
-            boxShadow: "none",
-            ".progress-outline rect": {
-              stroke: t.colors.primary,
-            },
-          },
-          ".noun-image": {
-            background: t.colors.backgroundModifierNormal,
-          },
-          ".progress-outline": {
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            width: "calc(100% + 0.4rem)",
-            height: "calc(100% + 0.4rem)",
-            transform: "translateX(-50%) translateY(-50%)",
-            pointerEvents: "none",
-          },
-          ".progress-outline rect": {
-            fill: "none",
-            stroke: t.colors.primaryTransparentStrong,
-            strokeWidth: 2,
-            strokeDasharray:
-              "calc(var(--progress) * 100) calc((1 - var(--progress)) * 100)",
-            strokeDashoffset: "-9",
-            transition: "stroke-dashoffset 1s linear, stroke 0.1s ease-out",
-          },
-          "@media(hover: hover)": {
-            cursor: "pointer",
-            ":not([disabled]):hover": {
-              background: "none",
-              ".progress-outline rect": {
-                stroke: t.colors.primary,
-              },
-            },
-          },
-        })
-      }
+      className={clsx(
+        "group relative ml-(0.4rem) mr-(0.8rem) overflow-visible rounded-[0.6rem]",
+        "focus-visible:shadow-none hover:bg-transparent",
+      )}
       style={{
         "--progress": (() => {
           if (auction == null) return 0;
@@ -258,7 +188,7 @@ const predefinedActions = {
               <DocumentIcon
                 aria-hidden="true"
                 role="graphics-symbol"
-                style={{ width: "1.6rem", height: "auto" }}
+                className="h-auto w-(1.6rem)"
               />
             ),
           },
@@ -267,20 +197,14 @@ const predefinedActions = {
             title: "Discussion topic",
             description: "Start a discussion thread (onchain)",
             icon: (
-              <ChatBubblesIcon
-                style={{
-                  width: "1.6rem",
-                  height: "auto",
-                  transform: "translateY(1px)",
-                }}
-              />
+              <ChatBubblesIcon className="h-auto w-(1.6rem) translate-y-[1px]" />
             ),
           },
         ],
       },
     ],
     buttonProps: {
-      iconRight: <CaretDownIcon style={{ width: "0.9rem", height: "auto" }} />,
+      iconRight: <CaretDownIcon className="h-auto w-(0.9rem)" />,
     },
   },
   "treasury-dialog-trigger": {
@@ -453,7 +377,6 @@ const NavBar = ({ navigationStack, actions: customActions }) => {
         try {
           openAccountAuthenticationDialog();
           await signInConnectedWalletAccount();
-          // TODO alert success
         } catch (e) {
           console.error(e);
           alert("Ops, seems like something went wrong!");
@@ -476,211 +399,102 @@ const NavBar = ({ navigationStack, actions: customActions }) => {
     }
   };
 
+  const navigationItems = [
+    (() => {
+      const logo = (
+        <LogoSymbol
+          className="inline-block h-auto w-(1.8rem) [backface-visibility:hidden]"
+          style={{ filter: isTestnet ? "invert(1)" : undefined }}
+        />
+      );
+
+      if (pathname !== "/")
+        return {
+          to: "/",
+          label: (
+            <>
+              {logo}
+              <span className="hidden sm:ml-(0.6rem) sm:inline">
+                {isTestnet ? chain.name : "Camp"}
+              </span>
+            </>
+          ),
+        };
+
+      const isRoot = pathname === "/";
+      const hasSearchParams = searchParams.size > 0;
+
+      return {
+        key: "root-logo",
+        to: "/",
+        replace: hasSearchParams && isRoot ? true : undefined,
+        props: {
+          className: "px-0 py-0",
+          style: {
+            perspective: "200vmax",
+          },
+        },
+        label: (
+          <>
+            <div className="relative inline-flex h-(1.8rem) w-(1.8rem) items-center justify-center [transform-style:preserve-3d] animate-[flip-logo_24s_linear_12s_infinite] transition-transform duration-[0.25s] ease-out hover:animate-none [&>svg]:block">
+              {logo}
+              <div className="absolute left-1/2 top-1/2 h-(2.4rem) w-(2.4rem) -translate-x-1/2 -translate-y-1/2 [backface-visibility:hidden] [transform:translateX(-50%)_translateY(-50%)_rotate3d(0.4,1,0,180deg)] [&>svg]:block [&>svg]:h-full [&>svg]:w-full [&>svg]:rounded-[0.3rem]">
+                <NoggleImage />
+              </div>
+            </div>
+            {isTestnet && (
+              <span className="hidden sm:ml-(0.6rem) sm:inline">
+                {chain.name}
+              </span>
+            )}
+          </>
+        ),
+      };
+    })(),
+    ...navigationStack,
+  ];
+
   return (
-    <nav
-      css={(t) =>
-        css({
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "flex-start",
-          whiteSpace: "nowrap",
-          minHeight: t.navBarHeight, // "4.7rem",
-          "@media (max-width: 599px)": {
-            '[data-desktop-only="true"]': {
-              display: "none",
-            },
-          },
-        })
-      }
-    >
-      <div
-        css={css({
-          flex: 1,
-          minWidth: 0,
-          display: "flex",
-          alignItems: "center",
-          gap: "0.2rem",
-          overflow: "hidden",
-          padding: "1rem 1.6rem 1rem 1.3rem",
-          "@media (min-width: 600px)": {
-            padding: "1rem",
-          },
-        })}
-      >
-        {[
-          (() => {
-            const logo = (
-              <LogoSymbol
-                css={css({
-                  display: "inline-block",
-                  width: "1.8rem",
-                  height: "auto",
-                  backfaceVisibility: "hidden",
-                })}
-                style={{
-                  filter: isTestnet ? "invert(1)" : undefined,
-                }}
-              />
-            );
-
-            if (pathname !== "/")
-              return {
-                to: "/",
-                label: (
-                  <>
-                    {logo}
-                    <span
-                      css={css({
-                        display: "none",
-                        "@media(min-width: 600px)": {
-                          display: "inline",
-                          marginLeft: "0.6rem",
-                        },
-                      })}
-                    >
-                      {isTestnet ? chain.name : "Camp"}
-                    </span>
-                  </>
-                ),
-              };
-
-            // Different behavior based on current location
-            const isRoot = pathname === "/";
-            // Check if there are any search parameters
-            const hasSearchParams = searchParams.size > 0;
-
-            return {
-              key: "root-logo",
-              to: "/",
-              // Use replace prop when on root with search params to not add to history stack
-              replace: hasSearchParams && isRoot ? true : undefined,
-              props: {
-                style: {
-                  height: "2.8rem",
-                  minWidth: "2.8rem",
-                  paddingBlock: 0,
-                  perspective: "200vmax",
-                },
-              },
-              label: (
-                <>
-                  <div
-                    css={css({
-                      position: "relative",
-                      display: "inline-flex",
-                      alignItems: "center",
-                      width: "1.8rem",
-                      height: "1.8rem",
-                      animation: `${flipAnimation} 24s linear 12s infinite`,
-                      transition: "0.25s transform ease-out",
-                      transformStyle: "preserve-3d",
-                      svg: { display: "block" },
-                      "@media(hover: hover)": {
-                        "&:hover": {
-                          animation: "none",
-                        },
-                      },
-                    })}
-                  >
-                    {logo}
-                    <div
-                      css={css({
-                        position: "absolute",
-                        top: "50%",
-                        left: "50%",
-                        backfaceVisibility: "hidden",
-                        transform:
-                          "translateX(-50%) translateY(-50%) rotate3d(0.4,1,0,180deg)",
-                        width: "2.4rem",
-                        height: "2.4rem",
-                        svg: {
-                          display: "block",
-                          width: "100%",
-                          height: "100%",
-                          borderRadius: "0.3rem",
-                        },
-                      })}
-                    >
-                      <NoggleImage />
-                    </div>
-                  </div>
-                  {isTestnet && (
-                    <span
-                      css={css({
-                        display: "none",
-                        "@media(min-width: 600px)": {
-                          display: "inline",
-                          marginLeft: "0.6rem",
-                        },
-                      })}
-                    >
-                      {chain.name}
-                    </span>
-                  )}
-                </>
-              ),
-            };
-          })(),
-          ...navigationStack,
-        ].map((item, index) => {
-          const [Component, componentProps] =
+    <nav className="flex min-h-[var(--size-navbar,4.7rem)] items-center justify-start whitespace-nowrap">
+      <div className="flex min-w-0 flex-1 items-center gap-(0.2rem) overflow-hidden pl-(1.3rem) pr-(1.6rem) py-(1rem) sm:px-(1rem)">
+        {navigationItems.map((item, index) => {
+          const Component = item.component ?? NextLink;
+          const baseProps =
             item.component != null
-              ? [item.component, item.props]
-              : [
-                  NextLink,
-                  {
-                    prefetch: true,
-                    href: item.to,
-                  },
-                ];
+              ? (item.props ?? {})
+              : {
+                  prefetch: true,
+                  href: item.to,
+                };
+          const resolvedProps = { ...baseProps };
+          if (item.replace != null) resolvedProps.replace = item.replace;
+          const { className: itemClassName, ...restComponentProps } =
+            resolvedProps;
+
           return (
-            <React.Fragment key={item.key ?? item.to}>
+            <React.Fragment key={item.key ?? item.to ?? index}>
               {index > 0 && (
                 <span
                   data-index={index}
                   data-desktop-only={item.desktopOnly}
-                  css={(t) =>
-                    css({
-                      color: t.colors.textMuted,
-                      fontSize: t.text.sizes.base,
-                    })
-                  }
+                  className={clsx(
+                    "text-base text-text-muted",
+                    item.desktopOnly && "max-sm:hidden",
+                  )}
                 >
                   {"/"}
                 </span>
               )}
               <Component
-                {...componentProps}
+                {...restComponentProps}
                 data-index={index}
                 data-image={item.image || undefined}
-                // data-disabled={pathname === item.to}
                 data-desktop-only={item.desktopOnly}
-                css={(t) =>
-                  css({
-                    display: "inline-block",
-                    height: "2.8rem",
-                    minWidth: "2.8rem",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    fontSize: t.fontSizes.base,
-                    color: t.colors.textNormal,
-                    padding: "0.3rem 0.5rem",
-                    borderRadius: "0.6rem",
-                    textDecoration: "none",
-                    '&[data-index="0"]': {
-                      display: "inline-flex",
-                      alignItems: "center",
-                      minWidth: "max-content",
-                    },
-                    '&[data-disabled="true"]': { pointerEvents: "none" },
-                    "@media(hover: hover)": {
-                      cursor: "pointer",
-                      ":hover": {
-                        background: t.colors.backgroundModifierHover,
-                      },
-                    },
-                  })
-                }
+                className={clsx(
+                  NAV_LINK_BASE_CLASS,
+                  item.desktopOnly && "max-sm:hidden",
+                  itemClassName,
+                )}
               >
                 {item.label}
               </Component>
@@ -688,31 +502,8 @@ const NavBar = ({ navigationStack, actions: customActions }) => {
           );
         })}
       </div>
-      <div
-        css={(t) =>
-          css({
-            fontSize: t.text.sizes.base,
-            padding: "0 1.6rem 0 0",
-            ul: {
-              display: "grid",
-              gridAutoFlow: "column",
-              gridGap: "0.3rem",
-              alignItems: "center",
-            },
-            li: { listStyle: "none" },
-            '[role="separator"]': {
-              width: "0.1rem",
-              background: t.colors.borderLight,
-              height: "1.6rem",
-              margin: "0 0.4rem",
-            },
-            "@media (min-width: 600px)": {
-              padding: "0 1rem",
-            },
-          })
-        }
-      >
-        <ul>
+      <div className="flex items-center pl-0 pr-(1.6rem) text-base sm:px-(1rem)">
+        <ul className="grid auto-cols-max grid-flow-col items-center gap-(0.3rem)">
           {[
             ...actions,
             actions.length > 0 && { type: "separator" },
@@ -725,11 +516,15 @@ const NavBar = ({ navigationStack, actions: customActions }) => {
                     variant: "default",
                     isLoading: requestWalletAccess == null || isLoadingWallet,
                     disabled: requestWalletAccess == null || isLoadingWallet,
-                    style: { marginLeft: "0.8rem", marginRight: "0.4rem" },
+                    className: "ml-(0.8rem) mr-(0.4rem)",
                   },
                   label: (
                     <>
-                      Connect<span data-desktop-only> Wallet</span>
+                      Connect
+                      <span data-desktop-only className="hidden sm:inline">
+                        {" "}
+                        Wallet
+                      </span>
                     </>
                   ),
                 }
@@ -743,7 +538,7 @@ const NavBar = ({ navigationStack, actions: customActions }) => {
                       isLoading: isLoadingWallet,
                       disabled:
                         switchWalletToTargetChain == null || isLoadingWallet,
-                      style: { marginLeft: "0.8rem" },
+                      className: "ml-(0.8rem)",
                     },
                     label: `Switch to ${CHAIN_ID === 1 ? "Mainnet" : chain.name}`,
                   }
@@ -819,10 +614,8 @@ const NavBar = ({ navigationStack, actions: customActions }) => {
                     },
                   ].filter(Boolean),
                   buttonProps: {
-                    style: { display: "flex" },
-                    icon: (
-                      <DotsIcon style={{ width: "1.8rem", height: "auto" }} />
-                    ),
+                    className: "flex",
+                    icon: <DotsIcon className="h-auto w-(1.8rem)" />,
                   },
                 };
 
@@ -886,30 +679,13 @@ const NavBar = ({ navigationStack, actions: customActions }) => {
                   },
                 ],
                 buttonProps: {
-                  css: css({
-                    display: "flex",
-                    "@media(max-width: 600px)": {
-                      paddingInline: "0.4rem",
-                      marginLeft: "0.3rem",
-                      ".account-display-name": { display: "none" },
-                    },
-                  }),
-                  iconRight: (
-                    <CaretDownIcon
-                      style={{ width: "0.9rem", height: "auto" }}
-                    />
-                  ),
+                  className: "flex max-sm:ml-(0.3rem) max-sm:px-(0.4rem)",
+                  iconRight: <CaretDownIcon className="h-auto w-(0.9rem)" />,
                 },
                 label: (
-                  <div
-                    css={css({
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "0.8rem",
-                    })}
-                  >
+                  <div className="flex items-center gap-(0.8rem)">
                     {pathname === "/" && (
-                      <div className="account-display-name">
+                      <div className="account-display-name hidden sm:block">
                         {userAccountDisplayName}
                       </div>
                     )}
@@ -923,32 +699,43 @@ const NavBar = ({ navigationStack, actions: customActions }) => {
             .map((a, i) => {
               if (a.type === "separator")
                 return (
-                  <li key={i} role="separator" aria-orientation="vertical" />
+                  <li
+                    key={i}
+                    role="separator"
+                    aria-orientation="vertical"
+                    className="mx-(0.4rem) h-(1.6rem) w-(0.1rem) list-none bg-border-light"
+                  />
                 );
 
-              const [ButtonComponent, buttonProps] = [
-                a.component ?? Button,
-                {
-                  variant: a.buttonVariant ?? "transparent",
-                  size: "small",
-                  children: a.label,
-                  ...a.buttonProps,
-                },
-              ];
+              const ButtonComponent = a.component ?? Button;
+              const baseButtonProps = {
+                variant: a.buttonVariant ?? "transparent",
+                size: "small",
+                children: a.label,
+                ...a.buttonProps,
+              };
+              const { className: buttonClassName, ...restButtonProps } =
+                baseButtonProps;
 
               return (
-                <li key={a.key ?? i} data-desktop-only={a.desktopOnly}>
+                <li
+                  key={a.key ?? i}
+                  data-desktop-only={a.desktopOnly}
+                  className={clsx(
+                    "list-none",
+                    a.desktopOnly && "max-sm:hidden",
+                  )}
+                >
                   {a.type === "dropdown" ? (
                     <DropdownMenu.Root placement={a.placement ?? "bottom"}>
                       <DropdownMenu.Trigger asChild>
-                        <ButtonComponent {...buttonProps} />
+                        <ButtonComponent
+                          className={buttonClassName}
+                          {...restButtonProps}
+                        />
                       </DropdownMenu.Trigger>
                       <DropdownMenu.Content
-                        css={css({
-                          width: "min-content",
-                          minWidth: "min-content",
-                          maxWidth: "calc(100vw - 2rem)",
-                        })}
+                        className="w-min min-w-min max-w-[calc(100vw-2rem)]"
                         items={a.items}
                         onAction={handleDropDownAction}
                       >
@@ -963,7 +750,11 @@ const NavBar = ({ navigationStack, actions: customActions }) => {
                       </DropdownMenu.Content>
                     </DropdownMenu.Root>
                   ) : (
-                    <ButtonComponent {...buttonProps} onClick={a.onSelect} />
+                    <ButtonComponent
+                      className={buttonClassName}
+                      {...restButtonProps}
+                      onClick={a.onSelect}
+                    />
                   )}
                 </li>
               );
@@ -985,46 +776,19 @@ export const MainContentContainer = ({
   ...props
 }) => (
   <div
-    data-pad={pad && undefined}
-    css={css({
-      "@media (min-width: 600px)": {
-        margin: "0 auto",
-        maxWidth: "100%",
-        width: "var(--width)",
-        padding: "0 4rem",
-      },
-      "@media (min-width: 1152px)": {
-        padding: "0 8rem",
-      },
-      '&[data-pad="false"]': { padding: 0 },
-    })}
-    style={{
-      "--width": narrow ? "92rem" : "134rem",
-    }}
+    className={clsx(
+      "w-full",
+      "sm:mx-auto sm:w-[var(--layout-width)] sm:max-w-full",
+      pad ? "sm:px-(4rem) xl:px-(8rem)" : "sm:px-0 xl:px-0",
+    )}
+    style={{ "--layout-width": narrow ? "92rem" : "134rem" }}
     {...props}
   >
     {sidebar == null ? (
       children
     ) : (
       <div
-        css={(t) =>
-          css({
-            "@media (min-width: 1152px)": {
-              display: "grid",
-              gridTemplateColumns: `minmax(0, 1fr) var(--sidebar-width, ${t.sidebarWidth})`,
-              gridGap: "var(--sidebar-gap, 10rem)",
-              "[data-sidebar-content]": {
-                position: "sticky",
-                top: 0,
-                maxHeight: `var(--container-height, calc(100vh - ${t.navBarHeight}))`,
-                overflow: "auto",
-                // Prevents the scrollbar from overlapping the content
-                margin: "0 -2rem",
-                padding: "0 2rem",
-              },
-            },
-          })
-        }
+        className="xl:grid xl:grid-cols-[minmax(0,1fr)_var(--sidebar-width,40rem)] xl:gap-[var(--sidebar-gap,10rem)]"
         style={{
           "--container-height": containerHeight,
           "--sidebar-width": sidebarWidth,
@@ -1033,7 +797,12 @@ export const MainContentContainer = ({
       >
         <div>{children}</div>
         <div>
-          <div data-sidebar-content>{sidebar}</div>
+          <div
+            data-sidebar-content
+            className="xl:sticky xl:top-0 xl:max-h-[var(--container-height,calc(100vh-var(--size-navbar)))] xl:overflow-auto xl:-mx-(2rem) xl:px-(2rem)"
+          >
+            {sidebar}
+          </div>
         </div>
       </div>
     )}
