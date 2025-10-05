@@ -1,24 +1,27 @@
 import React from "react";
-import { css } from "@emotion/react";
+import clsx from "clsx";
+import { twMerge } from "tailwind-merge";
 
-const Image = ({ disableFallback = false, ...props }) => {
+const Image = ({ disableFallback = false, className, style, ...rest }) => {
   const ref = React.useRef();
-  const onLoadRef = React.useRef(props.onLoad);
+  const onLoadRef = React.useRef(rest.onLoad);
 
   const [error, setError] = React.useState(null);
 
   React.useEffect(() => {
     setError(null);
-    ref.current.onerror = (error) => {
-      setError(error);
+    if (ref.current == null) return;
+    ref.current.onerror = (event) => {
+      setError(event);
     };
-  }, [props.src]);
+  }, [rest.src]);
 
   React.useEffect(() => {
-    onLoadRef.current = props.onLoad;
+    onLoadRef.current = rest.onLoad;
   });
 
   React.useEffect(() => {
+    if (ref.current == null) return;
     ref.current.onload = () => {
       if (ref.current == null) return;
       onLoadRef.current?.({
@@ -28,33 +31,30 @@ const Image = ({ disableFallback = false, ...props }) => {
     };
   }, []);
 
-  if (error != null && !disableFallback)
+  if (error != null && !disableFallback) {
     return (
       <span
-        data-url={props.src ?? "--none--"}
+        data-url={rest.src ?? "--none--"}
         style={{
-          padding: props.width == null ? "1em" : 0,
-          width: props.width,
-          ...props.style,
+          padding: rest.width == null ? "1em" : 0,
+          width: rest.width,
+          ...style,
         }}
-        css={(t) =>
-          css({
-            userSelect: "none",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            color: t.colors.textMuted,
-            fontSize: "1em",
-            borderRadius: "0.4rem",
-            boxShadow: `0 0 0 0.1rem ${t.colors.borderLighter}`,
-          })
-        }
+        className={twMerge(
+          clsx(
+            "inline-flex items-center justify-center text-text-muted text-base",
+            "rounded-md border border-(--color-border-lighter)",
+            "select-none",
+          ),
+          className,
+        )}
       >
         Error loading image
       </span>
     );
+  }
 
-  return <img ref={ref} {...props} />;
+  return <img ref={ref} className={className} style={style} {...rest} />;
 };
 
 export default Image;
