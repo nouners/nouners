@@ -1,87 +1,7 @@
 import React from "react";
 import { useButton, mergeProps } from "react-aria";
-import { css, keyframes } from "@emotion/react";
-
-const baseStyles = (t, { align }) => ({
-  userSelect: "none",
-  transition: "background 20ms ease-in",
-  fontWeight: "400",
-  lineHeight: 1.25,
-  border: 0,
-  borderRadius: "0.6rem",
-  cursor: "pointer",
-  textAlign: align === "left" ? "left" : "center",
-  display: "inline-flex",
-  alignItems: "center",
-  justifyContent: align === "left" ? "stretch" : "center",
-  textDecoration: "none",
-  maxWidth: "100%",
-  whiteSpace: "nowrap",
-  overflow: "hidden",
-  textOverflow: "ellipsis",
-  outline: "none",
-  "&[disabled]": { opacity: 0.5, cursor: "not-allowed" },
-  "&:focus-visible": { boxShadow: t.shadows.focus },
-});
-
-const textDangerHoverModifier = "rgb(235 87 87 / 10%)";
-
-const stylesByVariant = (t, { danger }) => {
-  const defaultStyles = {
-    color: danger ? t.colors.textDanger : t.colors.textNormal,
-    border: "1px solid",
-    borderColor: danger ? t.colors.borderDanger : t.colors.borderLighter,
-    "@media (hover: hover)": {
-      "&:not([disabled]):hover": {
-        background: danger
-          ? textDangerHoverModifier
-          : t.colors.backgroundModifierNormal,
-      },
-    },
-  };
-  return {
-    default: defaultStyles,
-    opaque: {
-      color: t.colors.textDimmed,
-      background: t.colors.backgroundModifierNormal,
-      "@media (hover: hover)": {
-        "&:not([disabled]):hover": {
-          color: t.colors.textAccent,
-        },
-      },
-    },
-    transparent: {
-      color: danger ? t.colors.textDanger : t.colors.textNormal,
-      background: "none",
-      "@media (hover: hover)": {
-        "&:not([disabled]):hover": {
-          color: danger ? t.colors.textDanger : t.colors.textAccent,
-          background: danger
-            ? textDangerHoverModifier
-            : t.colors.backgroundModifierNormal,
-        },
-      },
-    },
-    primary: {
-      color: "white",
-      background: t.colors.primary,
-      border: "1px solid transparent",
-      "&:focus-visible": {
-        boxShadow: `0 0 0 0.3rem ${t.colors.primaryTransparent}`,
-      },
-      "@media (hover: hover)": {
-        "&:not([disabled]):hover": {
-          background: t.colors.primaryModifierHover,
-        },
-      },
-    },
-    tag: {
-      ...defaultStyles,
-      textTransform: "uppercase",
-      fontWeight: t.text.weights.emphasis,
-    },
-  };
-};
+import clsx from "clsx";
+import { twMerge } from "tailwind-merge";
 
 export const heightBySize = {
   default: "3.2rem",
@@ -90,58 +10,13 @@ export const heightBySize = {
   medium: "3.6rem",
 };
 
-const stylesBySize = (theme, { multiline, align, icon }) => {
-  const heightProp = multiline ? "minHeight" : "height";
-  return {
-    default: {
-      fontSize: theme.fontSizes.base,
-      padding: icon ? 0 : align === "left" ? "0 0.8rem" : "0 1.2rem",
-      [heightProp]: heightBySize.default,
-      width: icon ? heightBySize.default : undefined,
-    },
-    tiny: {
-      fontSize: theme.fontSizes.small,
-      padding: icon ? 0 : "0 0.4rem",
-      [heightProp]: heightBySize.tiny,
-      width: icon ? heightBySize.tiny : undefined,
-      borderRadius: "0.5rem",
-    },
-    small: {
-      fontSize: theme.fontSizes.base,
-      padding: [
-        multiline ? "0.5rem" : 0,
-        icon ? 0 : align === "left" ? "0.7rem" : "0.9rem",
-      ].join(" "),
-      [heightProp]: heightBySize.small,
-      width: icon ? heightBySize.small : undefined,
-      lineHeight: 1.2,
-      borderRadius: "0.5rem",
-    },
-    medium: {
-      fontSize: theme.text.sizes.button,
-      padding: [
-        multiline ? "0.7rem" : 0,
-        icon ? 0 : align === "left" ? "0.9rem" : "1.7rem",
-      ].join(" "),
-      [heightProp]: heightBySize.medium,
-      width: icon ? heightBySize.medium : undefined,
-    },
-    large: {
-      fontSize: theme.text.sizes.button,
-      padding: ["1.2rem", align === "left" ? "1.2rem" : "2rem"].join(" "),
-    },
-    larger: {
-      fontSize: theme.text.sizes.large,
-      padding: ["1.4rem", align === "left" ? "1.4rem" : "2.8rem"].join(" "),
-    },
-  };
-};
-
 const iconLayoutPropsBySize = {
+  default: { size: "3.2rem", gutter: "0.8rem" },
   tiny: { size: "2rem", gutter: "0.2rem" },
   small: { size: "2.8rem", gutter: "0.4rem" },
   medium: { size: "3rem", gutter: "0.8rem" },
   large: { size: "3.2rem", gutter: "1rem" },
+  larger: { size: "3.2rem", gutter: "1.4rem" },
 };
 
 const defaultPropsByComponent = {
@@ -150,8 +25,114 @@ const defaultPropsByComponent = {
   },
 };
 
-const loadingDotSize = "0.4rem";
 const loadingDotCount = 3;
+
+const getSizeClasses = ({ size, align, hasIconOnly, multiline }) => {
+  switch (size) {
+    case "tiny":
+      return clsx(
+        "text-sm",
+        "rounded-[0.5rem]",
+        multiline ? "min-h-10 py-(0.5rem)" : "h-10",
+        hasIconOnly ? "size-10 px-0" : "px-2",
+      );
+    case "small":
+      return clsx(
+        "text-base",
+        "rounded-[0.5rem]",
+        multiline ? "min-h-14 py-(0.5rem)" : "h-14",
+        hasIconOnly
+          ? "size-14 px-0"
+          : align === "left"
+            ? "px-(0.7rem)"
+            : "px-(0.9rem)",
+      );
+    case "medium":
+      return clsx(
+        "text-button",
+        multiline ? "min-h-18 py-(0.7rem)" : "h-18",
+        hasIconOnly
+          ? "size-18 px-0"
+          : align === "left"
+            ? "px-(0.9rem)"
+            : "px-(1.7rem)",
+      );
+    case "large":
+      return clsx(
+        "text-button",
+        "rounded-md",
+        "py-(1.2rem)",
+        hasIconOnly
+          ? "px-(1.2rem)"
+          : align === "left"
+            ? "px-(1.2rem)"
+            : "px-(2rem)",
+      );
+    case "larger":
+      return clsx(
+        "text-xl",
+        "py-(1.4rem)",
+        hasIconOnly
+          ? "px-(1.4rem)"
+          : align === "left"
+            ? "px-(1.4rem)"
+            : "px-(2.8rem)",
+      );
+    default:
+      return clsx(
+        "text-base",
+        "rounded-md",
+        multiline ? "min-h-16" : "h-16",
+        hasIconOnly ? "size-16 px-0" : align === "left" ? "px-4" : "px-6",
+      );
+  }
+};
+
+const getVariantClasses = (variant, danger) => {
+  switch (variant) {
+    case "opaque":
+      return clsx(
+        "border border-transparent",
+        "bg-(--color-surface-muted)",
+        "text-text-dimmed",
+        "hover:text-text-accent",
+      );
+    case "transparent":
+      return clsx(
+        "border border-transparent",
+        "bg-transparent",
+        danger ? "text-text-negative" : "text-text-normal",
+        danger
+          ? "hover:bg-(--color-danger-hover)"
+          : "hover:bg-(--color-surface-muted)",
+        !danger && "hover:text-text-accent",
+      );
+    case "primary":
+      return clsx(
+        "border border-transparent",
+        "bg-accent-primary",
+        "text-white",
+        "hover:bg-accent-hover",
+        "focus-visible:[box-shadow:0_0_0_0.3rem_var(--color-accent-soft)]",
+      );
+    case "tag":
+      return clsx(
+        "border",
+        danger
+          ? "border-border-danger text-text-negative"
+          : "border-border-light text-text-normal",
+        "uppercase font-semibold tracking-[0.08em]",
+        danger
+          ? "hover:bg-(--color-danger-hover)"
+          : "hover:bg-(--color-surface-muted)",
+      );
+    case "default":
+    default:
+      return danger
+        ? "border border-border-danger text-text-negative hover:bg-(--color-danger-hover)"
+        : "border border-border-light text-text-normal hover:bg-(--color-surface-muted)";
+  }
+};
 
 const Button = React.forwardRef(
   (
@@ -171,6 +152,7 @@ const Button = React.forwardRef(
       onPressStart,
       component: Component = "button",
       children,
+      className,
       style,
       ...props
     },
@@ -188,54 +170,59 @@ const Button = React.forwardRef(
       ref,
     );
 
+    const hasIconOnly = icon != null && children == null;
+    const sizeClasses = getSizeClasses({
+      size,
+      align,
+      hasIconOnly,
+      multiline,
+    });
+    const variantClasses = getVariantClasses(variant, danger);
     const iconLayout =
-      iconLayoutPropsBySize[size] ?? iconLayoutPropsBySize.medium;
+      iconLayoutPropsBySize[size] ?? iconLayoutPropsBySize.default;
+
+    const rootClassName = twMerge(
+      clsx(
+        "relative inline-flex items-center justify-center select-none font-normal leading-[1.25] text-center transition-colors duration-75 ease-linear whitespace-nowrap overflow-hidden text-ellipsis outline-hidden",
+        "focus-visible:outline-hidden focus-visible:focus-ring",
+        "disabled:cursor-not-allowed disabled:opacity-50",
+        align === "left" ? "justify-start text-left" : "justify-center",
+        fullWidth && "w-full",
+        isLoading && "pointer-events-none",
+        sizeClasses,
+        variantClasses,
+        className,
+      ),
+    );
 
     return (
       <Component
         ref={ref}
         {...defaultPropsByComponent[Component]}
-        css={(theme) =>
-          css({
-            ...baseStyles(theme, { align }),
-            ...(stylesBySize(theme, {
-              multiline,
-              align,
-              icon: icon != null && children == null,
-            })[size] ?? { width: size, height: size }),
-            ...stylesByVariant(theme, { danger })[variant],
-          })
-        }
-        style={{
-          pointerEvents: isLoading ? "none" : undefined,
-          width: fullWidth ? "100%" : undefined,
-          ...style,
-        }}
         {...mergeProps(props, buttonProps)}
+        className={rootClassName}
+        style={style}
+        aria-busy={isLoading || undefined}
       >
         {icon != null && (
           <div
             aria-hidden="true"
-            css={css({
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              minWidth: "1.2rem",
-              maxWidth: iconLayout.size,
-              marginRight: children == null ? undefined : iconLayout.gutter,
-            })}
+            className={clsx(
+              "flex shrink-0 items-center justify-center text-current",
+              "min-w-(1.2rem)",
+              `max-w-(${iconLayout.size})`,
+              children != null && `mr-(${iconLayout.gutter})`,
+            )}
           >
             {icon}
           </div>
         )}
         {children != null && (
           <div
-            style={{
-              visibility: isLoading ? "hidden" : undefined,
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              flex: 1,
-            }}
+            className={clsx(
+              "flex-1 min-w-0 overflow-hidden text-ellipsis",
+              isLoading && "invisible",
+            )}
           >
             {children}
           </div>
@@ -243,40 +230,24 @@ const Button = React.forwardRef(
         {iconRight != null && (
           <div
             aria-hidden="true"
-            css={css({
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              minWidth: "1.5rem",
-              maxWidth: iconLayout.size,
-              marginLeft: iconLayout.gutter,
-            })}
+            className={clsx(
+              "flex shrink-0 items-center justify-center text-current",
+              `min-w-(${iconLayout.size})`,
+              `max-w-(${iconLayout.size})`,
+              "ml-(${iconLayout.gutter})",
+            )}
           >
             {iconRight}
           </div>
         )}
         {isLoading && (
-          <div
-            style={{
-              position: "absolute",
-              display: "flex",
-              visibility: isLoading ? undefined : "hidden",
-            }}
-          >
+          <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
             {Array.from({ length: loadingDotCount }).map((_, i) => (
               <div
                 key={i}
-                css={css({
-                  animation: dotsAnimation,
-                  animationDelay: `${i / 5}s`,
-                  animationDuration: "1.4s",
-                  animationIterationCount: "infinite",
-                  width: loadingDotSize,
-                  height: loadingDotSize,
-                  borderRadius: "50%",
-                  background: "currentColor",
-                  margin: "0 0.1rem",
-                })}
+                className="animate-loading-dots size-(0.4rem) rounded-full bg-current mx-(0.1rem)"
+                style={{ animationDelay: `${i / 5}s` }}
+                aria-hidden="true"
               />
             ))}
           </div>
@@ -286,16 +257,6 @@ const Button = React.forwardRef(
   },
 );
 
-const dotsAnimation = keyframes({
-  "0%": {
-    opacity: 0.2,
-  },
-  "20%": {
-    opacity: 1,
-  },
-  to: {
-    opacity: 0.2,
-  },
-});
+Button.displayName = "Button";
 
 export default Button;

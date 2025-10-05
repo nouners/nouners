@@ -61,6 +61,9 @@
   --color-surface-overlay: hsl(0 0% 100%);
   --color-surface-popover: hsl(0 0% 100%);
   --color-surface-tooltip: hsl(0 0% 100%);
+  --color-surface-muted: hsl(60 12% 30% / 7%);
+  --color-surface-strong: hsl(60 12% 30% / 12%);
+  --color-surface-contrast: hsl(60 12% 30% / 36%);
 
   --color-surface-primary-dark: hsl(0 0% 10%);
   --color-surface-secondary-dark: hsl(0 0% 13%);
@@ -69,6 +72,9 @@
   --color-surface-overlay-dark: hsl(0 0% 13%);
   --color-surface-popover-dark: hsl(0 0% 15%);
   --color-surface-tooltip-dark: hsl(0 0% 17%);
+  --color-surface-muted-dark: hsl(0 0% 100% / 5.5%);
+  --color-surface-strong-dark: hsl(0 0% 100% / 8%);
+  --color-surface-contrast-dark: hsl(0 0% 100% / 26%);
 
   --color-accent-primary: hsl(210 77% 51%);
   --color-accent-hover: hsl(210 100% 43%);
@@ -98,6 +104,7 @@
   --color-state-danger-bg: #f2dfdf;
   --color-state-special-bg: #f2dff7;
   --color-state-primary-bg: #deedfd;
+  --color-danger-hover: rgb(235 87 87 / 10%);
 
   --size-navbar: 4.7rem;
   --size-sidebar: 40rem;
@@ -112,6 +119,9 @@
   --color-surface-overlay: var(--color-surface-overlay-dark);
   --color-surface-popover: var(--color-surface-popover-dark);
   --color-surface-tooltip: var(--color-surface-tooltip-dark);
+  --color-surface-muted: var(--color-surface-muted-dark);
+  --color-surface-strong: var(--color-surface-strong-dark);
+  --color-surface-contrast: var(--color-surface-contrast-dark);
 
   --color-text-normal: hsl(0 0% 83%);
   --color-text-dimmed: hsl(0 0% 60%);
@@ -136,6 +146,7 @@
   --color-state-danger-bg: #3f2f32;
   --color-state-special-bg: #3d2f40;
   --color-state-primary-bg: #253240;
+  --color-danger-hover: rgb(235 87 87 / 10%);
 }
 
 :root {
@@ -278,4 +289,25 @@
 @utility small {
   font-size: var(--text-sm);
   line-height: var(--text-sm--line-height);
+}
+
+@utility text-button {
+  font-size: 1.5rem;
+  line-height: 1.2;
+}
+
+@keyframes loading-dots {
+  0% {
+    opacity: 0.2;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.2;
+  }
+}
+
+@utility animate-loading-dots {
+  animation: loading-dots 1.4s ease-in-out infinite;
 }
