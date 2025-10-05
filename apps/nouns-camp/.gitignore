@@ -15,3 +15,10 @@ playwright-report
 test-results
 
 reports
+
+# Cloudflare
+.wrangler
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
