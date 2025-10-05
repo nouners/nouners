@@ -20,7 +20,6 @@ const MobileDevTools = lazy(() => import("@/components/mobile-devtools"));
 
 import "@/app/tailwind.css";
 
-import "@/snow.css";
 
 const isProduction = process.env.NODE_ENV === "production";
 

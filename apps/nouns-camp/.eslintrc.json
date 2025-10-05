@@ -6,7 +6,22 @@
     "react/prop-types": "off",
     "react/display-name": "off",
     "react/no-unknown-property": [2, { "ignore": ["css"] }],
-    "@next/next/no-img-element": "off"
+    "@next/next/no-img-element": "off",
+    "no-restricted-imports": [
+      "warn",
+      {
+        "paths": [
+          {
+            "name": "@emotion/react",
+            "message": "Emotion is being migrated out. Use Tailwind utilities or CSS layers instead."
+          },
+          {
+            "name": "@emotion/cache",
+            "message": "Emotion is being migrated out. Use Tailwind utilities or CSS layers instead."
+          }
+        ]
+      }
+    ]
   },
   "settings": {
     "react": {

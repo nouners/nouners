@@ -1,6 +1,4 @@
 import React from "react";
-import { css } from "@emotion/react";
-import "./snow.css";
 
 // All cred to Ethan! https://codepen.io/ethancopping/pen/ExrGYGG
 const init = (containerEl) => {
@@ -24,10 +22,16 @@ const init = (containerEl) => {
     snowflake.style.top = `-${size}px`;
 
     const animationDuration = (Math.random() * 3 + 2) / fallSpeed;
-    snowflake.style.animationDuration = `${animationDuration}s`;
-    snowflake.style.animationTimingFunction = "linear";
-    snowflake.style.animationName =
-      Math.random() < 0.5 ? "fall" : "diagonal-fall";
+    snowflake.style.setProperty("--snow-duration", `${animationDuration}s`);
+
+    // Toggle between animations via classes
+    if (Math.random() < 0.5) {
+      snowflake.classList.remove("animate-diagonal-fall");
+      snowflake.classList.add("animate-fall");
+    } else {
+      snowflake.classList.remove("animate-fall");
+      snowflake.classList.add("animate-diagonal-fall");
+    }
 
     setTimeout(() => {
       if (parseInt(snowflake.style.top, 10) < viewportHeight) {
@@ -41,7 +45,15 @@ const init = (containerEl) => {
   function createSnowflake() {
     if (snowflakes.length < maxSnowflakes) {
       const snowflake = document.createElement("div");
-      snowflake.classList.add("snowflake");
+      snowflake.className = [
+        "snowflake",
+        "absolute",
+        "rounded-full",
+        "opacity-80",
+        "pointer-events-none",
+        "bg-neutral-300",
+        "dark:bg-neutral-500",
+      ].join(" ");
       snowflakes.push(snowflake);
       containerEl.appendChild(snowflake);
       resetSnowflake(snowflake);
@@ -84,34 +96,15 @@ const init = (containerEl) => {
 };
 
 const SnowOverlay = () => {
-  const ref = React.useRef();
+  const ref = React.useRef(null);
 
   React.useEffect(() => {
-    init(ref.current);
+    if (ref.current) init(ref.current);
   }, []);
 
   return (
     <div
-      css={(t) =>
-        css({
-          position: "fixed",
-          top: 0,
-          left: 0,
-          overflow: "hidden",
-          width: "100vw",
-          height: "100vh",
-          zIndex: 99999,
-          pointerEvents: "none",
-          ".snowflake": {
-            position: "absolute",
-            backgroundColor:
-              t.name === "dark" ? "hsl(0 0% 50%)" : "hsl(0 0% 85%)",
-            borderRadius: "50%",
-            opacity: 0.8,
-            pointerEvents: "none",
-          },
-        })
-      }
+      className="fixed inset-0 overflow-hidden w-screen h-screen z-[99999] pointer-events-none"
       ref={ref}
     />
   );
