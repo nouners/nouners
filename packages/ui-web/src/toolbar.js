@@ -1,74 +1,46 @@
 import React from "react";
-import { css } from "@emotion/react";
 import * as Toolbar from "@radix-ui/react-toolbar";
+import clsx from "clsx";
+import { twMerge } from "tailwind-merge";
 
-export const Root = React.forwardRef((props, ref) => (
+export const Root = React.forwardRef(({ className, ...props }, ref) => (
   <Toolbar.Root
     ref={ref}
-    css={(theme) =>
-      css({
-        width: "100%",
-        minWidth: "max-content",
-        display: "flex",
-        padding: "0.4rem",
-        borderRadius: theme.dropdownMenus.borderRadius,
-        background: theme.colors.toolbarBackground,
-        boxShadow: theme.shadows.elevationHigh,
-      })
-    }
+    className={twMerge(
+      clsx(
+        "flex min-w-max w-full items-center gap-1",
+        "rounded-[var(--dropdown-radius)] bg-(--color-toolbar-background) p-[0.4rem] shadow-elevation-high",
+      ),
+      className,
+    )}
     {...props}
   />
 ));
 
-export const Button = React.forwardRef((props, ref) => (
+export const Button = React.forwardRef(({ className, ...props }, ref) => (
   <Toolbar.Button
     ref={ref}
-    css={(t) =>
-      css({
-        all: "unset",
-        flex: "0 0 auto",
-        color: t.colors.textNormal,
-        width: "2.5rem",
-        height: "2.5rem",
-        // padding: "0 0.5rem",
-        borderRadius: 4,
-        display: "inline-flex",
-        // fontSize: 13,
-        lineHeight: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        boxShadow: 0,
-        margin: "0",
-        cursor: "pointer",
-        "@media(hover: hover)": {
-          "&:hover": {
-            background: t.colors.backgroundModifierHover,
-          },
-        },
-        "&:focus": {
-          position: "relative",
-          boxShadow: t.shadows.focus,
-        },
-        "&[disabled]": {
-          color: t.colors.textMuted,
-          pointerEvents: "none",
-        },
-      })
-    }
+    className={twMerge(
+      clsx(
+        "inline-flex h-[2.5rem] w-[2.5rem] flex-none items-center justify-center",
+        "rounded-[4px] text-text-normal outline-hidden transition-colors duration-100 ease-linear",
+        "hover:bg-(--color-surface-muted)",
+        "focus-visible:[box-shadow:var(--shadow-focus)]",
+        "disabled:cursor-not-allowed disabled:text-text-muted disabled:hover:bg-transparent",
+      ),
+      className,
+    )}
     {...props}
   />
 ));
 
-export const Separator = React.forwardRef((props, ref) => (
+export const Separator = React.forwardRef(({ className, ...props }, ref) => (
   <Toolbar.Separator
     ref={ref}
-    css={(t) =>
-      css({
-        width: "1px",
-        background: t.colors.borderLight,
-        margin: "0.3rem",
-      })
-    }
+    className={twMerge(
+      clsx("mx-[0.3rem] my-0 h-[70%] w-px bg-(--color-border-light)"),
+      className,
+    )}
     {...props}
   />
 ));
