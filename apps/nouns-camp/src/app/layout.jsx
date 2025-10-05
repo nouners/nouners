@@ -18,8 +18,7 @@ import { Provider as FarcasterStateProvider } from "@/hooks/farcaster";
 import { lazy, Suspense } from "react";
 const MobileDevTools = lazy(() => import("@/components/mobile-devtools"));
 
-import "@/reset.css";
-import "@/index.css";
+import "@/app/tailwind.css";
 
 import "@/snow.css";
 
