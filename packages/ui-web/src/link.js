@@ -1,41 +1,36 @@
-import { css } from "@emotion/react";
+import clsx from "clsx";
+import { twMerge } from "tailwind-merge";
 
 const Link = ({
   underline = false,
   variant = "regular",
   component: Component = "button",
   size,
+  className,
   ...props
 }) => {
+  const variantClasses =
+    variant === "dimmed"
+      ? "text-text-dimmed hover:text-(--color-text-dimmed-hover)"
+      : "text-text-primary hover:text-accent-hover";
+
+  const sizeClass = size === "small" ? "text-sm" : undefined;
+
   return (
     <Component
       data-size={size}
       data-variant={variant}
       data-underline={underline || undefined}
-      css={(t) =>
-        css({
-          color: "inherit",
-          outline: "none",
-          textDecoration: "none",
-          '&[data-size="small"]': { fontSize: t.text.sizes.small },
-          "&[data-underline]": { textDecoration: "underline" },
-          '&[data-variant="regular"]': { color: t.colors.link },
-          '&[data-variant="dimmed"]': { color: t.colors.textDimmed },
-          ":focus-visible": { textDecoration: "underline" },
-          "@media(hover: hover)": {
-            cursor: "pointer",
-            ":hover": {
-              textDecoration: "underline",
-              '&[data-variant="regular"]': {
-                color: t.colors.linkModifierHover,
-              },
-              '&[data-variant="dimmed"]': {
-                color: t.colors.textDimmedModifierHover,
-              },
-            },
-          },
-        })
-      }
+      className={twMerge(
+        clsx(
+          "inline-flex items-center gap-1 text-current no-underline outline-hidden transition-colors duration-100 ease-linear",
+          "focus-visible:underline hover:underline",
+          variantClasses,
+          sizeClass,
+          underline && "underline",
+          className,
+        ),
+      )}
       {...props}
     />
   );
