@@ -1,11 +1,34 @@
 import React from "react";
-import { css } from "@emotion/react";
+import clsx from "clsx";
+import { twMerge } from "tailwind-merge";
 import { AutoAdjustingHeightTextarea } from "@shades/common/react";
 
 let id = 0;
 const genId = () => {
   return ++id;
 };
+
+const paddingBySize = {
+  small: "py-(0.5rem) px-(0.7rem)",
+  normal: "py-(0.7rem) px-(0.9rem)",
+  large: "py-(0.9rem) px-(1.1rem)",
+};
+
+const fontBySize = {
+  small: "text-input",
+  normal: "text-input",
+  large: "text-lg",
+};
+
+const baseInputClasses = clsx(
+  "block w-full max-w-full rounded-md border-none bg-(--color-surface-muted)",
+  "text-text-normal font-normal outline-hidden transition-shadow duration-100 ease-linear",
+  "focus-visible:focus-ring placeholder:text-(--color-input-placeholder)",
+  "disabled:bg-(--color-surface-strong) disabled:text-text-muted disabled:pointer-events-none",
+  '[&[type="date"]]:appearance-none [&[type="time"]]:appearance-none',
+  "[&::-webkit-datetime-edit]:leading-none [&::-webkit-datetime-edit]:inline [&::-webkit-datetime-edit]:p-0",
+  "[@supports(-webkit-touch-callout:none)]:text-(1.6rem)",
+);
 
 const Input = React.forwardRef(
   (
@@ -17,11 +40,14 @@ const Input = React.forwardRef(
       hint,
       containerProps,
       labelProps,
-      ...props
+      className,
+      style,
+      rows,
+      ...rest
     },
     ref,
   ) => {
-    const [id] = React.useState(() => genId());
+    const [generatedId] = React.useState(() => genId());
 
     const Component =
       CustomComponent != null
@@ -30,86 +56,62 @@ const Input = React.forwardRef(
           ? AutoAdjustingHeightTextarea
           : "input";
 
-    const renderInput = (extraProps) => (
-      <Component
-        ref={ref}
-        autoComplete="off"
-        autoCorrect="off"
-        autoCapitalize="none"
-        spellCheck="off"
-        css={(t) =>
-          css({
-            "--text-size-normal": t.text.sizes.input,
-            "--text-size-large": t.text.sizes.large,
-            fontSize: "var(--text-size)",
-            display: "block",
-            background: t.colors.backgroundModifierNormal,
-            color: t.colors.textNormal,
-            fontWeight: "400",
-            borderRadius: "0.6rem",
-            width: "100%",
-            maxWidth: "100%",
-            outline: "none",
-            border: 0,
-            padding: "var(--padding)",
-            "::placeholder": { color: t.colors.inputPlaceholder },
-            "&:disabled": { color: t.colors.textMuted },
-            "&:focus-visible": { boxShadow: t.shadows.focus },
-            '&[type="date"], &[type="time"]': {
-              WebkitAppearance: "none",
-              minHeight: "3.6rem",
-              "::-webkit-datetime-edit": {
-                lineHeight: 1,
-                display: "inline",
-                padding: 0,
-              },
-            },
-            // Prevents iOS zooming in on input fields
-            "@supports (-webkit-touch-callout: none)": { fontSize: "1.6rem" },
-          })
-        }
-        // Default to 1 row on multiline inputs
-        rows={multiline && props.rows == null ? 1 : props.rows}
-        {...props}
-        {...extraProps}
-        style={{
-          "--padding":
-            size === "small"
-              ? "0.5rem 0.7rem"
-              : size === "large"
-                ? "0.9rem 1.1rem"
-                : "0.7rem 0.9rem",
-          "--text-size":
-            size === "large"
-              ? "var(--text-size-large)"
-              : "var(--text-size-normal)",
-          ...props.style,
-        }}
-      />
-    );
+    const resolvedSize = fontBySize[size] != null ? size : "normal";
+
+    const renderInput = (extraProps = {}) => {
+      const combinedClassName = twMerge(
+        clsx(
+          baseInputClasses,
+          fontBySize[resolvedSize],
+          paddingBySize[resolvedSize],
+          multiline && "resize-none",
+          className,
+          extraProps.className,
+        ),
+      );
+
+      const mergedStyle = {
+        ...style,
+        ...extraProps.style,
+      };
+
+      return (
+        <Component
+          ref={ref}
+          autoComplete="off"
+          autoCorrect="off"
+          autoCapitalize="none"
+          spellCheck="off"
+          rows={multiline && rows == null ? 1 : rows}
+          {...rest}
+          {...extraProps}
+          className={combinedClassName}
+          style={mergedStyle}
+        />
+      );
+    };
 
     if (label == null && hint == null) return renderInput();
 
+    const { className: containerClassName, ...containerRest } =
+      containerProps ?? {};
+
+    const { className: labelClassName, ...labelRest } = labelProps ?? {};
+
     return (
-      <div {...containerProps}>
+      <div className={containerClassName} {...containerRest}>
         {label != null && (
-          <Label htmlFor={id} {...labelProps}>
+          <Label
+            htmlFor={generatedId}
+            className={labelClassName}
+            {...labelRest}
+          >
             {label}
           </Label>
         )}
-        {renderInput({ id })}
+        {renderInput({ id: generatedId })}
         {hint != null && (
-          <div
-            css={(t) =>
-              css({
-                fontSize: t.text.sizes.small,
-                color: t.colors.textDimmed,
-                marginTop: "0.7rem",
-                strong: { fontWeight: t.text.weights.emphasis },
-                "p + p": { marginTop: "0.7em" },
-              })
-            }
-          >
+          <div className="mt-(0.7rem) text-text-dimmed text-sm [&_strong]:font-semibold [&>p+p]:mt-[0.7em]">
             {hint}
           </div>
         )}
@@ -118,19 +120,16 @@ const Input = React.forwardRef(
   },
 );
 
-export const Label = (props) => (
+export const Label = ({ className, ...props }) => (
   <label
-    css={(t) =>
-      css({
-        display: "inline-block",
-        color: t.colors.textDimmed,
-        fontSize: t.text.sizes.base,
-        lineHeight: 1.2,
-        margin: "0 0 0.8rem",
-      })
-    }
+    className={twMerge(
+      "inline-block text-text-dimmed text-base leading-[1.2] mb-4",
+      className,
+    )}
     {...props}
   />
 );
+
+Input.displayName = "Input";
 
 export default Input;

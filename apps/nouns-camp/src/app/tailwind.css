@@ -64,6 +64,7 @@
   --color-surface-muted: hsl(60 12% 30% / 7%);
   --color-surface-strong: hsl(60 12% 30% / 12%);
   --color-surface-contrast: hsl(60 12% 30% / 36%);
+  --color-input-placeholder: hsl(45deg 8% 20% / 50%);
 
   --color-surface-primary-dark: hsl(0 0% 10%);
   --color-surface-secondary-dark: hsl(0 0% 13%);
@@ -75,6 +76,7 @@
   --color-surface-muted-dark: hsl(0 0% 100% / 5.5%);
   --color-surface-strong-dark: hsl(0 0% 100% / 8%);
   --color-surface-contrast-dark: hsl(0 0% 100% / 26%);
+  --color-input-placeholder-dark: hsl(0 0% 100% / 30%);
 
   --color-accent-primary: hsl(210 77% 51%);
   --color-accent-hover: hsl(210 100% 43%);
@@ -122,6 +124,7 @@
   --color-surface-muted: var(--color-surface-muted-dark);
   --color-surface-strong: var(--color-surface-strong-dark);
   --color-surface-contrast: var(--color-surface-contrast-dark);
+  --color-input-placeholder: var(--color-input-placeholder-dark);
 
   --color-text-normal: hsl(0 0% 83%);
   --color-text-dimmed: hsl(0 0% 60%);
@@ -292,6 +295,11 @@
 }
 
 @utility text-button {
+  font-size: 1.5rem;
+  line-height: 1.2;
+}
+
+@utility text-input {
   font-size: 1.5rem;
   line-height: 1.2;
 }
