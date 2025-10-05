@@ -3,3 +3,4 @@
 pnpm-lock.yaml
 /.open-next
 cloudflare-env.d.ts
+wrangler.jsonc
