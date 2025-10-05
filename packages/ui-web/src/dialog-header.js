@@ -1,68 +1,60 @@
-import { css } from "@emotion/react";
+import clsx from "clsx";
+import { twMerge } from "tailwind-merge";
 import { Cross as CrossIcon } from "./icons.js";
 import Button from "./button.js";
 
-const DialogHeader = ({ title, subtitle, titleProps, dismiss, ...props }) => (
-  <header
-    data-has-dimiss={dismiss != null || undefined}
-    css={css({
-      display: "grid",
-      gridTemplateColumns: "minmax(0,1fr) auto",
-      alignItems: "flex-start",
-      margin: "0 0 1.5rem",
-      // Offsets the title to align with the dismiss button
-      "&[data-has-dismiss]": { paddingTop: "0.1em" },
-      "@media (min-width: 600px)": {
-        margin: "0 0 2rem",
-      },
-    })}
-    {...props}
-  >
-    <h1
-      css={(t) =>
-        css({
-          fontSize: t.text.sizes.headerLarge,
-          color: t.colors.textHeader,
-          lineHeight: 1.2,
-        })
-      }
-      {...titleProps}
-    >
-      {title}
-      {subtitle != null && (
-        <div
-          css={(t) =>
-            css({
-              fontSize: t.text.sizes.base,
-              color: t.colors.textDimmed,
-              fontWeight: t.text.weights.normal,
-              lineHeight: 1.3,
-              marginTop: "0.2em",
-            })
-          }
-        >
-          {subtitle}
-        </div>
+const DialogHeader = ({
+  title,
+  subtitle,
+  titleProps,
+  dismiss,
+  className,
+  ...props
+}) => {
+  const { className: titleClassName, ...restTitleProps } = titleProps ?? {};
+
+  return (
+    <header
+      data-has-dismiss={dismiss != null ? "" : undefined}
+      className={twMerge(
+        clsx(
+          "grid grid-cols-[minmax(0,1fr)_auto] items-start",
+          "mb-6 md:mb-8",
+          dismiss != null && "pt-[0.1em]",
+        ),
+        className,
       )}
-    </h1>
-    {dismiss != null && (
-      <Button
-        size="small"
-        onClick={() => {
-          dismiss();
-        }}
-        css={css({
-          width: "2.8rem",
-          padding: 0,
-          marginBottom: "-100%", // Makes sure the button doesn’t change the container height
-        })}
+      {...props}
+    >
+      <h1
+        className={twMerge(
+          clsx(
+            "text-dialog-title text-(--color-text-header)",
+            "font-semibold leading-[1.2]",
+          ),
+          titleClassName,
+        )}
+        {...restTitleProps}
       >
-        <CrossIcon
-          style={{ width: "1.5rem", height: "auto", margin: "auto" }}
-        />
-      </Button>
-    )}
-  </header>
-);
+        {title}
+        {subtitle != null && (
+          <div className="mt-[0.2em] text-base font-normal leading-[1.3] text-text-dimmed">
+            {subtitle}
+          </div>
+        )}
+      </h1>
+      {dismiss != null && (
+        <Button
+          size="small"
+          onClick={() => dismiss()}
+          className="mb-[-100%] w-[2.8rem] px-0 py-0"
+          aria-label="Close dialog"
+        >
+          <CrossIcon className="mx-auto h-auto w-[1.5rem]" />
+        </Button>
+      )}
+    </header>
+  );
+};
 
 export default DialogHeader;

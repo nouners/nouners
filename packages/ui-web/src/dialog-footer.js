@@ -1,4 +1,5 @@
-import { css } from "@emotion/react";
+import clsx from "clsx";
+import { twMerge } from "tailwind-merge";
 import Button from "./button.js";
 
 const DialogFooter = ({
@@ -6,20 +7,17 @@ const DialogFooter = ({
   cancelButtonLabel,
   submitButtonLabel,
   submitButtonProps,
+  className,
   ...props
 }) => (
   <footer
-    css={css({
-      display: "flex",
-      justifyContent: "flex-end",
-      paddingTop: "2.5rem",
-      "@media (min-width: 600px)": {
-        paddingTop: "3rem",
-      },
-    })}
+    className={twMerge(
+      clsx("flex justify-end pt-[2.5rem] md:pt-[3rem]"),
+      className,
+    )}
     {...props}
   >
-    <div css={css({ display: "flex", gap: "1rem" })}>
+    <div className="flex gap-4">
       {cancel != null && (
         <Button type="button" size="medium" onClick={cancel}>
           {cancelButtonLabel}

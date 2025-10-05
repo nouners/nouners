@@ -88,6 +88,8 @@
   --color-text-muted: hsl(45 1% 54%);
   --color-text-accent: hsl(0 0% 6%);
   --color-text-primary: hsl(210 90% 48%);
+  --color-text-header: hsl(45 8% 20%);
+  --color-text-header-secondary: hsl(45 2% 46%);
   --color-text-positive: #0d924d;
   --color-text-positive-contrast: #097045;
   --color-text-negative: #d32335;
@@ -147,6 +149,8 @@
   --color-text-muted: hsl(0 0% 40%);
   --color-text-accent: white;
   --color-text-primary: hsl(210 100% 60%);
+  --color-text-header: hsl(0 0% 94%);
+  --color-text-header-secondary: hsl(0 0% 72%);
   --color-text-positive: #41b579;
   --color-text-positive-contrast: #55c88d;
   --color-text-negative: #f25666;
@@ -331,6 +335,11 @@
 
 @utility text-input {
   font-size: 1.5rem;
+  line-height: 1.2;
+}
+
+@utility text-dialog-title {
+  font-size: 2rem;
   line-height: 1.2;
 }
 
