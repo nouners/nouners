@@ -4,15 +4,15 @@ import { ethereum as ethereumUtils } from "@shades/common/utils";
 const { truncateAddress } = ethereumUtils;
 
 export const getFonts = async () => {
-  const fontName = "Inter";
+  const fontName = "Oxanium";
 
   const semiBoldResp = await fetch(
-    new URL("../../assets/fonts/Inter-SemiBold.woff", import.meta.url),
+    new URL("../../assets/fonts/Oxanium-SemiBold.ttf", import.meta.url),
   );
   const semiBoldFontArray = await semiBoldResp.arrayBuffer();
 
   const boldResp = await fetch(
-    new URL("../../assets/fonts/Inter-Bold.woff", import.meta.url),
+    new URL("../../assets/fonts/Oxanium-Bold.ttf", import.meta.url),
   );
   const boldFontArray = await boldResp.arrayBuffer();
 
