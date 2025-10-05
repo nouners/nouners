@@ -167,15 +167,7 @@ export async function GET() {
       })(),
       (async () => {
         try {
-          const res = await fetch(
-            "https://app.methprotocol.xyz/api/stats/apy",
-            {
-              headers: {
-                Accept: "application/json",
-                "User-Agent": "nouners/1.0 (+https://nouns.camp)",
-              },
-            },
-          );
+          const res = await fetch("https://app.methprotocol.xyz/api/stats/apy");
           if (!res.ok) throw new Error();
           const payload = await res.json();
           const entry = Array.isArray(payload?.data) ? payload.data[0] : null;
