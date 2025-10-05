@@ -410,3 +410,32 @@
     transform: translateY(0);
   }
 }
+
+@keyframes spinner-rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spinner-dash {
+  0% {
+    stroke-dasharray: 90 150;
+    stroke-dashoffset: 90;
+  }
+  50% {
+    stroke-dasharray: 90 150;
+    stroke-dashoffset: -45;
+  }
+  100% {
+    stroke-dasharray: 90 150;
+    stroke-dashoffset: -120;
+  }
+}
+
+@utility animate-spinner-rotate {
+  animation: spinner-rotate 2.5s linear infinite;
+}
+
+@utility animate-spinner-dash {
+  animation: spinner-dash 2s ease-in-out infinite;
+}
