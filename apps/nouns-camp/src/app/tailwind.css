@@ -107,6 +107,11 @@
   --color-state-special-bg: #f2dff7;
   --color-state-primary-bg: #deedfd;
   --color-danger-hover: rgb(235 87 87 / 10%);
+  --color-mention-text: hsl(210 77% 48%);
+  --color-mention-text-hover: hsl(210 77% 45%);
+  --color-mention-background: hsl(210 77% 51% / 15%);
+  --color-mention-background-hover: hsl(210 77% 51% / 20%);
+  --color-mention-focus-border: hsl(210 77% 40% / 50%);
 
   --size-navbar: 4.7rem;
   --size-sidebar: 40rem;
@@ -150,6 +155,11 @@
   --color-state-special-bg: #3d2f40;
   --color-state-primary-bg: #253240;
   --color-danger-hover: rgb(235 87 87 / 10%);
+  --color-mention-text: hsl(210 77% 95%);
+  --color-mention-text-hover: #ffffff;
+  --color-mention-background: hsl(210 77% 51% / 30%);
+  --color-mention-background-hover: hsl(210 77% 51% / 50%);
+  --color-mention-focus-border: hsl(210 77% 51%);
 }
 
 :root {
