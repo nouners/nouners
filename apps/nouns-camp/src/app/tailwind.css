@@ -362,3 +362,47 @@
 @utility animate-loading-dots {
   animation: loading-dots 1.4s ease-in-out infinite;
 }
+
+@keyframes tray-enter {
+  0% {
+    opacity: 0;
+    transform: translateY(min(100%, 50vh));
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes tray-leave {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(min(100%, 50vh));
+  }
+}
+
+@keyframes tray-enter-desktop {
+  0% {
+    opacity: 0;
+    transform: translateY(2vh);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes dialog-enter-centered {
+  0% {
+    opacity: 0;
+    transform: translateY(-1vh);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
