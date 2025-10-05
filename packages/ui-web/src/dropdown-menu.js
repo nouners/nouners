@@ -1,5 +1,5 @@
 import React from "react";
-import { css } from "@emotion/react";
+import clsx from "clsx";
 import {
   useMenu,
   useMenuItem,
@@ -17,6 +17,7 @@ import {
 import { isTouchDevice } from "@shades/common/utils";
 import { Checkmark as CheckmarkIcon } from "./icons";
 import * as Popover from "./popover.js";
+import { twMerge } from "tailwind-merge";
 
 const Context = React.createContext();
 
@@ -102,107 +103,20 @@ export const Content = ({
   widthFollowTrigger = false,
   footerNote,
   children,
+  className,
   ...props
 }) => {
   const { menuProps } = React.useContext(Context);
   return (
     <Popover.Content
       widthFollowTrigger={widthFollowTrigger}
-      css={(t) =>
-        css({
-          width: "min-content", // theme.dropdownMenus.width,
-          minWidth: t.dropdownMenus.minWidth,
-          maxWidth: t.dropdownMenus.maxWidth,
-          padding: t.dropdownMenus.padding,
-          background: t.colors.popoverBackground,
-          borderRadius: t.dropdownMenus.borderRadius,
-          boxShadow: t.dropdownMenus.boxShadow,
-          ".menu-root": {
-            listStyle: "none",
-            outline: "none",
-            ".section-header": {
-              color: t.colors.textDimmed,
-              fontSize: t.text.sizes.micro,
-              fontWeight: t.text.weights.smallTextEmphasis,
-              textTransform: "uppercase",
-              padding: "0 0.8rem",
-            },
-            ".separator": {
-              height: "0.1rem",
-              background: t.colors.borderLighter,
-              margin: `0.5rem -${t.dropdownMenus.padding}`,
-            },
-            ".menu-item": {
-              color: t.colors.textNormal,
-              width: "100%",
-              minHeight: t.dropdownMenus.itemHeight,
-              display: "flex",
-              alignItems: "flex-start",
-              justifyContent: "flex-start",
-              gap: "0.8rem",
-              padding: "0.4rem 0.8rem",
-              lineHeight: "calc(20/14)",
-              fontSize: t.fontSizes.menus,
-              fontWeight: "400",
-              cursor: "pointer",
-              borderRadius: "0.3rem",
-              whiteSpace: "nowrap",
-              margin: "0.1rem 0",
-              ":focus": {
-                background: t.colors.backgroundModifierHover,
-                outline: "none",
-              },
-              "&[aria-disabled]": {
-                cursor: "default",
-                color: t.colors.textMutedAlpha,
-              },
-              '&[aria-checked="true"]': {
-                background: t.colors.backgroundModifierSelected,
-                color: t.colors.textNormal,
-              },
-              '&[aria-checked="true"]:focus': {
-                color: t.colors.textAccent,
-              },
-              "&[data-danger]": { color: t.colors.textDanger },
-              "&[data-primary]": { color: t.colors.textPrimary },
-              ".title-container": {
-                flex: 1,
-                minWidth: 0,
-              },
-              ".description-container": {
-                color: t.colors.textDimmed,
-                fontSize: t.text.sizes.tiny,
-                paddingBottom: "0.1rem",
-              },
-              ".icon-container": {
-                padding: "0.2rem 0",
-                width: "1.6rem",
-                height: "2rem",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                ".selected-checkmark": {
-                  width: "1.1rem",
-                  height: "auto",
-                },
-              },
-            },
-          },
-          ".menu-footer": {
-            borderTop: "0.1rem solid",
-            borderColor: t.colors.borderLighter,
-            margin: `-${t.dropdownMenus.padding}`,
-            marginTop: t.dropdownMenus.padding,
-            padding: t.dropdownMenus.padding,
-            ".content": {
-              color: t.colors.textMutedAlpha,
-              fontSize: t.text.sizes.tiny,
-              lineHeight: "calc(16/12)",
-              padding: "0.4rem 0.8rem",
-            },
-          },
-        })
-      }
+      className={twMerge(
+        clsx(
+          "min-w-[var(--dropdown-min-width)] max-w-[var(--dropdown-max-width)]",
+          "w-min rounded-[var(--dropdown-radius)] bg-(--color-surface-popover) p-[var(--dropdown-padding)] text-text-normal shadow-dropdown",
+        ),
+        className,
+      )}
       {...props}
     >
       <Menu
@@ -230,7 +144,11 @@ const Menu = ({ footerNote, ...props }) => {
 
   return (
     <>
-      <ul ref={ref} className="menu-root" {...menuProps}>
+      <ul
+        ref={ref}
+        className="flex list-none flex-col outline-hidden"
+        {...menuProps}
+      >
         {[...state.collection].map((item) =>
           item.type === "section" ? (
             <MenuSection key={item.key} section={item} state={state} />
@@ -240,8 +158,10 @@ const Menu = ({ footerNote, ...props }) => {
         )}
       </ul>
       {footerNote != null && (
-        <div className="menu-footer">
-          <div className="content">{footerNote}</div>
+        <div className="mt-[var(--dropdown-padding)] mx-[calc(var(--dropdown-padding)*-1)] border-t border-(--color-border-lighter) pt-[var(--dropdown-padding)]">
+          <div className="px-(0.8rem) py-(0.4rem) text-[1.05rem] leading-[calc(16/12)] text-(--color-text-muted-alpha)">
+            {footerNote}
+          </div>
         </div>
       )}
     </>
@@ -263,25 +183,39 @@ const MenuItem = ({ item, state }) => {
     <li
       {...menuItemProps}
       ref={ref}
-      className="menu-item"
+      className={clsx(
+        "my-(0.1rem) flex w-full min-h-[var(--dropdown-item-height)] items-start justify-start gap-(0.8rem)",
+        "rounded-[0.3rem] px-(0.8rem) py-(0.4rem) text-base leading-[calc(20/14)] text-text-normal",
+        "cursor-pointer whitespace-nowrap transition-colors duration-100 ease-linear",
+        "focus:bg-(--color-surface-muted) focus:outline-hidden",
+        "aria-disabled:cursor-default aria-disabled:text-(--color-text-muted-alpha)",
+        "aria-[checked=true]:bg-(--color-surface-selected) aria-[checked=true]:text-text-normal",
+        "aria-[checked=true]:focus:text-text-accent",
+        "data-danger:text-text-negative data-primary:text-text-primary",
+      )}
       data-primary={item.props.primary || undefined}
       data-danger={item.props.danger || undefined}
     >
       {item.props.icon && (
-        <div className="icon-container">{item.props.icon}</div>
+        <div className="flex size-[auto] h-(2rem) w-(1.6rem) items-center justify-center py-(0.2rem)">
+          {item.props.icon}
+        </div>
       )}
-      <div className="title-container">
+      <div className="flex min-w-0 flex-1 flex-col gap-(0.2rem)">
         <div {...labelProps}>{item.rendered ?? item.props.title}</div>
         {item.props.description && (
-          <div className="description-container" {...descriptionProps}>
+          <div
+            className="text-[1.05rem] text-text-dimmed pb-(0.1rem)"
+            {...descriptionProps}
+          >
             {item.props.description}
           </div>
         )}
       </div>
       {(isSelected || item.props.iconRight) && (
-        <div className="icon-container">
+        <div className="flex h-(2rem) w-(1.6rem) items-center justify-center py-(0.2rem)">
           {isSelected ? (
-            <CheckmarkIcon className="selected-checkmark" />
+            <CheckmarkIcon className="h-auto w-(1.1rem)" />
           ) : (
             item.props.iconRight
           )}
@@ -304,11 +238,17 @@ const MenuSection = ({ section, state, onAction, onClose }) => {
   return (
     <>
       {section.key !== state.collection.getFirstKey() && (
-        <li {...separatorProps} className="separator" />
+        <li
+          {...separatorProps}
+          className="mx-[calc(var(--dropdown-padding)*-1)] my-(0.5rem) h-(0.1rem) bg-(--color-border-lighter)"
+        />
       )}
       <li {...itemProps}>
         {section.rendered && (
-          <span {...headingProps} className="section-header">
+          <span
+            {...headingProps}
+            className="block px-(0.8rem) text-xs font-medium uppercase text-text-dimmed"
+          >
             {section.rendered}
           </span>
         )}

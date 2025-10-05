@@ -113,6 +113,15 @@
   --color-mention-background-hover: hsl(210 77% 51% / 20%);
   --color-mention-focus-border: hsl(210 77% 40% / 50%);
   --color-scheme: light;
+  --color-surface-selected: hsl(210 85% 70% / 15%);
+  --color-text-muted-alpha: hsl(45deg 8% 20% / 50%);
+  --dropdown-min-width: 18rem;
+  --dropdown-max-width: calc(100vw - 2rem);
+  --dropdown-padding: 0.4rem;
+  --dropdown-radius: 0.6rem;
+  --dropdown-item-height: 2.8rem;
+  --dropdown-shadow: rgb(15 15 15 / 5%) 0px 0px 0px 1px,
+    rgb(15 15 15 / 10%) 0px 3px 6px, rgb(15 15 15 / 20%) 0px 9px 24px;
 
   --size-navbar: 4.7rem;
   --size-sidebar: 40rem;
@@ -162,6 +171,15 @@
   --color-mention-background-hover: hsl(210 77% 51% / 50%);
   --color-mention-focus-border: hsl(210 77% 51%);
   --color-scheme: dark;
+  --color-surface-selected: hsl(210 77% 40% / 15%);
+  --color-text-muted-alpha: hsl(0 0% 100% / 28%);
+  --dropdown-min-width: 18rem;
+  --dropdown-max-width: calc(100vw - 2rem);
+  --dropdown-padding: 0.4rem;
+  --dropdown-radius: 0.6rem;
+  --dropdown-item-height: 2.8rem;
+  --dropdown-shadow: rgb(15 15 15 / 5%) 0px 0px 0px 1px,
+    rgba(15, 15, 15, 0.1) 0px 3px 6px, rgba(15, 15, 15, 0.2) 0px 9px 24px;
 }
 
 :root {
@@ -314,6 +332,10 @@
 @utility text-input {
   font-size: 1.5rem;
   line-height: 1.2;
+}
+
+@utility shadow-dropdown {
+  box-shadow: var(--dropdown-shadow);
 }
 
 @keyframes loading-dots {
