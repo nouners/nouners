@@ -167,21 +167,27 @@ export async function GET() {
       })(),
       (async () => {
         try {
-          const res = await fetch("https://stake.mantle.xyz/api/apr", {
-            headers: {
-              Accept: "application/json",
-              "User-Agent": "nouners/1.0 (+https://nouns.camp)",
+          const res = await fetch(
+            "https://app.methprotocol.xyz/api/stats/apy",
+            {
+              headers: {
+                Accept: "application/json",
+                "User-Agent": "nouners/1.0 (+https://nouns.camp)",
+              },
             },
-          });
+          );
           if (!res.ok) throw new Error();
-          const data = await res.json();
+          const payload = await res.json();
+          const entry = Array.isArray(payload?.data) ? payload.data[0] : null;
           const aprValue =
-            typeof data === "number"
-              ? data
-              : (data?.apr ?? data?.data?.apr ?? null);
+            entry?.OneDayAPY ?? entry?.WeekAPY ?? entry?.MonthAPY ?? null;
+          const normalizedApr =
+            aprValue == null ? null : Number.parseFloat(aprValue);
           return [
             "mantleApr",
-            aprValue == null ? null : Number(aprValue) / 100,
+            normalizedApr != null && Number.isFinite(normalizedApr)
+              ? normalizedApr
+              : null,
           ];
         } catch (e) {
           console.error("Failed to fetch mETH APR", e);

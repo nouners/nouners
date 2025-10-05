@@ -23,7 +23,7 @@ const addressByIdentifierByChainId = {
     "reth-token": "0xae78736cd615f374d3085123a210448e74fc6393",
     "usdc-token": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
     "steth-token": "0xae7ab96520de3a18e5e111b5eaab095312d7fe84",
-    "meth-token": "0x3b3a1b0fa6da8b1b17be268fbf579c780a145ba5",
+    "meth-token": "0xd5F7838F5C461fefF7FE49ea5ebaF7728bB0ADfa",
     "$nouns-token": "0x5c1760c98be951a4067df234695c8014d8e7619c",
     "lido-withdrawal-queque": "0x889edc2edab5f40e902b864ad4d7ade8e412f9b1",
     "prop-house": "0x000000002c93cad6f9cfd00c603aef62458d8a48",
@@ -57,6 +57,7 @@ const addressByIdentifierByChainId = {
     "usdc-token": "0xebcc972b6b3eb15c0592be1871838963d0b94278",
     "steth-token": "0x3e3fe7dbc6b4c189e7128855dd526361c49b40af",
     "wsteth-token": "0xb82381a3fbd3fafa77b3a7be693342618240067b",
+    "meth-token": "0x072d71b257ECa6B60b5333626F6a55ea1B0c451c",
     "$nouns-token": "0x0000000000000000000000000000000000000000",
 
     // Nouns contracts
