@@ -1,5 +1,6 @@
 import React from "react";
-import { css } from "@emotion/react";
+import clsx from "clsx";
+import { twMerge } from "tailwind-merge";
 import {
   createEditor as createSlateEditor,
   Transforms,
@@ -29,7 +30,11 @@ import {
 } from "@shades/common/utils";
 import { ErrorBoundary } from "@shades/common/react";
 import Select from "./select.js";
-import RichText, { createCss as createRichTextCss } from "./rich-text.js";
+import RichText, {
+  RICH_TEXT_CLASS,
+  DEFAULT_BLOCK_GAP,
+  DEFAULT_COMPACT_BLOCK_GAP,
+} from "./rich-text.js";
 import createControlledParagraphLineBreaksPlugin from "./slate/plugins/controlled-paragraph-line-breaks.js";
 import createSensibleVoidsPlugin from "./slate/plugins/sensible-voids.js";
 import createListsPlugin from "./slate/plugins/lists.js";
@@ -501,6 +506,17 @@ const RichTextEditor = React.forwardRef(
       editor.normalize({ force: true });
     }, [ref, internalEditorRef, editor, onChange]);
 
+    const {
+      className: editableClassName,
+      style: editableStyle,
+      ...editableProps
+    } = props;
+    const editableStyleWithVars = {
+      "--default-block-gap": DEFAULT_BLOCK_GAP,
+      "--default-compact-block-gap": DEFAULT_COMPACT_BLOCK_GAP,
+      ...editableStyle,
+    };
+
     return (
       <>
         <Slate
@@ -594,32 +610,19 @@ const RichTextEditor = React.forwardRef(
               setSelection(editor.selection);
               onFocus?.(e, editor);
             }}
-            css={(theme) => {
-              const styles = createRichTextCss(theme);
-              return css({
-                ...styles,
-                outline: "none",
-                "a:hover": { textDecoration: "none" },
-                "&[data-disabled]": {
-                  color: theme.colors.textMuted,
-                  cursor: "not-allowed",
-                  "[data-slate-placeholder]": {
-                    color: theme.colors.textMuted,
-                  },
-                },
-                "[data-slate-placeholder]": {
-                  color: theme.colors.inputPlaceholder,
-                  opacity: "1 !important",
-                  whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  top: 0,
-                },
-              });
-            }}
+            className={twMerge(
+              clsx(
+                RICH_TEXT_CLASS,
+                "outline-none",
+                "data-[disabled]:cursor-not-allowed data-[disabled]:text-text-muted",
+                "data-[disabled]:[&_[data-slate-placeholder]]:text-text-muted",
+              ),
+              editableClassName,
+            )}
             readOnly={disabled}
             data-disabled={disabled || undefined}
-            {...props}
+            style={editableStyleWithVars}
+            {...editableProps}
           />
         </Slate>
 
@@ -770,19 +773,24 @@ const VoidTable = ({ attributes, children, element }) => {
   const focused = useFocused();
   const isFocused = selected && focused;
 
+  const tableAttributes = attributes != null ? { ...attributes } : {};
+  const attributeClassName = tableAttributes.className;
+  delete tableAttributes.className;
+
   return (
     <div>
       <table
-        {...attributes}
+        {...tableAttributes}
         contentEditable={false}
-        data-focused={isFocused}
-        css={(t) =>
-          css({
-            '&[data-focused="true"]': {
-              boxShadow: t.shadows.focus,
-            },
-          })
-        }
+        data-focused={isFocused || undefined}
+        className={twMerge(
+          clsx(
+            RICH_TEXT_CLASS,
+            "w-full",
+            attributeClassName,
+            isFocused && "shadow-focus",
+          ),
+        )}
       >
         <RichText raw blocks={element.content} />
       </table>
@@ -961,6 +969,15 @@ export const Toolbar = ({ disabled: disabled_, onFocus, onBlur, ...props }) => {
     { value: "quote", label: "Quote" },
   ];
 
+  const { className, ...restProps } = props;
+
+  const toolbarButtonClass =
+    "flex h-[2.6rem] w-[2.6rem] flex-none items-center justify-center rounded-[0.4rem] text-text-normal transition-colors duration-100 ease-linear hover:bg-(--color-surface-muted) focus-visible:[box-shadow:var(--shadow-focus)] disabled:cursor-not-allowed disabled:text-text-muted data-[active=true]:text-text-primary";
+
+  const toolbarSelectButtonClass = "min-h-[2.6rem] py-0";
+  const toolbarSeparatorClass =
+    "mx-[0.3rem] h-[2rem] w-[0.1rem] bg-(--color-border-light)";
+
   const renderAction = (action) => {
     switch (action.key) {
       case "list-transform":
@@ -999,7 +1016,17 @@ export const Toolbar = ({ disabled: disabled_, onFocus, onBlur, ...props }) => {
           }
         };
 
-        const props = getProps();
+        const selectProps = getProps();
+        const actionProps = action.props ?? {};
+        const { buttonProps: actionButtonProps, ...restActionProps } =
+          actionProps;
+
+        const mergedButtonProps = {
+          ...actionButtonProps,
+          className: twMerge(
+            clsx(toolbarSelectButtonClass, actionButtonProps?.className),
+          ),
+        };
 
         return (
           <Select
@@ -1054,22 +1081,27 @@ export const Toolbar = ({ disabled: disabled_, onFocus, onBlur, ...props }) => {
               storedSelectionRangeRef.unref();
               onBlur?.(); // onBlur doesn’t seem to fire on iOS
             }}
-            data-select
-            {...props}
-            {...action.props}
+            buttonProps={mergedButtonProps}
+            {...selectProps}
+            {...restActionProps}
           />
         );
       }
 
-      case "heading-transform":
+      case "heading-transform": {
+        const actionPropsHeading = action.props ?? {};
+        const { className: headingClassName, ...restHeadingProps } =
+          actionPropsHeading;
         return (
           <button
             key={action.key}
             type="button"
-            data-button
+            className={twMerge(toolbarButtonClass, headingClassName)}
             disabled={disabled || !selectedNodeIsTransformable}
-            data-active={selectedBlockNode?.type.startsWith("heading-")}
-            {...action.props}
+            data-active={
+              selectedBlockNode?.type.startsWith("heading-") || undefined
+            }
+            {...restHeadingProps}
             onMouseDown={(e) => {
               e.preventDefault();
 
@@ -1092,16 +1124,20 @@ export const Toolbar = ({ disabled: disabled_, onFocus, onBlur, ...props }) => {
             {action.icon}
           </button>
         );
+      }
 
-      case "quote-transform":
+      case "quote-transform": {
+        const actionPropsQuote = action.props ?? {};
+        const { className: quoteClassName, ...restQuoteProps } =
+          actionPropsQuote;
         return (
           <button
             key={action.key}
             type="button"
-            data-button
+            className={twMerge(toolbarButtonClass, quoteClassName)}
             disabled={disabled || !selectedNodeIsTransformable}
-            data-active={selectedBlockNode?.type === "quote"}
-            {...action.props}
+            data-active={selectedBlockNode?.type === "quote" || undefined}
+            {...restQuoteProps}
             onMouseDown={(e) => {
               e.preventDefault();
               editor.setNodes({
@@ -1113,16 +1149,19 @@ export const Toolbar = ({ disabled: disabled_, onFocus, onBlur, ...props }) => {
             {action.icon}
           </button>
         );
+      }
 
-      case "code-block-transform":
+      case "code-block-transform": {
+        const actionPropsCode = action.props ?? {};
+        const { className: codeClassName, ...restCodeProps } = actionPropsCode;
         return (
           <button
             key={action.key}
             type="button"
-            data-button
+            className={twMerge(toolbarButtonClass, codeClassName)}
             disabled={disabled || !selectedNodeIsTransformable}
-            data-active={selectedBlockNode?.type === "code-block"}
-            {...action.props}
+            data-active={selectedBlockNode?.type === "code-block" || undefined}
+            {...restCodeProps}
             onMouseDown={(e) => {
               e.preventDefault();
               editor.setNodes({
@@ -1136,18 +1175,22 @@ export const Toolbar = ({ disabled: disabled_, onFocus, onBlur, ...props }) => {
             {action.icon}
           </button>
         );
+      }
 
       case "toggle-mark-bold":
       case "toggle-mark-italic":
-      case "toggle-mark-strikethrough":
+      case "toggle-mark-strikethrough": {
+        const actionPropsToggle = action.props ?? {};
+        const { className: toggleClassName, ...restToggleProps } =
+          actionPropsToggle;
         return (
           <button
             key={action.key}
             type="button"
-            data-button
+            className={twMerge(toolbarButtonClass, toggleClassName)}
             disabled={disabled || !inlineElementsAllowed}
-            data-active={activeMarks.includes(action.mark)}
-            {...action.props}
+            data-active={activeMarks.includes(action.mark) || undefined}
+            {...restToggleProps}
             onMouseDown={(e) => {
               e.preventDefault();
               editor.toggleMark(action.mark);
@@ -1156,16 +1199,18 @@ export const Toolbar = ({ disabled: disabled_, onFocus, onBlur, ...props }) => {
             {action.icon}
           </button>
         );
+      }
 
-      case "insert-link":
+      case "insert-link": {
+        const actionPropsLink = action.props ?? {};
+        const { className: linkClassName, ...restLinkProps } = actionPropsLink;
         return (
           <button
             key={action.key}
             type="button"
-            data-button
+            className={twMerge(toolbarButtonClass, linkClassName)}
             disabled={disabled || !inlineElementsAllowed}
-            // data-active={activeMarks.includes(action.mark)}
-            {...action.props}
+            {...restLinkProps}
             onMouseDown={(e) => {
               e.preventDefault();
               linkDialogActions.open();
@@ -1174,16 +1219,19 @@ export const Toolbar = ({ disabled: disabled_, onFocus, onBlur, ...props }) => {
             {action.icon}
           </button>
         );
+      }
 
-      case "insert-image":
+      case "insert-image": {
+        const actionPropsImage = action.props ?? {};
+        const { className: imageClassName, ...restImageProps } =
+          actionPropsImage;
         return (
           <button
             key={action.key}
             type="button"
-            data-button
+            className={twMerge(toolbarButtonClass, imageClassName)}
             disabled={disabled || !inlineElementsAllowed}
-            // data-active={activeMarks.includes(action.mark)}
-            {...action.props}
+            {...restImageProps}
             onMouseDown={(e) => {
               e.preventDefault();
               imageDialogActions.open();
@@ -1192,6 +1240,7 @@ export const Toolbar = ({ disabled: disabled_, onFocus, onBlur, ...props }) => {
             {action.icon}
           </button>
         );
+      }
 
       default:
         throw new Error();
@@ -1201,46 +1250,13 @@ export const Toolbar = ({ disabled: disabled_, onFocus, onBlur, ...props }) => {
   return (
     <div
       data-toolbar
-      css={(t) =>
-        css({
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "flex-start",
-          gap: "0.3rem 0",
-          flexWrap: "wrap",
-          '[role="separator"]': {
-            width: "0.1rem",
-            height: "2rem",
-            background: t.colors.borderLight,
-            margin: "0 0.3rem",
-          },
-          "[data-button]": {
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            width: "2.6rem",
-            height: "2.6rem",
-            borderRadius: "0.4rem",
-            color: t.colors.textNormal,
-            ":disabled": { color: t.colors.textMuted },
-            "@media(hover: hover)": {
-              ":not(:disabled)": {
-                cursor: "pointer",
-                ":hover": {
-                  background: t.colors.backgroundModifierHover,
-                },
-              },
-            },
-            '&[data-active="true"]': { color: t.colors.textPrimary },
-          },
-          "[data-select]": {
-            paddingTop: 0,
-            paddingBottom: 0,
-            minHeight: "2.6rem",
-          },
-        })
-      }
-      {...props}
+      className={twMerge(
+        clsx(
+          "flex flex-wrap items-center justify-start gap-x-[0.3rem] gap-y-0",
+        ),
+        className,
+      )}
+      {...restProps}
     >
       {[
         !isTouchDevice() && selectedListRootNodeEntry != null
@@ -1266,7 +1282,11 @@ export const Toolbar = ({ disabled: disabled_, onFocus, onBlur, ...props }) => {
 
           return (
             <React.Fragment key={sectionIndex}>
-              <div role="separator" aria-orientation="vertical" />
+              <div
+                role="separator"
+                aria-orientation="vertical"
+                className={toolbarSeparatorClass}
+              />
               {renderedSectionActions}
             </React.Fragment>
           );

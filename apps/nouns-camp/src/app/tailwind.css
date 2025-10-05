@@ -445,3 +445,406 @@
 @utility animate-spinner-dash {
   animation: spinner-dash 2s ease-in-out infinite;
 }
+
+@layer base {
+  .rt {
+    --default-block-gap: 1.25em;
+    --default-compact-block-gap: 0.625em;
+    word-break: break-word;
+  }
+
+  .rt p {
+    margin: 0;
+  }
+
+  .rt * + p {
+    margin-top: var(--default-compact-block-gap);
+  }
+
+  .rt p:has(+ *) {
+    margin-bottom: var(--default-compact-block-gap);
+  }
+
+  .rt ul,
+  .rt ol {
+    padding-left: 1.875em;
+    margin: 0;
+  }
+
+  .rt ul {
+    list-style-type: disc;
+  }
+
+  .rt ol {
+    list-style-type: decimal;
+  }
+
+  .rt * + :is(ul, ol) {
+    margin-top: var(--default-block-gap);
+  }
+
+  .rt *:is(ul, ol):has(+ *) {
+    margin-bottom: var(--default-block-gap);
+  }
+
+  .rt *:is(ul, ol) :is(ul, ol) {
+    margin: 0;
+  }
+
+  .rt li > p:not(*:not(style) + *):has(+ :is(ul, ol)) {
+    margin-bottom: 0 !important;
+  }
+
+  .rt li > p:not(*:not(style) + *) + :is(ul, ol):not(:has(+ *)) {
+    margin-top: 0 !important;
+  }
+
+  .rt li:has(+ li)
+    > * + *:not(:has(+ *)):not(p:not(*:not(style) + *) + :is(ul, ol):not(:has(+ *))) {
+    padding-bottom: var(--default-compact-block-gap);
+  }
+
+  .rt h1 {
+    font-size: 1.375em;
+  }
+
+  .rt h2 {
+    font-size: 1.125em;
+  }
+
+  .rt h3,
+  .rt h4,
+  .rt h5,
+  .rt h6 {
+    font-size: 1em;
+  }
+
+  .rt * + h1 {
+    margin-top: 1.875em;
+  }
+
+  .rt h1:has(+ *) {
+    margin-bottom: 0.625em;
+  }
+
+  .rt * + h2 {
+    margin-top: 1.5em;
+  }
+
+  .rt h2:has(+ *) {
+    margin-bottom: 0.8em;
+  }
+
+  .rt * + h3,
+  .rt * + h4,
+  .rt * + h5,
+  .rt * + h6 {
+    margin-top: 1.5em;
+  }
+
+  .rt *:is(h3, h4, h5, h6):has(+ *) {
+    margin-bottom: 0.5em;
+  }
+
+  .rt *:is(h1, h2, h3, h4, h5, h6) + *:is(p, ul, ol) {
+    margin-top: 0;
+  }
+
+  .rt blockquote {
+    border-left: 0.3rem solid var(--color-border-light);
+    padding-left: 1rem;
+    font-style: italic;
+  }
+
+  .rt * + blockquote {
+    margin-top: var(--default-block-gap);
+  }
+
+  .rt blockquote:has(+ *) {
+    margin-bottom: var(--default-block-gap);
+  }
+
+  .rt aside {
+    background: var(--color-surface-muted);
+    padding: 1em;
+    border-radius: 0.6rem;
+  }
+
+  .rt * + aside {
+    margin-top: var(--default-block-gap);
+  }
+
+  .rt aside:has(+ *) {
+    margin-bottom: var(--default-block-gap);
+  }
+
+  .rt code {
+    color: var(--color-text-normal);
+    background: var(--color-surface-muted);
+    border-radius: 0.3rem;
+    font-size: 0.85em;
+    padding: 0.2em 0.4em;
+    font-family: var(--font-mono);
+  }
+
+  .rt pre:has(code) {
+    margin: 0;
+  }
+
+  .rt pre code {
+    display: block;
+    overflow: auto;
+    padding: 1em;
+    background: var(--color-surface-muted);
+    border-radius: 0.6rem;
+    position: relative;
+  }
+
+  .rt pre code [data-slate-placeholder] {
+    padding: 1em 0;
+  }
+
+  .rt * + pre:has(code) {
+    margin-top: var(--default-block-gap);
+  }
+
+  .rt pre:has(code):has(+ *) {
+    margin-bottom: var(--default-block-gap);
+  }
+
+  .rt a:hover {
+    text-decoration: none;
+  }
+
+  .rt a.link,
+  .rt a.link:active,
+  .rt a.link:visited {
+    color: var(--color-text-primary);
+    text-decoration: none;
+    outline: none;
+  }
+
+  .rt [data-slate-placeholder] {
+    color: var(--color-input-placeholder);
+    opacity: 1 !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    top: 0;
+  }
+
+  .rt[data-disabled] {
+    color: var(--color-text-muted);
+    cursor: not-allowed;
+  }
+
+  .rt[data-disabled] [data-slate-placeholder] {
+    color: var(--color-text-muted);
+  }
+
+  .rt a.link:focus-visible {
+    text-decoration: underline;
+    color: var(--color-text-primary);
+  }
+
+  @media (hover: hover) {
+    .rt a.link:hover {
+      text-decoration: underline;
+      color: var(--color-text-primary);
+    }
+  }
+
+  .rt .image,
+  .rt .video {
+    display: block;
+    border-radius: 0.6rem;
+    position: relative;
+  }
+
+  .rt .image[data-focused="true"],
+  .rt .image:focus-visible,
+  .rt .video[data-focused="true"],
+  .rt .video:focus-visible {
+    box-shadow: var(--shadow-focus);
+  }
+
+  .rt .image[data-inline="true"],
+  .rt .video[data-inline="true"] {
+    display: inline-block;
+  }
+
+  @media (hover: hover) {
+    .rt .image[data-interactive="true"],
+    .rt .video[data-interactive="true"] {
+      cursor: zoom-in;
+    }
+    .rt .image[data-interactive="true"][data-editable],
+    .rt .video[data-interactive="true"][data-editable] {
+      cursor: pointer;
+    }
+  }
+
+  .rt .image > img,
+  .rt .video > img {
+    display: block;
+    border-radius: 0.6rem;
+    background: var(--color-surface-secondary);
+  }
+
+  .rt .image-caption {
+    display: block;
+    font-size: 0.875em;
+    font-weight: 400;
+    color: var(--color-text-dimmed);
+    padding: 0.4em 0 0.4em 0.15em;
+  }
+
+  .rt .image-caption .text-container {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .rt .grid > * {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    margin: calc(-1 * var(--default-compact-block-gap)) 0 0
+      calc(-1 * var(--default-compact-block-gap));
+  }
+
+  .rt .grid > * > * {
+    margin: var(--default-compact-block-gap) 0 0 var(--default-compact-block-gap);
+    max-width: 100%;
+  }
+
+  .rt * + .grid {
+    margin-top: var(--default-block-gap);
+  }
+
+  .rt .grid:has(+ *) {
+    margin-bottom: var(--default-block-gap);
+  }
+
+  .rt [role="separator"],
+  .rt hr {
+    border: 0;
+    padding: var(--default-block-gap) 0;
+    border-radius: 0.3rem;
+  }
+
+  .rt [role="separator"]::after,
+  .rt hr::after {
+    content: "";
+    display: block;
+    height: 0.1rem;
+    width: 100%;
+    background: var(--color-border-light);
+  }
+
+  .rt [role="separator"][data-focused="true"],
+  .rt hr[data-focused="true"] {
+    background: var(--color-accent-soft);
+  }
+
+  .rt table {
+    display: block;
+    overflow: auto;
+    font-size: 0.875em;
+    border-collapse: collapse;
+    border-spacing: 0;
+  }
+
+  .rt table th,
+  .rt table td {
+    padding: 0.5em 0.6428571429em;
+    border: 0.1rem solid var(--color-border-light);
+    min-width: 7em;
+  }
+
+  .rt table thead th,
+  .rt table thead td {
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .rt table .image {
+    width: auto !important;
+  }
+
+  .rt * + table {
+    margin-top: var(--default-block-gap);
+  }
+
+  .rt table:has(+ *) {
+    margin-bottom: var(--default-block-gap);
+  }
+
+  .rt em {
+    font-style: italic;
+  }
+
+  .rt strong {
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .rt .underline {
+    text-decoration: underline;
+  }
+
+  .rt[data-inline="true"] p,
+  .rt[data-inline="true"] ul,
+  .rt[data-inline="true"] ol,
+  .rt[data-inline="true"] li,
+  .rt[data-inline="true"] h1,
+  .rt[data-inline="true"] h2,
+  .rt[data-inline="true"] h3,
+  .rt[data-inline="true"] h4,
+  .rt[data-inline="true"] h5,
+  .rt[data-inline="true"] h6,
+  .rt[data-inline="true"] aside,
+  .rt[data-inline="true"] pre:has(code),
+  .rt[data-inline="true"] .grid,
+  .rt[data-inline="true"] table,
+  .rt[data-inline="true"] button.image,
+  .rt[data-inline="true"] [role="separator"],
+  .rt[data-inline="true"] hr,
+  .rt[data-inline="true"] hr::after,
+  .rt[data-inline="true"] [role="separator"]::after {
+    display: inline;
+    padding: 0;
+  }
+
+  .rt[data-inline="true"] blockquote {
+    display: inline;
+    padding: 0 0 0 0.5em;
+  }
+
+  .rt[data-compact="true"] p {
+    display: inline;
+  }
+
+  .rt[data-compact="true"] * + p::before {
+    display: block;
+    content: "";
+    margin-top: var(--default-compact-block-gap);
+  }
+
+  .rt[data-compact="true"] p:has(+ *)::after {
+    display: block;
+    content: "";
+    margin-bottom: var(--default-compact-block-gap);
+  }
+
+  .rt[data-compact="true"],
+  .rt li {
+    * + *:is(ul, ol, blockquote, aside, pre:has(code), .grid, table, [role="separator"], hr) {
+      margin-top: var(--default-compact-block-gap);
+    }
+
+    *:is(ul, ol, blockquote, aside, pre:has(code), .grid, table, [role="separator"], hr):has(+ *) {
+      margin-bottom: var(--default-compact-block-gap);
+    }
+  }
+}

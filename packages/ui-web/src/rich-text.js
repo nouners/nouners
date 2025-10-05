@@ -1,286 +1,19 @@
 import React from "react";
-import { css } from "@emotion/react";
 import { dimension as dimensionUtils } from "@shades/common/utils";
 import Image from "./image.js";
+import clsx from "clsx";
+import { twMerge } from "tailwind-merge";
 
 export const SINGLE_IMAGE_ATTACHMENT_MAX_WIDTH = 560;
 export const SINGLE_IMAGE_ATTACHMENT_MAX_HEIGHT = 280;
 export const MULTI_IMAGE_ATTACHMENT_MAX_WIDTH = 280;
 export const MULTI_IMAGE_ATTACHMENT_MAX_HEIGHT = 240;
 
-const DEFAULT_BLOCK_GAP = "1.25em";
-const DEFAULT_COMPACT_BLOCK_GAP = "0.625em";
+export const DEFAULT_BLOCK_GAP = "1.25em";
+export const DEFAULT_COMPACT_BLOCK_GAP = "0.625em";
 
 // note: emotion doesn’t accept :is without a leading star in some cases (*:is)
-export const createCss = (t) => ({
-  "--default-block-gap": DEFAULT_BLOCK_GAP,
-  "--default-compact-block-gap": DEFAULT_COMPACT_BLOCK_GAP,
-
-  // Paragraphs
-  p: {
-    margin: "0",
-  },
-  "* + p": { marginTop: "var(--default-compact-block-gap)" },
-  "p:has(+ *)": { marginBottom: "var(--default-compact-block-gap)" },
-
-  // Lists
-  "ul, ol": {
-    paddingLeft: "1.875em",
-    margin: 0,
-    listStyleType: "disc",
-  },
-  ul: {
-    listStyleType: "disc",
-  },
-  ol: {
-    listStyleType: "decimal",
-  },
-  "* + :is(ul, ol)": { marginTop: "var(--default-block-gap)" },
-  "*:is(ul, ol):has(+ *)": { marginBottom: "var(--default-block-gap)" },
-  "*:is(ul, ol) :is(ul, ol)": { margin: 0 },
-
-  // This mess removes any margins between a leading paragrah followed by a
-  // single list element inside a list item. This make simple nested lists look
-  // and feel nicer since the elements stay in place when you indent, preventing
-  // a vertical placement shift.
-  //
-  // :not(*:not(style) + *) is a hacky way of selecting the first child while
-  // playing well with emotion’s SSR https://github.com/emotion-js/emotion/issues/1178
-  // In case it’s not clear this is the most clever thing ever.
-  "li > p:not(*:not(style) + *):has(+ :is(ul, ol))": {
-    marginBottom: "0 !important",
-  },
-  "li > p:not(*:not(style) + *) + :is(ul, ol):not(:has(+ *))": {
-    marginTop: "0 !important",
-  },
-
-  // Scratch that, *this* is the most clever thing ever
-  "li:has(+ li) > * + *:not(:has(+ *)):not(p:not(*:not(style) + *) + :is(ul, ol):not(:has(+ *)))":
-    { paddingBottom: "var(--default-compact-block-gap)" },
-
-  // Headings
-  h1: { fontSize: "1.375em" },
-  h2: { fontSize: "1.125em" },
-  "h3, h4, h5, h6": { fontSize: "1em" },
-  "* + h1": { marginTop: "1.875em" },
-  "h1:has(+ *)": { marginBottom: "0.625em" },
-  "* + h2": { marginTop: "1.5em" },
-  "h2:has(+ *)": { marginBottom: "0.8em" },
-  "* + h3, * + h4, * + h5, * + h6": { marginTop: "1.5em" },
-  "*:is(h3, h4, h5, h6):has(+ *)": {
-    marginBottom: "0.5em",
-  },
-
-  // Heading overrides some other block elements’ top spacing
-  "*:is(h1, h2, h3, h4, h5, h6) + *:is(p, ul, ol)": { marginTop: 0 },
-
-  // Quotes
-  blockquote: {
-    borderLeft: "0.3rem solid",
-    borderColor: t.colors.borderLight,
-    paddingLeft: "1rem",
-    fontStyle: "italic",
-  },
-  "* + blockquote": { marginTop: "var(--default-block-gap)" },
-  "blockquote:has(+ *)": { marginBottom: "var(--default-block-gap)" },
-
-  // Callouts
-  aside: {
-    background: t.colors.backgroundModifierHover,
-    padding: "1em",
-    borderRadius: "0.6rem",
-  },
-  "* + aside": { marginTop: "var(--default-block-gap)" },
-  "aside:has(+ *)": { marginBottom: "var(--default-block-gap)" },
-
-  // Code
-  code: {
-    color: t.colors.textNormal,
-    background: t.colors.backgroundModifierHover,
-    borderRadius: "0.3rem",
-    fontSize: "0.85em",
-    padding: "0.2em 0.4em",
-    fontFamily: t.fontStacks.monospace,
-  },
-
-  "pre:has(code)": { margin: 0 },
-  "pre code": {
-    display: "block",
-    overflow: "auto",
-    padding: "1em",
-    background: t.colors.backgroundModifierHover,
-    borderRadius: "0.6rem",
-    // This prevents Slate’s absolutely positioned placeholder from
-    // overflowing the code container
-    position: "relative",
-    "[data-slate-placeholder]": {
-      padding: "1em 0",
-    },
-  },
-  "* + pre:has(code)": { marginTop: "var(--default-block-gap)" },
-  "pre:has(code):has(+ *)": { marginBottom: "var(--default-block-gap)" },
-
-  // Links
-  "a.link, a.link:active, a.link:visited": {
-    color: t.colors.link,
-    textDecoration: "none",
-    outline: "none",
-  },
-  "a.link:focus-visible": {
-    textDecoration: "underline",
-    color: t.colors.linkModifierHover,
-  },
-  "@media(hover: hover)": {
-    "a.link:hover": {
-      textDecoration: "underline",
-      color: t.colors.linkModifierHover,
-    },
-  },
-
-  // Images
-  ".image, .video": {
-    display: "block",
-    borderRadius: "0.6rem",
-    // overflow: "hidden",
-    '&[data-focused="true"], &:focus-visible': {
-      boxShadow: t.shadows.focus,
-    },
-    '&[data-inline="true"]': {
-      display: "inline-block",
-      // margin: "var(--default-block-gap) 0",
-    },
-    // "&[data-editable] img": {
-    //   boxShadow: `0 0 0 0.1rem ${t.colors.borderLighter}`,
-    // },
-    "@media(hover: hover)": {
-      '&[data-interactive="true"]': {
-        cursor: "zoom-in",
-        "&[data-editable]": { cursor: "pointer" },
-      },
-    },
-    "& > img": {
-      display: "block",
-      borderRadius: "0.6rem",
-      background: t.colors.backgroundSecondary,
-    },
-    ".image-caption": {
-      display: "block",
-      fontSize: "0.875em",
-      fontWeight: "400",
-      color: t.colors.textDimmed,
-      padding: "0.4em 0 0.4em 0.15em",
-      ".text-container": {
-        display: "-webkit-box",
-        WebkitLineClamp: 2,
-        WebkitBoxOrient: "vertical",
-        overflow: "hidden",
-      },
-    },
-  },
-  ".grid > *": {
-    display: "flex",
-    alignItems: "flex-start",
-    justifyContent: "flex-start",
-    flexWrap: "wrap",
-    margin:
-      "calc(-1 * var(--default-compact-block-gap)) 0 0 calc(-1 * var(--default-compact-block-gap))",
-    "& > *": {
-      margin:
-        "var(--default-compact-block-gap) 0 0 var(--default-compact-block-gap)",
-      maxWidth: "100%",
-    },
-  },
-  "* + .grid": { marginTop: "var(--default-block-gap)" },
-  ".grid:has(+ *)": { marginBottom: "var(--default-block-gap)" },
-
-  // Horizontal dividers
-  '[role="separator"], hr': {
-    border: 0,
-    padding: "var(--default-block-gap) 0",
-    borderRadius: "0.3rem",
-    ":after": {
-      content: '""',
-      display: "block",
-      height: "0.1rem",
-      width: "100%",
-      background: t.colors.borderLight,
-    },
-    '&[data-focused="true"]': {
-      background: t.colors.primaryTransparentSoft,
-    },
-  },
-
-  table: {
-    display: "block",
-    overflow: "auto",
-    fontSize: "0.875em",
-    borderCollapse: "collapse",
-    borderSpacing: 0,
-    "th,td": {
-      padding: "0.5em 0.6428571429em",
-      border: "0.1rem solid",
-      borderColor: t.colors.borderLight,
-      minWidth: "7em",
-    },
-    "thead th, thead td": {
-      fontWeight: t.text.weights.emphasis,
-    },
-    ".image": {
-      // Images with set widths will force tables to expand
-      width: "auto !important",
-    },
-  },
-  "* + table": { marginTop: "var(--default-block-gap)" },
-  "table:has(+ *)": { marginBottom: "var(--default-block-gap)" },
-
-  // Misc
-  wordBreak: "break-word",
-  em: { fontStyle: "italic" },
-  strong: { fontWeight: t.text.weights.emphasis },
-
-  ".underline": {
-    textDecoration: "underline",
-  },
-
-  // Inline mode
-  '&[data-inline="true"]': {
-    // All block elements
-    'p, ul, ol, li, h1, h2, h3, h4, h5 ,h6, aside, pre:has(code), .grid, table, button.image, [role="separator"], hr, hr:after, [role="separator"]:after':
-      {
-        display: "inline",
-        padding: 0,
-      },
-    blockquote: {
-      display: "inline",
-      padding: "0 0 0 0.5em",
-    },
-  },
-
-  // Compact mode
-  '&[data-compact="true"]': {
-    p: { display: "inline" },
-    "* + p:before": {
-      display: "block",
-      content: '""',
-      marginTop: "var(--default-compact-block-gap)",
-    },
-    "p:has(+ *):after": {
-      display: "block",
-      content: '""',
-      marginBottom: "var(--default-compact-block-gap)",
-    },
-  },
-  '&[data-compact="true"], li': {
-    '* + *:is(ul, ol, blockquote, aside, pre:has(code), .grid, table, [role="separator"], hr)':
-      {
-        marginTop: "var(--default-compact-block-gap)",
-      },
-    '*:is(ul, ol, blockquote, aside, pre:has(code), .grid, table, [role="separator"], hr):has(+ *)':
-      {
-        marginBottom: "var(--default-compact-block-gap)",
-      },
-  },
-});
+export const RICH_TEXT_CLASS = "rt";
 
 const blockComponentsByElementType = {
   paragraph: "p",
@@ -503,16 +236,9 @@ const createRenderer = ({
           <span
             key={i}
             title={JSON.stringify(el, null, 2)}
-            css={(t) =>
-              css({
-                whiteSpace: "nowrap",
-                color: t.colors.textMuted,
-                background: t.colors.backgroundModifierHover,
-              })
-            }
+            className="inline-block whitespace-nowrap bg-(--color-surface-muted) px-1 text-text-dimmed"
           >
-            Unsupported element type:{" "}
-            <span css={css({ fontStyle: "italic" })}>{el.type}</span>
+            Unsupported element type: <span className="italic">{el.type}</span>
           </span>
         );
     }
@@ -592,6 +318,7 @@ const RichText = React.forwardRef(
       imagesMaxWidth,
       imagesMaxHeight,
       style,
+      className,
       raw = false,
       ...props
     },
@@ -612,7 +339,9 @@ const RichText = React.forwardRef(
       return render(blocks);
     }
 
-    const inlineStyle = style ?? {};
+    const inlineStyle = { ...(style ?? {}) };
+    inlineStyle["--default-block-gap"] = DEFAULT_BLOCK_GAP;
+    inlineStyle["--default-compact-block-gap"] = DEFAULT_COMPACT_BLOCK_GAP;
 
     if (!inline) {
       inlineStyle.whiteSpace = "pre-wrap";
@@ -627,7 +356,7 @@ const RichText = React.forwardRef(
         ref={ref}
         data-inline={inline}
         data-compact={compact}
-        css={(theme) => css(createCss(theme))}
+        className={twMerge(clsx(RICH_TEXT_CLASS), className)}
         style={inlineStyle}
         {...props}
       >
