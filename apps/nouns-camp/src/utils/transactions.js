@@ -19,6 +19,7 @@ const decimalsByCurrency = {
   eth: 18,
   weth: 18,
   usdc: 6,
+  meth: 18,
 };
 
 export const createSignature = ({ functionName, inputTypes }) => {
@@ -64,6 +65,7 @@ export const parse = (data) => {
   const nounsTokenContract = resolveIdentifier("token");
   const wethTokenContract = resolveIdentifier("weth-token");
   const stethTokenContract = resolveIdentifier("steth-token");
+  const methTokenContract = resolveIdentifier("meth-token");
   const usdcTokenContract = resolveIdentifier("usdc-token");
 
   const transactions = data.targets.map((target, i) => ({
@@ -176,6 +178,7 @@ export const parse = (data) => {
     }
 
     if (
+      stethTokenContract?.address != null &&
       target === stethTokenContract.address &&
       signature === "transfer(address,uint256)"
     ) {
@@ -187,6 +190,22 @@ export const parse = (data) => {
         functionInputTypes,
         receiverAddress: functionInputs[0],
         stethAmount: BigInt(functionInputs[1]),
+      };
+    }
+
+    if (
+      methTokenContract?.address != null &&
+      target === methTokenContract.address &&
+      signature === "transfer(address,uint256)"
+    ) {
+      return {
+        type: "meth-transfer",
+        target,
+        functionName,
+        functionInputs,
+        functionInputTypes,
+        receiverAddress: functionInputs[0],
+        methAmount: BigInt(functionInputs[1]),
       };
     }
 
@@ -302,6 +321,7 @@ export const unparse = (transactions) => {
   const nounsTokenContract = resolveIdentifier("token");
   const wethTokenContract = resolveIdentifier("weth-token");
   const stethTokenContract = resolveIdentifier("steth-token");
+  const methTokenContract = resolveIdentifier("meth-token");
   const usdcTokenContract = resolveIdentifier("usdc-token");
   const nounsPayerContract = resolveIdentifier("payer");
   const nounsTokenBuyerContract = resolveIdentifier("token-buyer");
@@ -374,6 +394,19 @@ export const unparse = (transactions) => {
             calldata: encodeAbiParameters(
               [{ type: "address" }, { type: "uint256" }],
               [t.receiverAddress, t.stethAmount],
+            ),
+          });
+
+        case "meth-transfer":
+          if (methTokenContract?.address == null)
+            throw new Error("mETH token contract is not configured");
+          return append({
+            target: methTokenContract.address,
+            value: "0",
+            signature: "transfer(address,uint256)",
+            calldata: encodeAbiParameters(
+              [{ type: "address" }, { type: "uint256" }],
+              [t.receiverAddress, t.methAmount],
             ),
           });
 
@@ -524,6 +557,10 @@ export const extractAmounts = (parsedTransactions) => {
     (t) => t.type === "steth-transfer",
   );
 
+  const mEthTransfers = parsedTransactions.filter(
+    (t) => t.type === "meth-transfer",
+  );
+
   const usdcTransfers = parsedTransactions.filter(
     (t) =>
       t.type === "usdc-approval" ||
@@ -552,6 +589,11 @@ export const extractAmounts = (parsedTransactions) => {
     BigInt(0),
   );
 
+  const mEthAmount = mEthTransfers.reduce(
+    (sum, t) => sum + t.methAmount,
+    BigInt(0),
+  );
+
   const usdcAmount = usdcTransfers.reduce(
     (sum, t) => sum + t.usdcAmount,
     BigInt(0),
@@ -561,6 +603,7 @@ export const extractAmounts = (parsedTransactions) => {
     { currency: "eth", amount: ethAmount },
     { currency: "weth", amount: wethAmount },
     { currency: "steth", amount: stEthAmount },
+    { currency: "meth", amount: mEthAmount },
     { currency: "usdc", amount: usdcAmount },
     {
       currency: "nouns",
@@ -652,6 +695,21 @@ export const buildActions = (transactions) => {
         currency: "eth",
         amount: formatEther(transferTx.value),
         firstTransactionIndex: getTransactionIndex(transferTx),
+      };
+    }
+
+    const mEthTransferTx = transactionsLeft.find(
+      (t) => t.type === "meth-transfer",
+    );
+
+    if (mEthTransferTx != null) {
+      transactionsLeft = transactionsLeft.filter((t) => t !== mEthTransferTx);
+      return {
+        type: "one-time-payment",
+        target: mEthTransferTx.receiverAddress,
+        currency: "meth",
+        amount: formatUnits(mEthTransferTx.methAmount, decimalsByCurrency.meth),
+        firstTransactionIndex: getTransactionIndex(mEthTransferTx),
       };
     }
 
@@ -765,6 +823,15 @@ export const resolveAction = (a) => {
                 type: "transfer",
                 target: a.target,
                 value: parseEther(a.amount),
+              },
+            ];
+
+          case "meth":
+            return [
+              {
+                type: "meth-transfer",
+                receiverAddress: a.target,
+                methAmount: parseUnits(a.amount, decimalsByCurrency.meth),
               },
             ];
 

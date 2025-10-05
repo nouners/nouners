@@ -24,6 +24,7 @@ const mainnetPublicClient =
 
 const balanceOf = ({ contract, account }) => {
   const address = resolveContractIdentifier(contract)?.address;
+  if (address == null) return BigInt(0);
   return publicClient.readContract({
     address,
     chainId: CHAIN_ID,
@@ -60,6 +61,7 @@ export async function GET() {
     convertionRates,
     lidoApr,
     rocketPoolApr,
+    mantleApr,
   } = Object.fromEntries(
     await Promise.all([
       (async () => {
@@ -73,6 +75,7 @@ export async function GET() {
               { key: "usdc", contract: "usdc-token" },
               { key: "steth", contract: "steth-token" },
               { key: "wsteth", contract: "wsteth-token" },
+              { key: "meth", contract: "meth-token" },
               CHAIN_ID === 1 ? { key: "reth", contract: "reth-token" } : null,
               { key: "nouns", contract: "token" },
             ]
@@ -162,6 +165,29 @@ export async function GET() {
         const { rethAPR } = await res.json();
         return ["rocketPoolApr", Number(rethAPR) / 100];
       })(),
+      (async () => {
+        try {
+          const res = await fetch("https://stake.mantle.xyz/api/apr", {
+            headers: {
+              Accept: "application/json",
+              "User-Agent": "nouners/1.0 (+https://nouns.camp)",
+            },
+          });
+          if (!res.ok) throw new Error();
+          const data = await res.json();
+          const aprValue =
+            typeof data === "number"
+              ? data
+              : (data?.apr ?? data?.data?.apr ?? null);
+          return [
+            "mantleApr",
+            aprValue == null ? null : Number(aprValue) / 100,
+          ];
+        } catch (e) {
+          console.error("Failed to fetch mETH APR", e);
+          return ["mantleApr", null];
+        }
+      })(),
     ]),
   );
 
@@ -184,7 +210,7 @@ export async function GET() {
         "fork-escrow": { nouns: forkEscrowNounsBalance.toString() },
       },
       rates: objectUtils.mapValues((v) => v.toString(), convertionRates),
-      aprs: { lido: lidoApr, rocketPool: rocketPoolApr },
+      aprs: { lido: lidoApr, rocketPool: rocketPoolApr, mantle: mantleApr },
     },
     {
       headers: {

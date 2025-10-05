@@ -161,6 +161,8 @@ const Content = ({ balances, rates, aprs, totals, titleProps, dismiss }) => {
     .filter(Boolean)
     .reduce((sum, amount) => sum + amount, BigInt(0));
 
+  const mEthTotal = balances.executor.meth ?? 0n;
+
   const inflowProjectionYearFraction = inflowProjectionDayCount / 365;
 
   const stEthReturnRateEstimateBPS = BigInt(
@@ -169,6 +171,10 @@ const Content = ({ balances, rates, aprs, totals, titleProps, dismiss }) => {
   const rEthReturnRateEstimateBPS = BigInt(
     Math.round(aprs.rocketPool * inflowProjectionYearFraction * 10_000),
   );
+  const mEthReturnRateEstimateBPS =
+    aprs.mantle == null
+      ? null
+      : BigInt(Math.round(aprs.mantle * inflowProjectionYearFraction * 10_000));
 
   return (
     <div
@@ -368,6 +374,15 @@ const Content = ({ balances, rates, aprs, totals, titleProps, dismiss }) => {
                               false
                             )
                           }
+                        />
+                      </li>
+                    )}
+                    {mEthTotal > 0n && (
+                      <li>
+                        <FormattedEth
+                          value={mEthTotal}
+                          tokenSymbol="mETH"
+                          tooltip={false}
                         />
                       </li>
                     )}
@@ -722,6 +737,27 @@ const Content = ({ balances, rates, aprs, totals, titleProps, dismiss }) => {
               APR)
             </span>
           </dd>
+          {mEthTotal > 0n && mEthReturnRateEstimateBPS != null && (
+            <>
+              <dt>mETH yield</dt>
+              <dd>
+                {"Ξ"}
+                <FormattedEth
+                  value={(mEthTotal * mEthReturnRateEstimateBPS) / 10_000n}
+                  tooltip={false}
+                />{" "}
+                <span data-small>
+                  (
+                  <FormattedNumber
+                    value={aprs.mantle}
+                    style="percent"
+                    maximumFractionDigits={2}
+                  />{" "}
+                  APR)
+                </span>
+              </dd>
+            </>
+          )}
           {balances.executor.reth != null && (
             <>
               <dt>rETH yield</dt>
