@@ -1,4 +1,3 @@
-import { css } from "@emotion/react";
 import React from "react";
 import { Item, useSelectState } from "react-stately";
 import { HiddenSelect, useSelect, useListBox, useOption } from "react-aria";
@@ -10,6 +9,8 @@ import {
   CaretDown as CaretDownIcon,
   Checkmark as CheckmarkIcon,
 } from "./icons.js";
+import clsx from "clsx";
+import { twMerge } from "tailwind-merge";
 
 const caretConfigBySize = {
   tiny: {
@@ -142,14 +143,7 @@ const Select = React.forwardRef(
                 ) : inlineLabel != null ? (
                   <>
                     {inlineLabel}:{" "}
-                    <em
-                      css={(t) =>
-                        css({
-                          fontStyle: "normal",
-                          fontWeight: t.text.weights.emphasis,
-                        })
-                      }
-                    >
+                    <em className="not-italic font-semibold">
                       {state.selectedItem.value.inlineLabel ??
                         state.selectedItem.value.label}
                     </em>
@@ -158,14 +152,7 @@ const Select = React.forwardRef(
                   <>
                     <div>{state.selectedItem.value.label}</div>
                     {state.selectedItem.value.description != null && (
-                      <div
-                        css={(t) =>
-                          css({
-                            color: t.colors.textDimmed,
-                            fontSize: t.text.sizes.small,
-                          })
-                        }
-                      >
+                      <div className="text-sm text-text-dimmed">
                         {state.selectedItem.value.description}
                       </div>
                     )}
@@ -174,7 +161,11 @@ const Select = React.forwardRef(
               </span>
             </Button>
           </Popover.Trigger>
-          <Popover.Content width={width} widthFollowTrigger={width == null}>
+          <Popover.Content
+            width={width}
+            widthFollowTrigger={width == null}
+            className="w-min"
+          >
             <ListBox {...menuProps} state={state} />
           </Popover.Content>
         </Popover.Root>
@@ -196,14 +187,7 @@ const ListBox = ({ state, ...props }) => {
       <ul
         {...listBoxProps}
         ref={ref}
-        css={(t) =>
-          css({
-            display: "block",
-            padding: t.dropdownMenus.padding,
-            listStyle: "none",
-            ":focus": { outline: "none" },
-          })
-        }
+        className="block list-none p-[var(--dropdown-padding)] outline-hidden"
       >
         {[...state.collection].map((item) => (
           <Option key={item.key} item={item} state={state} />
@@ -223,64 +207,44 @@ const Option = ({ item, state }) => {
   return (
     <li
       {...optionProps}
-      // {...mergeProps(optionProps, focusProps)}
       ref={ref}
-      css={(t) =>
-        css({
-          minHeight: t.dropdownMenus.itemHeight,
-          padding: "0.5rem 0.8rem",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "flex-start",
-          lineHeight: 1.4,
-          fontSize: t.fontSizes.menus,
-          fontWeight: "400",
-          color: isDisabled ? t.colors.textMuted : t.colors.textNormal,
-          borderRadius: "0.3rem",
-          outline: "none",
-          cursor: isDisabled ? "not-allowed" : "pointer",
-          ":focus": { background: t.colors.backgroundModifierHover },
-          '&[aria-selected="true"]': {
-            background: t.colors.backgroundModifierSelected,
-          },
-        })
-      }
-      // style={{
-      //   background: isFocusVisible ? "rgb(255 255 255 / 5%)" : undefined,
-      // }}
+      className={twMerge(
+        clsx(
+          "flex min-h-[var(--dropdown-item-height)] items-center justify-start gap-3",
+          "rounded-[0.3rem] px-[0.8rem] py-[0.5rem] text-base font-normal leading-[1.4] outline-hidden",
+          "transition-colors duration-100 ease-linear",
+          isDisabled
+            ? "cursor-not-allowed text-text-muted"
+            : "cursor-pointer text-text-normal hover:bg-(--color-surface-muted)",
+          "focus:bg-(--color-surface-muted)",
+          "aria-[selected=true]:bg-(--color-surface-selected)",
+        ),
+      )}
     >
       {item.value.icon != null && (
-        <div
-          css={css({
-            width: "3rem",
-            marginRight: "1rem",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          })}
-        >
+        <div className="flex w-[3rem] items-center justify-center text-current">
           {item.value.icon}
         </div>
       )}
-      <div css={css({ flex: 1 })}>
+      <div className="flex min-w-0 flex-1 flex-col gap-[0.2rem]">
         <div {...labelProps}>{item.value.label}</div>
-        <div
-          {...descriptionProps}
-          css={(t) =>
-            css({
-              color: isDisabled ? t.colors.textMuted : t.colors.textDimmed,
-              fontSize: t.fontSizes.small,
-            })
-          }
-        >
-          {item.value.description}
-        </div>
+        {item.value.description != null && (
+          <div
+            {...descriptionProps}
+            className={clsx(
+              "text-sm",
+              isDisabled ? "text-text-muted" : "text-text-dimmed",
+            )}
+          >
+            {item.value.description}
+          </div>
+        )}
       </div>
-      <div css={css({ padding: "0 0.5rem", marginLeft: "1.2rem" })}>
+      <div className="ml-[1.2rem] px-[0.5rem]">
         {isSelected ? (
-          <CheckmarkIcon style={{ width: "1.1rem" }} />
+          <CheckmarkIcon className="h-auto w-[1.1rem]" />
         ) : (
-          <div style={{ width: "1.1rem" }} />
+          <div className="h-[1.1rem] w-[1.1rem]" />
         )}
       </div>
     </li>
