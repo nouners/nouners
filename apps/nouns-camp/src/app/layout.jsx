@@ -97,6 +97,10 @@ const fetchConfig = async () => {
 
 export default async function RootLayout({ children }) {
   const [session, config] = await Promise.all([getSession(), fetchConfig()]);
+  const shouldShowMobileDevTools =
+    process.env.NODE_ENV === "development" ||
+    process.env.VERCEL_ENV === "preview";
+
   return (
     <html lang="en">
       <body>
@@ -121,10 +125,10 @@ export default async function RootLayout({ children }) {
                       initialSession={{ address: session.address }}
                     >
                       <StoreProvider>
+                        {/* Always mount the Farcaster provider; it supplies a no-op context when disabled. */}
                         <FarcasterStateProvider>
                           {children}
-                          {(process.env.NODE_ENV === "development" ||
-                            process.env.VERCEL_ENV === "preview") && (
+                          {shouldShowMobileDevTools && (
                             <Suspense fallback={null}>
                               <MobileDevTools />
                             </Suspense>
