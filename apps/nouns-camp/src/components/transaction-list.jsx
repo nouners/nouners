@@ -240,6 +240,7 @@ const ListItem = ({ transaction, isSimulationRunning }) => {
       case "transfer":
       case "weth-transfer":
       case "steth-transfer":
+      case "meth-transfer":
       case "weth-deposit":
       case "weth-approval":
       case "stream":
@@ -256,6 +257,7 @@ const ListItem = ({ transaction, isSimulationRunning }) => {
     switch (t.type) {
       case "weth-transfer":
       case "steth-transfer":
+      case "meth-transfer":
       case "weth-deposit":
       case "weth-approval":
       case "usdc-approval":
