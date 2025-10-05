@@ -112,6 +112,7 @@
   --color-mention-background: hsl(210 77% 51% / 15%);
   --color-mention-background-hover: hsl(210 77% 51% / 20%);
   --color-mention-focus-border: hsl(210 77% 40% / 50%);
+  --color-scheme: light;
 
   --size-navbar: 4.7rem;
   --size-sidebar: 40rem;
@@ -160,6 +161,7 @@
   --color-mention-background: hsl(210 77% 51% / 30%);
   --color-mention-background-hover: hsl(210 77% 51% / 50%);
   --color-mention-focus-border: hsl(210 77% 51%);
+  --color-scheme: dark;
 }
 
 :root {

@@ -1,5 +1,5 @@
 import { useComposedRefs } from "@shades/common/react";
-import { css } from "@emotion/react";
+import clsx from "clsx";
 import React from "react";
 import { useOverlayTriggerState } from "@react-stately/overlays";
 import {
@@ -11,14 +11,12 @@ import {
   useButton,
   useDialog,
 } from "react-aria";
+import { twMerge } from "tailwind-merge";
 
 const Dialog = ({ children, ...props }) => {
   const ref = React.useRef();
 
-  const {
-    dialogProps,
-    // titleProps
-  } = useDialog(props, ref);
+  const { dialogProps } = useDialog(props, ref);
   return (
     <div ref={ref} {...dialogProps} style={{ outline: "none" }}>
       {children}
@@ -84,13 +82,11 @@ export const Trigger = React.forwardRef(
       ...triggerProps,
       ...props,
       isDisabled: disabled ?? props.isDisabled,
-      // elementType: 'span'
     };
     const { buttonProps } = useButton(useButtonInput);
 
     const ref = useComposedRefs(triggerRef, forwardedRef);
 
-    // `asButtonChild` indicates that the child itself will call `useButton`
     return asButtonChild ? (
       React.cloneElement(children, { ...useButtonInput, ref })
     ) : asChild ? (
@@ -104,7 +100,10 @@ export const Trigger = React.forwardRef(
 );
 
 const ContentInner = React.forwardRef(
-  ({ width, widthFollowTrigger, children, ...props }, forwardedRef) => {
+  (
+    { width, widthFollowTrigger, children, className, ...props },
+    forwardedRef,
+  ) => {
     const {
       isDialog,
       state,
@@ -120,14 +119,9 @@ const ContentInner = React.forwardRef(
       popoverInputProps,
     } = React.useContext(Context);
 
-    const {
-      popoverProps,
-      underlayProps,
-      // arrowProps,
-      // placement,
-    } = usePopover(
+    const { popoverProps, underlayProps } = usePopover(
       {
-        isNonModal: !isDialog, // Should be rare, only for combobox
+        isNonModal: !isDialog,
         ...props,
         triggerRef: targetRef ?? triggerRef,
         popoverRef,
@@ -147,58 +141,42 @@ const ContentInner = React.forwardRef(
       ? mergeProps(props, dialogProps, overlayProps, popoverProps)
       : mergeProps(props, overlayProps, popoverProps);
 
+    const {
+      className: containerClassName,
+      style: containerStyle,
+      ...otherContainerProps
+    } = containerProps;
+
     const dismissButtonElement = <DismissButton onDismiss={state.close} />;
+
+    const baseClasses = clsx(
+      "relative z-[10] min-w-min max-w-[calc(100vw-2rem)] overflow-auto",
+      "rounded-md bg-(--color-surface-popover) text-text-normal shadow-elevation-high",
+      "outline-hidden",
+      "data-[width-behavior=follow-trigger]:min-w-0",
+      "data-[width-behavior=follow-trigger]:w-[var(--trigger-width)]",
+    );
 
     return (
       <>
-        {isDialog && (
-          <div
-            {...underlayProps}
-            style={{
-              position: "fixed",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "100%",
-            }}
-          />
-        )}
+        {isDialog && <div {...underlayProps} className="fixed inset-0" />}
         <div
           ref={ref}
           data-width-behavior={
             widthFollowTrigger ? "follow-trigger" : undefined
           }
-          css={(t) =>
-            css({
-              // Since Emotion’s <Global /> doesn’t work yet in Next we have
-              // to specify this on anything that’s outside the root div
-              colorScheme: t.name === "dark" ? "dark" : "light",
-
-              minWidth: "min-content",
-              width: "var(--custom-width, auto)",
-              maxWidth: "calc(100vw - 2rem)",
-              color: t.colors.textNormal,
-              background: t.colors.popoverBackground,
-              borderRadius: "0.6rem",
-              boxShadow: t.shadows.elevationHigh,
-              outline: "none", // TODO
-              overflow: "auto",
-              '&[data-width-behavior="follow-trigger"]': {
-                minWidth: 0,
-                width: "var(--trigger-width, auto)",
-              },
-            })
-          }
-          {...containerProps}
+          className={twMerge(baseClasses, className, containerClassName)}
+          {...otherContainerProps}
           style={{
-            ...containerProps.style,
+            ...containerStyle,
             zIndex: 10,
+            colorScheme: "var(--color-scheme, light)",
+            width: "var(--custom-width, auto)",
             "--custom-width": width ?? undefined,
             "--trigger-width":
               anchorRef.current == null
                 ? undefined
                 : `${anchorRef.current.offsetWidth}px`,
-            ...props.style,
           }}
         >
           {dismissButtonElement}
