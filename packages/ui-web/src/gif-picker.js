@@ -1,11 +1,12 @@
 import throttle from "lodash.throttle";
 import React from "react";
-import { css } from "@emotion/react";
 import { useActions } from "@shades/common/app";
 import { useMatchMedia, useFetch } from "@shades/common/react";
 import * as Popover from "./popover.js";
 import Dialog from "./dialog.js";
 import Input from "./input";
+import clsx from "clsx";
+import { twMerge } from "tailwind-merge";
 
 const GifPickerTrigger = ({
   width = "34rem",
@@ -166,17 +167,8 @@ const GifPicker = ({
   }, []);
 
   return (
-    <div
-      css={css({ display: "flex", flexDirection: "column" })}
-      style={{ height, width }}
-    >
-      <div
-        css={css({
-          padding: "0.8rem 0.8rem 0",
-          position: "relative",
-          zIndex: 2,
-        })}
-      >
+    <div className="flex flex-col" style={{ height, width }}>
+      <div className="relative z-[2] px-[0.8rem] pb-0 pt-[0.8rem]">
         <Input
           size="small"
           ref={inputRef}
@@ -195,61 +187,16 @@ const GifPicker = ({
       </div>
 
       <div
-        css={(t) =>
-          css({
-            position: "relative",
-            flex: 1,
-            minHeight: 0,
-            overflow: "auto",
-            padding: "0.6rem 0.4rem 0.4rem",
-            ".grid-container": {
-              display: "flex",
-              flexWrap: "wrap",
-            },
-            ".grid-item": {
-              minWidth: 0,
-              width: "calc(100% / var(--column-count))",
-            },
-            button: {
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              width: "100%",
-              height: "auto",
-              background: "none",
-              borderRadius: "0.5rem",
-              padding: "0.4rem",
-              border: 0,
-              cursor: "pointer",
-              outline: "none",
-              "&[data-selected]": {
-                background: t.colors.backgroundModifierNormal,
-              },
-              "&:focus": {
-                position: "relative",
-                zIndex: 2,
-                boxShadow: `0 0 0 0.2rem ${t.colors.primary}`,
-              },
-              img: {
-                display: "block",
-                width: "100%",
-                height: "auto",
-                objectFit: "cover",
-                margin: "auto",
-                borderRadius: "0.3rem",
-              },
-            },
-          })
-        }
+        className="relative flex-1 min-h-0 overflow-auto px-[0.4rem] pb-[0.4rem] pt-[0.6rem]"
         style={{ "--column-count": columnCount }}
       >
-        <div className="grid-container">
+        <div className="flex flex-wrap">
           {items.map((item, i) => {
             const isHighlighted = highlightedIndex === i;
             return (
               <div
                 key={item.id}
-                className="grid-item"
+                className="min-w-0"
                 // ref={(el) => {
                 //   if (el == null) return;
                 //   if (isHighlighted)
@@ -258,9 +205,17 @@ const GifPicker = ({
                 //       behavior: "smooth",
                 //     });
                 // }}
+                style={{ width: "calc(100% / var(--column-count))" }}
               >
                 <button
                   key={item.id}
+                  className={twMerge(
+                    clsx(
+                      "flex w-full items-center justify-center rounded-[0.5rem] p-[0.4rem] transition-colors duration-100 ease-linear",
+                      "outline-none focus-visible:relative focus-visible:z-[2] focus-visible:shadow-focus",
+                      "data-[selected=true]:bg-(--color-surface-muted)",
+                    ),
+                  )}
                   data-selected={isHighlighted ? "true" : undefined}
                   onClick={() => {
                     onSelect({ url: item.src });
@@ -270,7 +225,12 @@ const GifPicker = ({
                     setHighlightedIndex(i);
                   }}
                 >
-                  <img src={item.src} alt={item.title} loading="lazy" />
+                  <img
+                    src={item.src}
+                    alt={item.title}
+                    loading="lazy"
+                    className="mx-auto block h-auto w-full rounded-[0.3rem] object-cover"
+                  />
                 </button>
               </div>
             );
@@ -317,19 +277,7 @@ export const PopoverOrTrayDialog = ({
     <>
       {trigger}
       <Dialog isOpen={isOpen} onRequestClose={close} backdrop="none" tray>
-        <div
-          css={(t) =>
-            css({
-              flex: 1,
-              minHeight: 0,
-              padding: "0.4rem 0.4rem 0",
-              background: t.colors.popoverBackground,
-              borderTopLeftRadius: "0.6rem",
-              borderTopRightRadius: "0.6rem",
-              boxShadow: t.shadows.elevationHigh,
-            })
-          }
-        >
+        <div className="flex-1 min-h-0 rounded-t-[0.6rem] bg-(--color-surface-popover) px-[0.4rem] pb-0 pt-[0.4rem] shadow-elevation-high">
           {typeof children === "function"
             ? children({ type: "tray" })
             : children}

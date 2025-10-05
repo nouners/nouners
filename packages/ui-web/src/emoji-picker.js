@@ -1,9 +1,10 @@
 import React from "react";
-import { css } from "@emotion/react";
 import { useEmojis } from "@shades/common/app";
 import { array as arrayUtils, emoji as emojiUtils } from "@shades/common/utils";
 import Input from "./input";
 import { PopoverOrTrayDialog } from "./gif-picker.js";
+import clsx from "clsx";
+import { twMerge } from "tailwind-merge";
 
 const { groupBy } = arrayUtils;
 const { search: searchEmoji } = emojiUtils;
@@ -208,11 +209,8 @@ const EmojiPicker = ({ width = "auto", height = "100%", onSelect }) => {
   }, []);
 
   return (
-    <div
-      css={css({ display: "flex", flexDirection: "column" })}
-      style={{ height, width }}
-    >
-      <div css={css({ padding: "0.7rem 0.7rem 0.3rem" })}>
+    <div className="flex flex-col" style={{ height, width }}>
+      <div className="px-[0.7rem] pb-[0.3rem] pt-[0.7rem]">
         <Input
           size="small"
           ref={inputRef}
@@ -230,71 +228,24 @@ const EmojiPicker = ({ width = "auto", height = "100%", onSelect }) => {
         />
       </div>
 
-      <div
-        css={(t) =>
-          css({
-            position: "relative",
-            flex: 1,
-            overflow: "auto",
-            scrollPaddingTop: "3rem",
-            scrollPaddingBottom: "0.5rem",
-            paddingBottom: "0.7rem",
-            ".category-title": {
-              position: "sticky",
-              top: 0,
-              zIndex: 1,
-              background: `linear-gradient(-180deg, ${t.colors.popoverBackground} 50%, transparent)`,
-              padding: "0.6rem 0.9rem",
-              fontSize: "1.2rem",
-              fontWeight: "500",
-              color: t.colors.textDimmed,
-              textTransform: "uppercase",
-              pointerEvents: "none",
-            },
-            ".category-container": {
-              display: "grid",
-              justifyContent: "space-between",
-              padding: "0 0.5rem",
-              gridTemplateColumns: "repeat(auto-fill, minmax(3.4rem, 1fr))",
-            },
-            ".emoji": {
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: "2.2rem",
-              width: "3.4rem",
-              height: "2.9rem",
-              background: "none",
-              borderRadius: "0.5rem",
-              border: 0,
-              cursor: "pointer",
-              outline: "none",
-              "&[data-selected]": {
-                background: t.colors.backgroundModifierHover,
-              },
-              "&:focus": {
-                position: "relative",
-                zIndex: 2,
-                boxShadow: `0 0 0 0.2rem ${t.colors.primary}`,
-              },
-              img: {
-                display: "block",
-                width: "2.2rem",
-                height: "2.2rem",
-                margin: "auto",
-              },
-            },
-          })
-        }
-      >
+      <div className="relative flex-1 overflow-auto scroll-pt-[3rem] scroll-pb-[0.5rem] pb-[0.7rem]">
         {filteredEmojisByCategoryEntries.map(([category, emojis], ci) => (
           <div key={category ?? "no-category"}>
             {category != null && (
-              <div className="category-title">{category}</div>
+              <div
+                className="sticky top-0 z-[1] px-[0.9rem] py-[0.6rem] text-[1.2rem] font-medium uppercase text-text-dimmed"
+                style={{
+                  pointerEvents: "none",
+                  background:
+                    "linear-gradient(-180deg, var(--color-surface-popover) 50%, transparent)",
+                }}
+              >
+                {category}
+              </div>
             )}
 
             <div
-              className="category-container"
+              className="grid grid-cols-[repeat(auto-fill,minmax(3.4rem,1fr))] justify-between px-[0.5rem]"
               style={{ paddingTop: category == null ? "0.8rem" : undefined }}
             >
               {emojis.map(({ id, emoji, url }, i) => {
@@ -310,7 +261,13 @@ const EmojiPicker = ({ width = "auto", height = "100%", onSelect }) => {
                       if (isHighlighted)
                         el.scrollIntoView({ block: "nearest" });
                     }}
-                    className="emoji"
+                    className={twMerge(
+                      clsx(
+                        "flex h-[2.9rem] w-[3.4rem] items-center justify-center rounded-[0.5rem] text-[2.2rem] transition-colors duration-100 ease-linear",
+                        "outline-none focus-visible:relative focus-visible:z-[2] focus-visible:shadow-focus",
+                        "data-[selected=true]:bg-(--color-surface-muted)",
+                      ),
+                    )}
                     data-selected={isHighlighted ? "true" : undefined}
                     onClick={() => {
                       onSelect(emoji ?? id);
@@ -326,7 +283,13 @@ const EmojiPicker = ({ width = "auto", height = "100%", onSelect }) => {
                       setHighlightedEntry([ci, i]);
                     }}
                   >
-                    {emoji ?? <img src={url} alt={id} />}
+                    {emoji ?? (
+                      <img
+                        src={url}
+                        alt={id}
+                        className="mx-auto block h-[2.2rem] w-[2.2rem]"
+                      />
+                    )}
                   </button>
                 );
               })}
