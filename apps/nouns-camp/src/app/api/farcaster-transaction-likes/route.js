@@ -11,8 +11,11 @@ import {
   getAccountKeyForFid,
   deleteAccountKeyForFid,
 } from "@/app/api/farcaster-account-key-utils";
+import { ensureFarcasterEnabled } from "@/app/api/farcaster-disabled-response";
 
 export async function GET(request) {
+  const disabledResponse = ensureFarcasterEnabled();
+  if (disabledResponse) return disabledResponse;
   const { searchParams } = new URL(request.url);
   const hash = searchParams.get("hash");
 
@@ -38,6 +41,8 @@ export async function GET(request) {
 }
 
 export async function POST(request) {
+  const disabledResponse = ensureFarcasterEnabled();
+  if (disabledResponse) return disabledResponse;
   const { transactionHash, fid, action } = await request.json();
 
   if (!(await isLoggedIn()))

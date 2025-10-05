@@ -17,6 +17,7 @@ import { useDialog } from "@/hooks/global-dialogs";
 import { useConnectedFarcasterAccounts } from "@/hooks/farcaster";
 import LogoSymbol from "@/components/logo-symbol";
 import ChainExplorerAddressLink from "@/components/chain-explorer-address-link";
+import { FARCASTER_ENABLED } from "@/constants/features";
 
 const createFarcasterAccountKey = async () => {
   const res = await fetch("/api/farcaster-account-key", { method: "POST" });
@@ -40,6 +41,8 @@ const getFarcasterAccountKey = async (publicKey) => {
 
 const FarcasterSetupDialog = ({ isOpen, close }) => {
   const { address: connectedAccountAddress } = useWallet();
+
+  if (!FARCASTER_ENABLED) return null;
 
   return (
     <Dialog
@@ -82,7 +85,7 @@ const FarcasterSetupContent = ({ titleProps, dismiss }) => {
       setKeyData((s) => ({ ...s, ...data }));
     },
     {
-      enabled: keyData != null,
+      enabled: FARCASTER_ENABLED && keyData != null,
       fetchInterval: 3000,
     },
     [keyData?.key],
@@ -93,6 +96,7 @@ const FarcasterSetupContent = ({ titleProps, dismiss }) => {
     refetchInterval: 2500,
   });
 
+  if (!FARCASTER_ENABLED) return null;
   if (accounts == null) return null;
 
   const hasVerifiedAddress = accounts.length > 0;

@@ -26,6 +26,7 @@ import {
 } from "@/session-provider";
 import { useDialog } from "@/hooks/global-dialogs";
 import { useConnectedFarcasterAccounts } from "@/hooks/farcaster";
+import { FARCASTER_ENABLED } from "@/constants/features";
 import useAccountDisplayName from "@/hooks/account-display-name";
 import {
   useAuctionData,
@@ -357,10 +358,11 @@ const NavBar = ({ navigationStack, actions: customActions }) => {
   const { address: loggedInAccountAddress } = useSessionState();
   const { destroy: signOut } = useSessionActions();
   const connectedFarcasterAccounts = useConnectedFarcasterAccounts();
-  const hasVerifiedFarcasterAccount = connectedFarcasterAccounts?.length > 0;
+  const hasVerifiedFarcasterAccount =
+    FARCASTER_ENABLED && connectedFarcasterAccounts?.length > 0;
   const hasFarcasterAccountKey =
     hasVerifiedFarcasterAccount &&
-    connectedFarcasterAccounts.some((a) => a.hasAccountKey);
+    connectedFarcasterAccounts?.some((a) => a.hasAccountKey);
 
   const userAccountAddress =
     connectedWalletAccountAddress ?? loggedInAccountAddress;
@@ -408,12 +410,14 @@ const NavBar = ({ navigationStack, actions: customActions }) => {
         navigator.clipboard.writeText(userAccountAddress);
         break;
       case "open-warpcast":
+        if (!FARCASTER_ENABLED) break;
         window.open("https://warpcast.com/~/channel/nouns", "_blank");
         break;
       case "open-flows":
         window.open("https://flows.wtf", "_blank");
         break;
       case "open-camp-changelog":
+        if (!FARCASTER_ENABLED) break;
         window.open("https://warpcast.com/~/channel/camp", "_blank");
         break;
       case "open-camp-discord":
@@ -447,6 +451,7 @@ const NavBar = ({ navigationStack, actions: customActions }) => {
         openTreasuryDialog();
         break;
       case "setup-farcaster":
+        if (!FARCASTER_ENABLED) break;
         openFarcasterSetupDialog();
         break;
       case "sign-in": {
@@ -771,7 +776,7 @@ const NavBar = ({ navigationStack, actions: customActions }) => {
                 id: "external",
                 title: "External",
                 children: [
-                  {
+                  FARCASTER_ENABLED && {
                     id: "open-warpcast",
                     title: "Farcaster",
                     iconRight: <span>{"\u2197"}</span>,
@@ -781,14 +786,14 @@ const NavBar = ({ navigationStack, actions: customActions }) => {
                     title: "Flows",
                     iconRight: <span>{"\u2197"}</span>,
                   },
-                ],
+                ].filter(Boolean),
               };
               const settingsSection = {
                 id: "settings",
                 title: "Camp",
                 children: [
                   { id: "open-settings-dialog", title: "Settings" },
-                  {
+                  FARCASTER_ENABLED && {
                     id: "open-camp-changelog",
                     title: "Changelog",
                     iconRight: <span>{"\u2197"}</span>,
@@ -803,7 +808,7 @@ const NavBar = ({ navigationStack, actions: customActions }) => {
                     title: "GitHub",
                     iconRight: <span>{"\u2197"}</span>,
                   },
-                ],
+                ].filter(Boolean),
               };
 
               if (connectedWalletAccountAddress == null)
@@ -853,9 +858,8 @@ const NavBar = ({ navigationStack, actions: customActions }) => {
                         id: "open-drafts-dialog",
                         title: "Proposal & topic drafts",
                       },
-                      !hasVerifiedFarcasterAccount
-                        ? null
-                        : !hasFarcasterAccountKey
+                      FARCASTER_ENABLED && hasVerifiedFarcasterAccount
+                        ? !hasFarcasterAccountKey
                           ? {
                               id: "setup-farcaster",
                               title: "Setup Farcaster",
@@ -865,7 +869,8 @@ const NavBar = ({ navigationStack, actions: customActions }) => {
                                 id: "sign-in",
                                 title: "Authenticate account",
                               }
-                            : null,
+                            : null
+                        : null,
                     ].filter(Boolean),
                   },
                   daoSection,

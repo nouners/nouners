@@ -45,6 +45,7 @@ import NounPreviewPopoverTrigger from "@/components/noun-preview-popover-trigger
 import ProposalList from "@/components/sectioned-list";
 import { buildEtherscanLink } from "@/utils/etherscan";
 import { useAccountsWithVerifiedEthAddress as useFarcasterAccountsWithVerifiedEthAddress } from "@/hooks/farcaster";
+import { FARCASTER_ENABLED } from "@/constants/features";
 import Avatar from "@shades/ui-web/avatar";
 import AccountPreviewPopoverTrigger from "@/components/account-preview-popover-trigger";
 import useEnsText from "@/hooks/ens-text";
@@ -457,8 +458,9 @@ const VoterHeader = ({ accountAddress }) => {
       ? displayName_
       : matchingContract.name;
 
-  const farcasterAccounts =
+  const farcasterAccountsData =
     useFarcasterAccountsWithVerifiedEthAddress(accountAddress);
+  const farcasterAccounts = FARCASTER_ENABLED ? farcasterAccountsData : null;
 
   const representedNouns = delegate?.nounsRepresented ?? [];
 
@@ -635,7 +637,7 @@ const VoterHeader = ({ accountAddress }) => {
                   },
                 ]}
                 onAction={(key) => {
-                  if (key.startsWith("open-warpcast:")) {
+                  if (FARCASTER_ENABLED && key.startsWith("open-warpcast:")) {
                     const fid = key.split(":")[1];
                     const farcasterAccount = farcasterAccounts.find(
                       (a) => String(a.fid) === fid,

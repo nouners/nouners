@@ -20,6 +20,7 @@ import { useWallet } from "@/hooks/wallet";
 import { useDialog } from "@/hooks/global-dialogs";
 import NativeSelect from "@/components/native-select";
 import AccountPreviewPopoverTrigger from "@/components/account-preview-popover-trigger";
+import { FARCASTER_ENABLED } from "@/constants/features";
 
 const getByteLength = (string) =>
   new TextEncoder("utf-8").encode(string).length;
@@ -69,16 +70,36 @@ const ProposalActionForm = ({
 
   const isConnectedToTargetChainId = connectedChainId === CHAIN_ID;
 
+  const filteredAvailableModes = React.useMemo(
+    () =>
+      availableModes == null
+        ? null
+        : availableModes.filter(
+            (m) => FARCASTER_ENABLED || m !== "farcaster-comment",
+          ),
+    [availableModes],
+  );
+
+  React.useEffect(() => {
+    if (!FARCASTER_ENABLED && mode === "farcaster-comment") {
+      const fallbackMode = filteredAvailableModes?.find(
+        (m) => m !== "farcaster-comment",
+      );
+      if (fallbackMode != null && setMode != null) setMode(fallbackMode);
+    }
+  }, [mode, filteredAvailableModes, setMode]);
+
   const [
     selectedFarcasterAccountFidByWalletAccountAddress,
     setSelectedFarcasterAccount,
   ] = React.useState({});
   const farcasterAccounts = useConnectedFarcasterAccounts({
-    enabled: mode === "farcaster-comment",
+    enabled: FARCASTER_ENABLED && mode === "farcaster-comment",
   });
 
   const selectedFarcasterAccountFid = (() => {
-    if (connectedWalletAccountAddress == null) return null;
+    if (!FARCASTER_ENABLED || connectedWalletAccountAddress == null)
+      return null;
 
     const selectedFid =
       selectedFarcasterAccountFidByWalletAccountAddress[
@@ -111,6 +132,7 @@ const ProposalActionForm = ({
   const hasRequiredInputs = (() => {
     switch (mode) {
       case "farcaster-comment":
+        if (!FARCASTER_ENABLED) return false;
         return (
           reason.trim().length > 0 && getByteLength(reason) <= 320 // Farcaster text limit is set in bytes
         );
@@ -137,7 +159,7 @@ const ProposalActionForm = ({
         mode === "vote" ? "vote" : "comment"
       }.`;
 
-    if (mode === "farcaster-comment") {
+    if (FARCASTER_ENABLED && mode === "farcaster-comment") {
       const selectedAccount = farcasterAccounts?.find(
         (a) => String(a.fid) === String(selectedFarcasterAccountFid),
       );
@@ -201,7 +223,8 @@ const ProposalActionForm = ({
 
   const helpText = renderHelpText();
 
-  const showModePicker = availableModes != null && availableModes.length > 1;
+  const showModePicker =
+    filteredAvailableModes != null && filteredAvailableModes.length > 1;
 
   const disableForm =
     isPending ||
@@ -329,7 +352,7 @@ const ProposalActionForm = ({
           <label className="message-input-label" htmlFor="message-input">
             {connectedWalletAccountAddress == null ? null : (
               <>
-                {mode === "farcaster-comment" ? (
+                {FARCASTER_ENABLED && mode === "farcaster-comment" ? (
                   (() => {
                     if (
                       farcasterAccounts == null ||
@@ -462,7 +485,7 @@ const ProposalActionForm = ({
                     setSupport(m === "onchain-comment" ? 2 : null);
                   }
                 }}
-                options={availableModes.map((m) => ({
+                options={(filteredAvailableModes ?? []).map((m) => ({
                   value: m,
                   label: {
                     vote: "Cast vote",
@@ -756,6 +779,7 @@ const ProposalActionForm = ({
                     );
 
                   case "farcaster-comment": {
+                    if (!FARCASTER_ENABLED) return null;
                     if (connectedWalletAccountAddress == null)
                       return (
                         <Button

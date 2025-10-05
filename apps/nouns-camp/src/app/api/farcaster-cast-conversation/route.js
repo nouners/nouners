@@ -1,6 +1,9 @@
 import { fetchCastReplies } from "@/app/api/farcaster-utils";
+import { ensureFarcasterEnabled } from "@/app/api/farcaster-disabled-response";
 
 export async function GET(request) {
+  const disabledResponse = ensureFarcasterEnabled();
+  if (disabledResponse) return disabledResponse;
   const { searchParams } = new URL(request.url);
   const hash = searchParams.get("hash");
 

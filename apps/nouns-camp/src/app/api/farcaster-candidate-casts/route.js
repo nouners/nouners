@@ -13,6 +13,7 @@ import {
   getAccountKeyForFid,
   deleteAccountKeyForFid,
 } from "@/app/api/farcaster-account-key-utils";
+import { ensureFarcasterEnabled } from "@/app/api/farcaster-disabled-response";
 
 const createCanonicalCandidateUrl = async (candidateId) => {
   const { proposalCandidate } = await subgraphFetch({
@@ -39,6 +40,8 @@ const fetchCandidateCasts = async (candidateId) => {
 };
 
 export async function GET(request) {
+  const disabledResponse = ensureFarcasterEnabled();
+  if (disabledResponse) return disabledResponse;
   const { searchParams } = new URL(request.url);
   const candidateId = searchParams.get("candidate");
 
@@ -58,6 +61,8 @@ export async function GET(request) {
 }
 
 export async function POST(request) {
+  const disabledResponse = ensureFarcasterEnabled();
+  if (disabledResponse) return disabledResponse;
   const { candidateId, text, fid } = await request.json();
 
   if (!(await isLoggedIn()))

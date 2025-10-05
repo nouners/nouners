@@ -6,6 +6,7 @@ import config from "@/config";
 import useSetting, { getConfig as getSettingConfig } from "@/hooks/setting";
 import { useSearchParams } from "@/hooks/navigation";
 import { useWallet } from "@/hooks/wallet";
+import { FARCASTER_ENABLED } from "@/constants/features";
 
 const BUILD_ID = process.env.BUILD_ID;
 
@@ -105,7 +106,7 @@ const Content = ({ titleProps, dismiss }) => {
           state: zoom,
           setState: setZoom,
         },
-        {
+        FARCASTER_ENABLED && {
           key: "farcaster-cast-filter",
           state: farcasterFilter,
           setState: setFarcasterFilter,

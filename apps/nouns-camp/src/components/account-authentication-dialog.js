@@ -9,6 +9,7 @@ import { useDialog } from "@/hooks/global-dialogs";
 import { useConnectedFarcasterAccounts } from "@/hooks/farcaster";
 import { pickDisplayName as pickFarcasterAccountDisplayName } from "@/utils/farcaster";
 import { reportError } from "@/utils/monitoring";
+import { FARCASTER_ENABLED } from "@/constants/features";
 
 const AccountAuthenticationDialog = ({ isOpen, close }) => {
   const { isAuthenticated } = useWallet();
@@ -29,7 +30,10 @@ const Content = ({ titleProps, dismiss }) => {
   const { isAuthenticated } = useWallet();
   const { signIn: authenticateConnectedAccount, state: authenticationState } =
     useWalletAuthentication();
-  const connectedFarcasterAccount = useConnectedFarcasterAccounts()?.[0];
+  const connectedFarcasterAccounts = useConnectedFarcasterAccounts();
+  const connectedFarcasterAccount = FARCASTER_ENABLED
+    ? connectedFarcasterAccounts?.[0]
+    : null;
   const { data: dialogData } = useDialog("account-authentication");
   const userIntent = dialogData?.intent;
   const onSuccess = dialogData?.onSuccess;
@@ -66,7 +70,8 @@ const Content = ({ titleProps, dismiss }) => {
         {isAuthenticated ? (
           <>
             {(() => {
-              if (connectedFarcasterAccount == null) return null;
+              if (!FARCASTER_ENABLED || connectedFarcasterAccount == null)
+                return null;
               const { pfpUrl } = connectedFarcasterAccount;
               const displayName = pickFarcasterAccountDisplayName(
                 connectedFarcasterAccount,

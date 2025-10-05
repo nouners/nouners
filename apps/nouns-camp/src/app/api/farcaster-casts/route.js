@@ -3,6 +3,7 @@ import { CHAIN_ID } from "@/constants/env";
 import { subgraphFetch } from "@/nouns-subgraph";
 import { createUri as createTransactionReceiptUri } from "@/utils/erc-2400";
 import { fetchCastsByParentUrl } from "@/app/api/farcaster-utils";
+import { ensureFarcasterEnabled } from "@/app/api/farcaster-disabled-response";
 
 const DAY_THRESHOLD = 14;
 const CAST_LIMIT_PER_PROP = 20;
@@ -67,6 +68,8 @@ const jsonResponse = (statusCode, body, headers) =>
   });
 
 export async function GET() {
+  const disabledResponse = ensureFarcasterEnabled();
+  if (disabledResponse) return disabledResponse;
   const { casts, accounts } = await fetchRecentCasts();
 
   return jsonResponse(

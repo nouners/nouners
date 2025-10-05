@@ -8,6 +8,7 @@ import {
 } from "@/utils/votes-and-feedbacks";
 import { getSponsorSignatures as getCandidateSponsorSignatures } from "@/utils/candidates";
 import { pickDisplayName as pickFarcasterAccountDisplayName } from "@/utils/farcaster";
+import { FARCASTER_ENABLED } from "@/constants/features";
 import { base } from "viem/chains";
 
 const createFarcasterCastItem = (cast) => {
@@ -149,11 +150,13 @@ export const buildProposalFeed = (
         });
 
   const castItems =
-    casts?.map((c) => {
-      const item = createFarcasterCastItem(c);
-      item.proposalId = proposalId;
-      return item;
-    }) ?? [];
+    FARCASTER_ENABLED && casts != null
+      ? casts.map((c) => {
+          const item = createFarcasterCastItem(c);
+          item.proposalId = proposalId;
+          return item;
+        })
+      : [];
 
   let voteAndFeedbackPostItems = buildVoteAndFeedbackPostFeedItems({
     proposalId,
@@ -314,11 +317,13 @@ export const buildCandidateFeed = (
   const targetProposalId = candidate.latestVersion?.targetProposalId;
 
   const castItems =
-    casts?.map((c) => {
-      const item = createFarcasterCastItem(c);
-      item.candidateId = candidateId;
-      return item;
-    }) ?? [];
+    FARCASTER_ENABLED && casts != null
+      ? casts.map((c) => {
+          const item = createFarcasterCastItem(c);
+          item.candidateId = candidateId;
+          return item;
+        })
+      : [];
 
   const feedbackPostItems = includeFeedbackPosts
     ? buildVoteAndFeedbackPostFeedItems({

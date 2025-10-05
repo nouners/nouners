@@ -5,6 +5,7 @@ import {
   persistPendingAccountKeyForFid,
   setPendingAccountKey,
 } from "@/app/api/farcaster-account-key-utils";
+import { ensureFarcasterEnabled } from "@/app/api/farcaster-disabled-response";
 
 const SIGNED_KEY_REQUEST_VALIDATOR_EIP_712_DOMAIN = {
   name: "Farcaster SignedKeyRequestValidator",
@@ -107,6 +108,8 @@ const fetchAccountKey = async (publicKey) => {
 };
 
 export async function POST() {
+  const disabledResponse = ensureFarcasterEnabled();
+  if (disabledResponse) return disabledResponse;
   const { publicKey, privateKey } = await createSignerKeyPair();
 
   const keyRequest = await createSignedKeyRequest(publicKey);
@@ -117,6 +120,8 @@ export async function POST() {
 }
 
 export async function GET(request) {
+  const disabledResponse = ensureFarcasterEnabled();
+  if (disabledResponse) return disabledResponse;
   const { searchParams } = new URL(request.url);
   const publicKey = searchParams.get("key");
 

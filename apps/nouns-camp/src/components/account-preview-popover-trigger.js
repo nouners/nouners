@@ -30,6 +30,7 @@ import { useAccountsWithVerifiedEthAddress as useFarcasterAccountsWithVerifiedEt
 import AccountAvatar from "@/components/account-avatar";
 import NounPreviewPopoverTrigger from "@/components/noun-preview-popover-trigger";
 import NextLink from "next/link";
+import { FARCASTER_ENABLED } from "@/constants/features";
 
 const isProduction = process.env.NODE_ENV === "production";
 
@@ -142,8 +143,9 @@ const AccountPreviewPopoverTrigger = React.forwardRef(
 const AccountPreview = React.forwardRef(({ accountAddress, close }, ref) => {
   const { address: connectedAccountAddress } = useWallet();
   const connectedAccount = useAccount(connectedAccountAddress);
-  const farcasterAccounts =
+  const farcasterAccountsData =
     useFarcasterAccountsWithVerifiedEthAddress(accountAddress);
+  const farcasterAccounts = FARCASTER_ENABLED ? farcasterAccountsData : null;
 
   const isMe = accountAddress.toLowerCase() === connectedAccountAddress;
   const enableImpersonation = !isMe && (!isProduction || isDebugSession);
@@ -585,7 +587,7 @@ const AccountPreview = React.forwardRef(({ accountAddress, close }, ref) => {
                 },
               ]}
               onAction={(key) => {
-                if (key.startsWith("open-warpcast:")) {
+                if (FARCASTER_ENABLED && key.startsWith("open-warpcast:")) {
                   const fid = key.split(":")[1];
                   const farcasterAccount = farcasterAccounts.find(
                     (a) => String(a.fid) === fid,

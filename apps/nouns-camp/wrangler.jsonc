@@ -9,34 +9,34 @@
     "nodejs_compat",
     // Allow to fetch URLs in your app
     // see https://developers.cloudflare.com/workers/configuration/compatibility-flags/#global-fetch-strictly-public
-    "global_fetch_strictly_public"
+    "global_fetch_strictly_public",
   ],
   "assets": {
     "directory": ".open-next/assets",
-    "binding": "ASSETS"
+    "binding": "ASSETS",
   },
   "services": [
     {
       "binding": "WORKER_SELF_REFERENCE",
       // The service should match the "name" of your worker
-      "service": "nouners"
-    }
+      "service": "nouners",
+    },
   ],
   "r2_buckets": [
     {
       "binding": "NEXT_INC_CACHE_R2_BUCKET",
-      "bucket_name": "nouners"
-    }
+      "bucket_name": "nouners",
+    },
   ],
   "kv_namespaces": [
     {
       "binding": "KV",
-      "id": "d8b9ad73f5054ec081a27603fabc1da5"
-    }
+      "id": "d8b9ad73f5054ec081a27603fabc1da5",
+    },
   ],
   "observability": {
     "logs": {
-      "enabled": true
-    }
-  }
+      "enabled": true,
+    },
+  },
 }

@@ -1,9 +1,12 @@
 import { kv } from "@vercel/kv";
 import { isAddress } from "viem";
 import { fetchAccountsWithVerifiedAddress } from "@/app/api/farcaster-utils";
+import { ensureFarcasterEnabled } from "@/app/api/farcaster-disabled-response";
 
 // Returns Farcaster accounts matching a verified Ethereum account address
 export async function GET(request) {
+  const disabledResponse = ensureFarcasterEnabled();
+  if (disabledResponse) return disabledResponse;
   const { searchParams } = new URL(request.url);
   const ethAddress = searchParams.get("eth-address");
 

@@ -59,6 +59,7 @@ import { FormattedEthWithConditionalTooltip } from "@/components/transaction-lis
 import { buildEtherscanLink } from "@/utils/etherscan";
 import ProposalActionForm from "@/components/proposal-action-form";
 import { getClientData } from "@/client";
+import { FARCASTER_ENABLED } from "@/constants/features";
 
 const BODY_TRUNCATION_HEIGHT_THRESHOLD = 135;
 
@@ -76,7 +77,7 @@ const heartBounceAnimation = keyframes({
 
 const ActivityFeed = ({
   context, // "proposal" | "candidate" | null
-  items = [],
+  items: rawItems = [],
   spacing = "2rem",
   onReply,
   onRepost,
@@ -87,6 +88,14 @@ const ActivityFeed = ({
   variant,
   pendingRepliesByTargetItemId,
 }) => {
+  const farcasterEnabled = FARCASTER_ENABLED;
+  const items = React.useMemo(
+    () =>
+      farcasterEnabled
+        ? rawItems
+        : rawItems.filter((item) => item.type !== "farcaster-cast"),
+    [rawItems, farcasterEnabled],
+  );
   const { address: connectedAccountAddress } = useWallet();
   const { address: loggedInAccountAddress } = useSessionState();
   const userAccountAddress = connectedAccountAddress ?? loggedInAccountAddress;
@@ -101,11 +110,15 @@ const ActivityFeed = ({
     open: openAuthenticationDialog,
     preload: preloadAuthenticationDialog,
   } = useDialog("account-authentication");
-  const userFarcasterAccount =
-    useFarcasterAccountsWithVerifiedEthAddress(userAccountAddress)?.[0];
+  const userFarcasterAccounts =
+    useFarcasterAccountsWithVerifiedEthAddress(userAccountAddress);
+  const userFarcasterAccount = farcasterEnabled
+    ? userFarcasterAccounts?.[0]
+    : null;
 
   const like = React.useCallback(
     async (item, action) => {
+      if (!farcasterEnabled) return;
       try {
         if (item.transactionHash != null) {
           await submitTransactionLike({
@@ -128,25 +141,36 @@ const ActivityFeed = ({
         alert("Ops, looks like something went wrong!");
       }
     },
-    [userFarcasterAccount?.fid, submitTransactionLike, submitCastLike],
+    [
+      farcasterEnabled,
+      userFarcasterAccount?.fid,
+      submitTransactionLike,
+      submitCastLike,
+    ],
   );
 
   // Enable the like action if there’s a delegate entry for the user’s
   // account, or if there’s a delegate entry for a verified address on the
   // user’s Farcaster account
   const allowLikeAction =
-    userAccountDelegate != null || userFarcasterAccount?.nounerAddress != null;
+    farcasterEnabled &&
+    (userAccountDelegate != null ||
+      userFarcasterAccount?.nounerAddress != null);
 
   const hasFarcasterAccountKey =
-    userFarcasterAccount != null && userFarcasterAccount.hasAccountKey;
+    farcasterEnabled &&
+    userFarcasterAccount != null &&
+    userFarcasterAccount.hasAccountKey;
   const requireAuthentication =
-    loggedInAccountAddress == null ||
-    // If the user is connected and logged in with different addresses they
-    // likely want to like as the connected one
-    (connectedAccountAddress != null &&
-      connectedAccountAddress !== loggedInAccountAddress);
+    farcasterEnabled &&
+    (loggedInAccountAddress == null ||
+      // If the user is connected and logged in with different addresses they
+      // likely want to like as the connected one
+      (connectedAccountAddress != null &&
+        connectedAccountAddress !== loggedInAccountAddress));
 
   const onLike = (() => {
+    if (!farcasterEnabled) return null;
     // Wait for a wallet connection before we rule out likes
     if (connectedAccountAddress != null && !allowLikeAction) return null;
     if (!hasFarcasterAccountKey)
@@ -162,6 +186,7 @@ const ActivityFeed = ({
   })();
 
   React.useEffect(() => {
+    if (!farcasterEnabled) return;
     if (!allowLikeAction) return;
 
     if (!hasFarcasterAccountKey) {
@@ -173,6 +198,7 @@ const ActivityFeed = ({
       return;
     }
   }, [
+    farcasterEnabled,
     allowLikeAction,
     hasFarcasterAccountKey,
     requireAuthentication,

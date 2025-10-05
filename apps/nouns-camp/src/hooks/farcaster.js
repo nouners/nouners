@@ -12,6 +12,7 @@ import {
 } from "@shades/common/utils";
 import { useFetch } from "@shades/common/react";
 import { useWallet } from "@/hooks/wallet";
+import { FARCASTER_ENABLED } from "@/constants/features";
 
 const isFiltered = (filter, cast) => {
   switch (filter) {
@@ -26,22 +27,32 @@ const isFiltered = (filter, cast) => {
   }
 };
 
+const INITIAL_STATE = {
+  accountsByFid: {},
+  castsByHash: {},
+  fidsByEthAddress: {},
+  castHashesByProposalId: {},
+  castHashesByCandidateId: {},
+  castHashesByParentHash: {},
+};
+
 const Context = React.createContext();
 
 export const Provider = ({ children }) => {
-  const [state, setState] = React.useState({
-    accountsByFid: {},
-    castsByHash: {},
-    fidsByEthAddress: {},
-    castHashesByProposalId: {},
-    castHashesByCandidateId: {},
-    castHashesByParentHash: {},
-  });
-
-  const contextValue = React.useMemo(
-    () => ({ state, setState }),
-    [state, setState],
+  const disabledContextValue = React.useMemo(
+    () => ({ state: INITIAL_STATE, setState: () => {} }),
+    [],
   );
+  const [state, setState] = React.useState(INITIAL_STATE);
+
+  const activeContextValue = React.useMemo(
+    () => ({ state, setState }),
+    [state],
+  );
+
+  const contextValue = FARCASTER_ENABLED
+    ? activeContextValue
+    : disabledContextValue;
 
   return <Context.Provider value={contextValue}>{children}</Context.Provider>;
 };
@@ -68,11 +79,11 @@ export const useAccountsWithVerifiedEthAddress = (address, queryOptions) => {
       const { accounts } = await res.json();
       return accounts;
     },
-    enabled: address != null,
+    enabled: FARCASTER_ENABLED && address != null,
     ...queryOptions,
   });
 
-  if (address == null || accounts == null) return null;
+  if (!FARCASTER_ENABLED || address == null || accounts == null) return null;
 
   return arrayUtils.sortBy((a) => a.hasAccountKey, accounts);
 };
@@ -84,7 +95,7 @@ export const useConnectedFarcasterAccounts = (queryOptions) => {
     queryOptions,
   );
 
-  if (connectedAccountAddress == null) return null;
+  if (!FARCASTER_ENABLED || connectedAccountAddress == null) return null;
 
   return accounts;
 };
@@ -121,11 +132,13 @@ export const useProposalCasts = (
       }));
     },
     {
-      enabled: filter != null && filter !== "disabled",
+      enabled: FARCASTER_ENABLED && filter != null && filter !== "disabled",
       ...fetchOptions,
     },
     [proposalId],
   );
+
+  if (!FARCASTER_ENABLED) return [];
 
   const castHashes = castHashesByProposalId[proposalId];
 
@@ -170,11 +183,13 @@ export const useCandidateCasts = (candidateId, { filter, ...fetchOptions }) => {
       }));
     },
     {
-      enabled: filter != null && filter !== "disabled",
+      enabled: FARCASTER_ENABLED && filter != null && filter !== "disabled",
       ...fetchOptions,
     },
     [candidateId],
   );
+
+  if (!FARCASTER_ENABLED) return [];
 
   const castHashes = castHashesByCandidateId[candidateId];
 
@@ -213,10 +228,11 @@ export const useTransactionLikes = (
       return likes;
     },
     staleTime: 1000 * 30,
-    enabled: enabled && transactionHash != null,
+    enabled: FARCASTER_ENABLED && enabled && transactionHash != null,
     ...queryOptions,
   });
-  return likes;
+  if (!FARCASTER_ENABLED) return [];
+  return likes ?? [];
 };
 
 export const useCastLikes = (
@@ -241,11 +257,12 @@ export const useCastLikes = (
       const { likes } = await response.json();
       return likes;
     },
-    enabled: enabled && castHash != null,
+    enabled: FARCASTER_ENABLED && enabled && castHash != null,
     staleTime: 1000 * 30,
     ...queryOptions,
   });
-  return likes;
+  if (!FARCASTER_ENABLED) return [];
+  return likes ?? [];
 };
 
 export const useCastConversation = (
@@ -330,15 +347,20 @@ export const useCastConversation = (
         ),
       );
     },
-    enabled: enabled && castHash != null,
+    enabled: FARCASTER_ENABLED && enabled && castHash != null,
     staleTime: 1000 * 30,
     ...queryOptions,
   });
 
-  return casts;
+  if (!FARCASTER_ENABLED) return [];
+
+  return casts ?? [];
 };
 
 export const useSubmitTransactionLike = () => {
+  const disabledCallback = React.useCallback(async () => {
+    throw new Error("Farcaster features are disabled.");
+  }, []);
   const queryClient = useTanstackQueryClient();
   const { address: nounerAddress } = useWallet();
 
@@ -375,10 +397,15 @@ export const useSubmitTransactionLike = () => {
     },
   });
 
+  if (!FARCASTER_ENABLED) return disabledCallback;
+
   return mutateAsync;
 };
 
 export const useSubmitCastLike = () => {
+  const disabledCallback = React.useCallback(async () => {
+    throw new Error("Farcaster features are disabled.");
+  }, []);
   const queryClient = useTanstackQueryClient();
   const { address: nounerAddress } = useWallet();
 
@@ -415,13 +442,17 @@ export const useSubmitCastLike = () => {
     },
   });
 
+  if (!FARCASTER_ENABLED) return disabledCallback;
+
   return mutateAsync;
 };
 
 export const useSubmitProposalCast = (proposalId) => {
   const { setState } = React.useContext(Context);
-
-  return React.useCallback(
+  const disabledCallback = React.useCallback(async () => {
+    throw new Error("Farcaster features are disabled.");
+  }, []);
+  const submitProposalCast = React.useCallback(
     async ({ fid, text }) => {
       const response = await fetch("/api/farcaster-proposal-casts", {
         method: "POST",
@@ -452,12 +483,16 @@ export const useSubmitProposalCast = (proposalId) => {
     },
     [setState, proposalId],
   );
+
+  return FARCASTER_ENABLED ? submitProposalCast : disabledCallback;
 };
 
 export const useSubmitCandidateCast = (candidateId) => {
   const { setState } = React.useContext(Context);
-
-  return React.useCallback(
+  const disabledCallback = React.useCallback(async () => {
+    throw new Error("Farcaster features are disabled.");
+  }, []);
+  const submitCandidateCast = React.useCallback(
     async ({ fid, text }) => {
       const response = await fetch("/api/farcaster-candidate-casts", {
         method: "POST",
@@ -478,7 +513,7 @@ export const useSubmitCandidateCast = (candidateId) => {
         accountsByFid: { ...s.accountsByFid, [cast.fid]: cast.account },
         castsByHash: { ...s.castsByHash, [cast.hash]: cast },
         castHashesByCandidateId: {
-          ...s.castHashesByCandidatelId,
+          ...s.castHashesByCandidateId,
           [candidateId]: [
             ...(s.castHashesByCandidateId[candidateId] ?? []),
             cast.hash,
@@ -488,9 +523,14 @@ export const useSubmitCandidateCast = (candidateId) => {
     },
     [setState, candidateId],
   );
+
+  return FARCASTER_ENABLED ? submitCandidateCast : disabledCallback;
 };
 
 export const useSubmitCastReply = () => {
+  const disabledCallback = React.useCallback(async () => {
+    throw new Error("Farcaster features are disabled.");
+  }, []);
   const queryClient = useTanstackQueryClient();
   const { address: connectedAccountAddress } = useWallet();
 
@@ -554,6 +594,8 @@ export const useSubmitCastReply = () => {
       );
     },
   });
+
+  if (!FARCASTER_ENABLED) return disabledCallback;
 
   return mutateAsync;
 };
@@ -623,11 +665,13 @@ export const useRecentCasts = ({ filter, ...fetchOptions } = {}) => {
       }));
     },
     {
-      enabled: filter != null && filter !== "disabled",
+      enabled: FARCASTER_ENABLED && filter != null && filter !== "disabled",
       ...fetchOptions,
     },
     [],
   );
+
+  if (!FARCASTER_ENABLED) return [];
 
   return Object.values(castsByHash).reduce((casts, cast_) => {
     const cast = {

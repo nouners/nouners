@@ -1,6 +1,7 @@
 import React from "react";
 import { array as arrayUtils } from "@shades/common/utils";
 import { useSearchParams } from "@/hooks/navigation";
+import { FARCASTER_ENABLED } from "@/constants/features";
 
 const ReactLazyWithPreload = (fetcher) => {
   const LazyComponent = React.lazy(fetcher);
@@ -68,7 +69,7 @@ const dialogs = [
       () => import("@/components/account-authentication-dialog"),
     ),
   },
-  {
+  FARCASTER_ENABLED && {
     key: "farcaster-setup",
     component: ReactLazyWithPreload(
       () => import("@/components/farcaster-setup-dialog"),
@@ -80,7 +81,7 @@ const dialogs = [
       () => import("@/components/streams-dialog"),
     ),
   },
-];
+].filter(Boolean);
 
 const dialogsByKey = arrayUtils.indexBy((d) => d.key, dialogs);
 

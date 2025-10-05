@@ -6,8 +6,11 @@ import {
   getAccountKeyForFid,
   deleteAccountKeyForFid,
 } from "@/app/api/farcaster-account-key-utils";
+import { ensureFarcasterEnabled } from "@/app/api/farcaster-disabled-response";
 
 export async function POST(request) {
+  const disabledResponse = ensureFarcasterEnabled();
+  if (disabledResponse) return disabledResponse;
   const { targetCastId, text, fid } = await request.json();
 
   if (!(await isLoggedIn()))

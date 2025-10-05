@@ -14,6 +14,7 @@ import GlobalStylesWrapper from "@/global-styles-wrapper";
 import SessionProvider from "@/session-provider";
 import { Provider as StoreProvider } from "@/store";
 import { Provider as FarcasterStateProvider } from "@/hooks/farcaster";
+import { FARCASTER_ENABLED } from "@/constants/features";
 // MobileDevTools will be lazy-loaded in development and preview deployments
 import { lazy, Suspense } from "react";
 const MobileDevTools = lazy(() => import("@/components/mobile-devtools"));
@@ -121,15 +122,27 @@ export default async function RootLayout({ children }) {
                       initialSession={{ address: session.address }}
                     >
                       <StoreProvider>
-                        <FarcasterStateProvider>
-                          {children}
-                          {(process.env.NODE_ENV === "development" ||
-                            process.env.VERCEL_ENV === "preview") && (
-                            <Suspense fallback={null}>
-                              <MobileDevTools />
-                            </Suspense>
-                          )}
-                        </FarcasterStateProvider>
+                        {FARCASTER_ENABLED ? (
+                          <FarcasterStateProvider>
+                            {children}
+                            {(process.env.NODE_ENV === "development" ||
+                              process.env.VERCEL_ENV === "preview") && (
+                              <Suspense fallback={null}>
+                                <MobileDevTools />
+                              </Suspense>
+                            )}
+                          </FarcasterStateProvider>
+                        ) : (
+                          <>
+                            {children}
+                            {(process.env.NODE_ENV === "development" ||
+                              process.env.VERCEL_ENV === "preview") && (
+                              <Suspense fallback={null}>
+                                <MobileDevTools />
+                              </Suspense>
+                            )}
+                          </>
+                        )}
                       </StoreProvider>
                     </SessionProvider>
                   </WagmiProvider>
