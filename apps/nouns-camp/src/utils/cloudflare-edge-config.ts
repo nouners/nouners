@@ -1,7 +1,7 @@
 /* global KVNamespace */
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 
-const DEFAULT_BINDING_NAME = "EDGE_CONFIG";
+const DEFAULT_BINDING_NAME = "KV";
 const GET_TYPE = "json" as const;
 
 async function resolveNamespace(): Promise<KVNamespace> {
