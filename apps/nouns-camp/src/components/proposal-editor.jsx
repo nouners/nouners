@@ -926,6 +926,7 @@ const ActionListItem = ({
       case "usdc-approval":
       case "weth-transfer":
       case "steth-transfer":
+      case "reth-transfer":
       case "meth-transfer":
       case "weth-approval":
       case "payer-top-up":
