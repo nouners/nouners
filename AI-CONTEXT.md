@@ -38,7 +38,7 @@
 - **File Structure**: Group related functionality into dedicated files
 - **Shared Code**: Use workspace packages for shared functionality
 
-## Specific information about Nouns Camp (apps/nouns-camp)
+## Specific information about Nouners (apps/nouns-camp)
 
 ### Testing Commands
 

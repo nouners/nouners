@@ -1,6 +1,6 @@
-# Nouns Camp
+# Nouners
 
-[nouns.camp](https://www.nouns.camp/)
+[nouns.camp](https://nouners.com/)
 
 ## Development
 

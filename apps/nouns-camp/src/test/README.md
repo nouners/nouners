@@ -1,6 +1,6 @@
-# Testing Strategy for Nouns Camp
+# Testing Strategy for Nouners
 
-This document outlines the testing approach for the Nouns Camp application.
+This document outlines the testing approach for the Nouners application.
 
 ## Overview
 

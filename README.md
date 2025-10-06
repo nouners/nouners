@@ -1,8 +1,8 @@
-# Nouns Camp monorepo
+# Nouners monorepo
 
 👋
 
-[Nouns Camp](https://www.nouns.camp/) at [apps/nouns-camp](https://github.com/obvious-inc/frontend-monorepo/tree/main/apps/nouns-camp)
+[Nouners](https://nouners.com/) at [apps/nouns-camp](https://github.com/obvious-inc/frontend-monorepo/tree/main/apps/nouns-camp)
 
 ## Development
 
