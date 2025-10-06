@@ -4,7 +4,7 @@ const clientDataById = {
     url: null, // "https://houseofnouns.wtf"
     name: "House of Nouns",
   },
-  3: { url: "https://www.nouns.camp", name: "Camp" },
+  3: { url: "https://nouners.com", name: "Camp" },
   4: { url: "https://nouns.biz", name: "nouns.biz" },
   5: { url: "https://www.nounswap.wtf", name: "NounSwap" },
   6: { url: "https://www.nouns.game", name: "nouns.game" },
