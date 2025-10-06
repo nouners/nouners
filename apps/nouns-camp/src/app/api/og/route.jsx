@@ -137,6 +137,12 @@ const RequestedAmounts = ({ amounts }) => (
           case "weth":
             return <FormattedAmount value={amount} tokenSymbol="WETH" />;
 
+          case "steth":
+            return <FormattedAmount value={amount} tokenSymbol="stETH" />;
+
+          case "reth":
+            return <FormattedAmount value={amount} tokenSymbol="rETH" />;
+
           case "meth":
             return <FormattedAmount value={amount} tokenSymbol="mETH" />;
 

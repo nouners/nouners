@@ -1192,6 +1192,7 @@ export const ProposalHeader = ({
           case "eth":
           case "weth":
           case "steth":
+          case "reth":
           case "meth":
             return sum + amount;
           case "usdc":
@@ -1605,6 +1606,14 @@ const RequestedAmounts = ({ amounts }) => (
               <FormattedEthWithConditionalTooltip
                 value={amount}
                 tokenSymbol="stETH"
+              />
+            );
+
+          case "reth":
+            return (
+              <FormattedEthWithConditionalTooltip
+                value={amount}
+                tokenSymbol="rETH"
               />
             );
 

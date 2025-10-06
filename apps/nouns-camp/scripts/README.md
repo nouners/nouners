@@ -1,6 +1,6 @@
-# Nouns Camp Scripts
+# Nouners Scripts
 
-This directory contains utility scripts for Nouns Camp.
+This directory contains utility scripts for Nouners.
 
 ## Available Scripts
 

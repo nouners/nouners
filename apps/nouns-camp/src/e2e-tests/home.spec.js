@@ -5,7 +5,7 @@ test("homepage has correct title and layout", async ({ page }) => {
   await page.goto("/");
 
   // Check the page title
-  await expect(page).toHaveTitle(/Nouns Camp/);
+  await expect(page).toHaveTitle(/Nouners/);
 
   // Check for critical elements on the page
   await expect(page.locator("nav")).toBeVisible();

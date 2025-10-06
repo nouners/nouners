@@ -37,7 +37,7 @@ export const config = createConfig({
     walletConnect({
       projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID,
     }),
-    coinbaseWallet({ appName: "Nouns Camp" }),
+    coinbaseWallet({ appName: "Nouners" }),
     safe(),
     injected(),
   ],
