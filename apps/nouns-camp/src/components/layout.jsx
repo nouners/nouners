@@ -414,14 +414,14 @@ const NavBar = ({ navigationStack, actions: customActions }) => {
         window.open("https://flows.wtf", "_blank");
         break;
       case "open-camp-changelog":
-        window.open("https://warpcast.com/~/channel/camp", "_blank");
+        window.open("https://github.com/nouners/nouners/blob/master/CHANGELOG.md", "_blank");
         break;
       case "open-camp-discord":
-        window.open("https://discord.gg/kXjMV8kTnk", "_blank");
+        window.open("https://discord.gg/JNEdrkBjVk", "_blank");
         break;
       case "open-camp-github":
         window.open(
-          "https://github.com/obvious-inc/frontend-monorepo/tree/main/apps/nouns-camp",
+          "https://github.com/nouners/nouners",
           "_blank",
         );
         break;
@@ -627,12 +627,12 @@ const NavBar = ({ navigationStack, actions: customActions }) => {
             item.component != null
               ? [item.component, item.props]
               : [
-                  NextLink,
-                  {
-                    prefetch: true,
-                    href: item.to,
-                  },
-                ];
+                NextLink,
+                {
+                  prefetch: true,
+                  href: item.to,
+                },
+              ];
           return (
             <React.Fragment key={item.key ?? item.to}>
               {index > 0 && (
@@ -718,35 +718,35 @@ const NavBar = ({ navigationStack, actions: customActions }) => {
             actions.length > 0 && { type: "separator" },
             connectedWalletAccountAddress == null
               ? {
+                onSelect: () => {
+                  requestWalletAccess();
+                },
+                buttonProps: {
+                  variant: "default",
+                  isLoading: requestWalletAccess == null || isLoadingWallet,
+                  disabled: requestWalletAccess == null || isLoadingWallet,
+                  style: { marginLeft: "0.8rem", marginRight: "0.4rem" },
+                },
+                label: (
+                  <>
+                    Connect<span data-desktop-only> Wallet</span>
+                  </>
+                ),
+              }
+              : !isConnectedToTargetChain
+                ? {
                   onSelect: () => {
-                    requestWalletAccess();
+                    switchWalletToTargetChain();
                   },
                   buttonProps: {
                     variant: "default",
-                    isLoading: requestWalletAccess == null || isLoadingWallet,
-                    disabled: requestWalletAccess == null || isLoadingWallet,
-                    style: { marginLeft: "0.8rem", marginRight: "0.4rem" },
+                    isLoading: isLoadingWallet,
+                    disabled:
+                      switchWalletToTargetChain == null || isLoadingWallet,
+                    style: { marginLeft: "0.8rem" },
                   },
-                  label: (
-                    <>
-                      Connect<span data-desktop-only> Wallet</span>
-                    </>
-                  ),
+                  label: `Switch to ${CHAIN_ID === 1 ? "Mainnet" : chain.name}`,
                 }
-              : !isConnectedToTargetChain
-                ? {
-                    onSelect: () => {
-                      switchWalletToTargetChain();
-                    },
-                    buttonProps: {
-                      variant: "default",
-                      isLoading: isLoadingWallet,
-                      disabled:
-                        switchWalletToTargetChain == null || isLoadingWallet,
-                      style: { marginLeft: "0.8rem" },
-                    },
-                    label: `Switch to ${CHAIN_ID === 1 ? "Mainnet" : chain.name}`,
-                  }
                 : null,
             (() => {
               const daoSection = {
@@ -857,14 +857,14 @@ const NavBar = ({ navigationStack, actions: customActions }) => {
                         ? null
                         : !hasFarcasterAccountKey
                           ? {
-                              id: "setup-farcaster",
-                              title: "Setup Farcaster",
-                            }
+                            id: "setup-farcaster",
+                            title: "Setup Farcaster",
+                          }
                           : !isConnectedWalletAccountAuthenticated
                             ? {
-                                id: "sign-in",
-                                title: "Authenticate account",
-                              }
+                              id: "sign-in",
+                              title: "Authenticate account",
+                            }
                             : null,
                     ].filter(Boolean),
                   },
