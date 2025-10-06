@@ -2,6 +2,18 @@
 
 [nouns.camp](https://nouners.com/)
 
+## Fork Notice
+
+Nouners is a community-maintained fork of the Nouns Camp project. This fork explores new features and experiments quickly, with gratitude to the original Nouns Camp authors and community.
+
+## Purpose & Contributions
+
+We focus on rapid iteration, UX refinements, and community-centric features. Contributions are welcome—please open issues or pull requests with proposals, bug fixes, or experiments.
+
+## License
+
+This app is part of the Nouners monorepo and is licensed under GPL-3.0. See the repository root `LICENSE` for details.
+
 ## Development
 
 ```bash

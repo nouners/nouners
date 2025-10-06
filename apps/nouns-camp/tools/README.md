@@ -2,6 +2,18 @@
 
 This directory contains useful scripts and tools for development and debugging.
 
+## Fork Notice
+
+Nouners is a fork of the Nouns Camp project. This fork focuses on experimenting with new features and developer tooling. Thanks to the original Nouns Camp contributors for their foundational work.
+
+## Contributions
+
+Contributions to tooling and developer experience are welcome. Please open issues or pull requests for improvements or new tools.
+
+## License
+
+Tools in this directory are licensed under GPL-3.0. See the repository root `LICENSE` for full terms.
+
 ## Subgraph Query Tool
 
 The `query-subgraph.js` script allows you to easily query the Nouns subgraph from the command line.
