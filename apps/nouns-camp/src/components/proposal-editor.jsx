@@ -626,6 +626,8 @@ const FixedBottomToolbar = ({ isVisible = false, onFocus, onBlur }) => {
 const currencyFractionDigits = {
   eth: [1, 4],
   weth: [1, 4],
+  steth: [1, 4],
+  reth: [1, 4],
   meth: [1, 4],
   usdc: [2, 2],
 };

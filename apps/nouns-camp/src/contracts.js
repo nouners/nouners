@@ -97,6 +97,14 @@ const metaByIdentifier = {
     name: "stETH Token",
     token: "stETH",
   },
+  "reth-token": {
+    name: "rETH Token",
+    token: "rETH",
+  },
+  "wsteth-token": {
+    name: "wstETH Token",
+    token: "wstETH",
+  },
   "meth-token": {
     name: "mETH Token",
     token: "mETH",

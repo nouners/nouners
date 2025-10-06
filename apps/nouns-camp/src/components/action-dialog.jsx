@@ -44,6 +44,8 @@ const decimalsByCurrency = {
   eth: 18,
   weth: 18,
   meth: 18,
+  steth: 18,
+  reth: 18,
   usdc: 6,
 };
 
@@ -205,6 +207,8 @@ const parseAmount = (amount, currency) => {
   switch (currency.toLowerCase()) {
     case "eth":
     case "weth":
+    case "steth":
+    case "reth":
     case "meth":
     case "usdc":
       return parseUnits(amount.toString(), decimalsByCurrency[currency]);
@@ -828,6 +832,8 @@ const formConfigByActionType = {
             setCurrency={(currency) => setState({ currency })}
             currencyOptions={[
               { value: "eth", label: "ETH" },
+              { value: "steth", label: "stETH" },
+              { value: "reth", label: "rETH" },
               { value: "meth", label: "mETH" },
               { value: "usdc", label: "USDC" },
             ]}
@@ -1722,7 +1728,9 @@ const AmountWithCurrencyInput = ({
     amount !== "" && parseFloat(amount) > 0 && parseFloat(amount) < Infinity;
 
   const convertedEthToUsdValue =
-    !["eth", "meth"].includes(currency) || ethToUsdRate == null || !hasAmount
+    !["eth", "meth", "steth", "reth"].includes(currency) ||
+    ethToUsdRate == null ||
+    !hasAmount
       ? null
       : parseFloat(amount) * ethToUsdRate;
 
