@@ -1,3 +1,17 @@
+## [1.0.0-alpha.11] - 2025-10-06
+
+### 🐛 Bug Fixes
+
+- *(nav)* Correct Discord URL and update repo/changelog links
+
+### 📚 Documentation
+
+- *(readme)* Clarify fork from Nouns Camp, invite contributions, and make licensing explicit
+- *(readme)* Update repository link to nouners/nouners
+
+### ⚙️ Miscellaneous Tasks
+
+- *(repo)* Rename package and bump pnpm version
 ## [1.0.0-alpha.10] - 2025-10-06
 
 ### 🚀 Features
