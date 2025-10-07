@@ -1,4 +1,4 @@
-# Nouners monorepo
+# Nouners Client
 
 [![GitHub release (latest SemVer including pre-releases)](https://img.shields.io/github/v/release/nouners/nouners?include_prereleases)](https://github.com/nouners/nouners/releases)
 [![GitHub Workflow Status (branch)](https://img.shields.io/github/actions/workflow/status/nouners/nouners/build.yml)](https://github.com/nouners/nouners/actions/workflows/build.yml)
