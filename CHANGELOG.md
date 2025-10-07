@@ -1,3 +1,9 @@
+## [1.0.0-alpha.17] - 2025-10-07
+
+### 📚 Documentation
+
+- *(readme)* Add informative badges and notices
+- *(readme)* Update project title for clarity
 ## [1.0.0-alpha.16] - 2025-10-07
 
 ### 🚜 Refactor
