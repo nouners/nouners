@@ -79,6 +79,7 @@ export async function GET(request) {
 
   const { searchParams } = new URL(request.url);
   const voteOrFeedbackId = searchParams.get("id");
+  const ratio = searchParams.get("ratio") || "og"; // "og" for 1.91:1, "miniapp" for 3:2
 
   const voteOrFeedback = await fetchVoteOrFeedbackPost(voteOrFeedbackId);
 
@@ -123,6 +124,11 @@ export async function GET(request) {
     timeZoneName: "short",
   });
 
+  // Image dimensions based on ratio
+  const dimensions = ratio === "miniapp"
+    ? { width: 900, height: 600, padding: "2.5rem 1.5rem", fontSize: theme.text.sizes.base }
+    : { width: 1200, height: 628, padding: "3rem 2rem", fontSize: theme.text.sizes.large };
+
   return new ImageResponse(
     (
       <div
@@ -130,7 +136,7 @@ export async function GET(request) {
         style={{
           backgroundColor: theme.colors.backgroundPrimary,
           backgroundSize: "150px 150px",
-          padding: "3rem 2rem",
+          padding: dimensions.padding,
           height: "100%",
           width: "100%",
           display: "flex",
@@ -160,7 +166,7 @@ export async function GET(request) {
                 flexDirection: "row",
                 whiteSpace: "pre",
                 fontWeight: theme.text.weights.emphasis,
-                fontSize: theme.text.sizes.large,
+                fontSize: dimensions.fontSize,
               }}
             >
               {displayName({ address: voteOrFeedback.voterId, ensName })}{" "}
@@ -214,7 +220,7 @@ export async function GET(request) {
               display: "block",
               whiteSpace: "pre-line",
               lineHeight: 1.5,
-              fontSize: theme.text.sizes.large,
+              fontSize: dimensions.fontSize,
               lineClamp: '7 "[...]"',
               overflow: "hidden",
             }}
@@ -226,8 +232,8 @@ export async function GET(request) {
     ),
     {
       // debug: true,
-      width: 800,
-      height: 420,
+      width: dimensions.width,
+      height: dimensions.height,
       emoji: "twemoji",
       fonts,
     },

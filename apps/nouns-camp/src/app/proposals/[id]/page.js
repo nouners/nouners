@@ -81,10 +81,15 @@ export async function generateMetadata(props) {
       : (firstImage?.url ??
         `${metaConfig.canonicalAppBasename}/api/og?proposal=${params.id}`);
 
+  const miniappImage =
+    item != null
+      ? `${metaConfig.canonicalAppBasename}/api/og/vwrs?id=${item}&ratio=miniapp`
+      : `${metaConfig.canonicalAppBasename}/api/og?proposal=${params.id}&ratio=miniapp`;
+
   // Farcaster miniapp configuration
   const miniappConfig = {
     version: "1",
-    imageUrl: ogImage,
+    imageUrl: miniappImage,
     button: {
       title: metaConfig.miniappButtonTitle,
       action: {
