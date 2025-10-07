@@ -1,3 +1,12 @@
+## [1.0.0-alpha.13] - 2025-10-07
+
+### 🎨 Styling
+
+- *(layout)* Improve code formatting for better readability
+
+### ⚙️ Miscellaneous Tasks
+
+- *(workflows)* Update Node.js version to 22
 ## [1.0.0-alpha.12] - 2025-10-07
 
 ### 🚀 Features
