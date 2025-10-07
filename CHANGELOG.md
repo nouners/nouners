@@ -1,3 +1,8 @@
+## [1.0.0-alpha.18] - 2025-10-07
+
+### 🚀 Features
+
+- *(api)* Add support for image ratio customization
 ## [1.0.0-alpha.17] - 2025-10-07
 
 ### 📚 Documentation
