@@ -125,9 +125,20 @@ export async function GET(request) {
   });
 
   // Image dimensions based on ratio
-  const dimensions = ratio === "miniapp"
-    ? { width: 900, height: 600, padding: "2.5rem 1.5rem", fontSize: theme.text.sizes.base }
-    : { width: 1200, height: 628, padding: "3rem 2rem", fontSize: theme.text.sizes.large };
+  const dimensions =
+    ratio === "miniapp"
+      ? {
+          width: 900,
+          height: 600,
+          padding: "2.5rem 1.5rem",
+          fontSize: theme.text.sizes.base,
+        }
+      : {
+          width: 1200,
+          height: 628,
+          padding: "3rem 2rem",
+          fontSize: theme.text.sizes.large,
+        };
 
   return new ImageResponse(
     (
