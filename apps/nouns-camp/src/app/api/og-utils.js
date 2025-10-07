@@ -3,16 +3,16 @@ import { ethereum as ethereumUtils } from "@shades/common/utils";
 
 const { truncateAddress } = ethereumUtils;
 
-export const getFonts = async () => {
+export const getFonts = async (request) => {
   const fontName = "Oxanium";
 
   const semiBoldResp = await fetch(
-    new URL("../../assets/fonts/Oxanium-SemiBold.ttf", import.meta.url),
+    new URL("/assets/fonts/Oxanium-SemiBold.ttf", request.url),
   );
   const semiBoldFontArray = await semiBoldResp.arrayBuffer();
 
   const boldResp = await fetch(
-    new URL("../../assets/fonts/Oxanium-Bold.ttf", import.meta.url),
+    new URL("/assets/fonts/Oxanium-Bold.ttf", request.url),
   );
   const boldFontArray = await boldResp.arrayBuffer();
 

@@ -73,7 +73,7 @@ export async function generateMetadata(props) {
   const description = stringUtils.truncate(220, firstRegularParagraph);
 
   const canonicalUrl = `${metaConfig.canonicalAppBasename}/proposals/${params.id}?${urlSearchParams}`;
-  const firstImage = markdownUtils.getFirstImage(body ?? "");
+  const firstImage = { url: false }; // markdownUtils.getFirstImage(body ?? "");
 
   const ogImage =
     item != null

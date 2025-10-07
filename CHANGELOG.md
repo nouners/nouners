@@ -1,3 +1,11 @@
+## [1.0.0-alpha.15] - 2025-10-07
+
+### 🚜 Refactor
+
+- *(proposals)* Disable `getFirstImage` utility
+- *(fonts)* Relocate font assets to `public` directory
+- *(fonts)* Update font paths to use absolute URLs
+- *(api)* Pass `request` to `getFonts` utility
 ## [1.0.0-alpha.14] - 2025-10-07
 
 ### 🚀 Features
@@ -7,6 +15,10 @@
 ### 🚜 Refactor
 
 - *(proposals)* Remove unnecessary frame config
+
+### 🎨 Styling
+
+- *(proposals)* Fix trailing commas in object literals
 ## [1.0.0-alpha.13] - 2025-10-07
 
 ### 📚 Documentation
