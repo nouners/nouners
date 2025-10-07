@@ -14,10 +14,13 @@
 > Please note that the project is currently in an experimental phase, and it is subject to significant changes as it
 > progresses.
 
+### Description
 
-## Development
+Nouners is a fork of Nouns Camp. You can fork it and use it under the obligation of the GPL v3 license.
 
-### LLM Tools
+### Development
+
+#### LLM Tools
 
 This repo includes an `AI-CONTEXT.md` file with project-specific guidelines for AI coding assistants. Point your LLM tools to this file for better context and code consistency.
 
