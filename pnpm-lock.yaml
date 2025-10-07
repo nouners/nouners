@@ -29,6 +29,9 @@ importers:
       '@farcaster/miniapp-sdk':
         specifier: ^0.1.10
         version: 0.1.10(bufferutil@4.0.8)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@3.25.76)
+      '@farcaster/miniapp-wagmi-connector':
+        specifier: ^1.0.0
+        version: 1.0.0(@farcaster/miniapp-sdk@0.1.10(bufferutil@4.0.8)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@3.25.76))(@wagmi/core@2.16.3(@tanstack/query-core@5.66.0)(@types/react@19.2.0)(immer@10.1.1)(react@19.1.0)(typescript@5.9.3)(use-sync-external-store@1.4.0(react@19.1.0))(viem@2.22.17(bufferutil@4.0.8)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@3.25.76)))(viem@2.22.17(bufferutil@4.0.8)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@3.25.76))
       '@noble/ed25519':
         specifier: ^2.2.3
         version: 2.2.3
@@ -1344,6 +1347,13 @@ packages:
 
   '@farcaster/miniapp-sdk@0.1.10':
     resolution: {integrity: sha512-ueoEAH3N7hIrV+L9pXdLJZpOY1GsOuwKN7MckouSEWY98H5A7KVajyGmGSDDVzjRWpu7Vndu4NZUHoOhF4nTOA==}
+
+  '@farcaster/miniapp-wagmi-connector@1.0.0':
+    resolution: {integrity: sha512-vMRZbekUUctnAUvBFhNoEsJlujRRdxop94fDy5LrKiRR9ax0wtp8gCvLYO+LpaP2PtGs0HFpRwlHNDJWvBR8bg==}
+    peerDependencies:
+      '@farcaster/miniapp-sdk': ^0.1.0
+      '@wagmi/core': ^2.14.1
+      viem: ^2.21.55
 
   '@farcaster/quick-auth@0.0.6':
     resolution: {integrity: sha512-tiZndhpfDtEhaKlkmS5cVDuS+A/tafqZT3y9I44rC69m3beJok6e8dIH2JhxVy3EvOWTyTBnrmNn6GOOh+qK6A==}
@@ -10493,6 +10503,12 @@ snapshots:
       - typescript
       - utf-8-validate
       - zod
+
+  '@farcaster/miniapp-wagmi-connector@1.0.0(@farcaster/miniapp-sdk@0.1.10(bufferutil@4.0.8)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@3.25.76))(@wagmi/core@2.16.3(@tanstack/query-core@5.66.0)(@types/react@19.2.0)(immer@10.1.1)(react@19.1.0)(typescript@5.9.3)(use-sync-external-store@1.4.0(react@19.1.0))(viem@2.22.17(bufferutil@4.0.8)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@3.25.76)))(viem@2.22.17(bufferutil@4.0.8)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@3.25.76))':
+    dependencies:
+      '@farcaster/miniapp-sdk': 0.1.10(bufferutil@4.0.8)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@3.25.76)
+      '@wagmi/core': 2.16.3(@tanstack/query-core@5.66.0)(@types/react@19.2.0)(immer@10.1.1)(react@19.1.0)(typescript@5.9.3)(use-sync-external-store@1.4.0(react@19.1.0))(viem@2.22.17(bufferutil@4.0.8)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@3.25.76))
+      viem: 2.22.17(bufferutil@4.0.8)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@3.25.76)
 
   '@farcaster/quick-auth@0.0.6(typescript@5.9.3)':
     dependencies:
