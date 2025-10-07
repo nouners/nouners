@@ -1,4 +1,17 @@
+## [1.0.0-alpha.14] - 2025-10-07
+
+### 🚀 Features
+
+- *(proposals)* Add Farcaster miniapp configuration
+
+### 🚜 Refactor
+
+- *(proposals)* Remove unnecessary frame config
 ## [1.0.0-alpha.13] - 2025-10-07
+
+### 📚 Documentation
+
+- *(workspace)* Add AGENTS.md for workspace guidelines
 
 ### 🎨 Styling
 

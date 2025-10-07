@@ -93,8 +93,8 @@ export async function generateMetadata(props) {
         name: metaConfig.miniappName,
         splashImageUrl: `${metaConfig.canonicalAppBasename}/apple-icon.png`,
         splashBackgroundColor: metaConfig.miniappSplashBackgroundColor,
-      }
-    }
+      },
+    },
   };
 
   return {
