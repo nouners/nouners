@@ -1,3 +1,8 @@
+## [1.0.0-alpha.16] - 2025-10-07
+
+### 🚜 Refactor
+
+- *(proposals)* Change `firstImage.url` to `null`
 ## [1.0.0-alpha.15] - 2025-10-07
 
 ### 🚜 Refactor
