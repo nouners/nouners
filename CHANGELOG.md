@@ -1,3 +1,8 @@
+## [1.0.0-alpha.19] - 2025-10-07
+
+### 🚜 Refactor
+
+- *(api)* Improve `dimensions` object formatting
 ## [1.0.0-alpha.18] - 2025-10-07
 
 ### 🚀 Features
