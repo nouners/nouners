@@ -14,6 +14,7 @@ import {
 } from "wagmi/connectors";
 import { CHAIN_ID } from "@/constants/env";
 import { getChain } from "@/utils/chains";
+import { farcasterMiniApp as miniAppConnector } from "@farcaster/miniapp-wagmi-connector";
 
 const chain = getChain(CHAIN_ID);
 
@@ -39,6 +40,7 @@ export const config = createConfig({
     }),
     coinbaseWallet({ appName: "Nouners" }),
     safe(),
+    miniAppConnector(),
     injected(),
   ],
   transports: {
