@@ -1,3 +1,14 @@
+## [1.0.0-alpha.12] - 2025-10-07
+
+### 🚀 Features
+
+- *(hooks)* Signal Farcaster miniapp readiness
+- *(wagmi-config)* Add Farcaster miniapp connector
+- *(metadata)* Add Farcaster miniapp configuration
+
+### ⚙️ Miscellaneous Tasks
+
+- Update Node engine to >=22.11.0
 ## [1.0.0-alpha.11] - 2025-10-06
 
 ### 🐛 Bug Fixes
