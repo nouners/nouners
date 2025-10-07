@@ -97,17 +97,7 @@ export async function generateMetadata(props) {
       description,
       url: canonicalUrl,
       images: ogImage,
-    },
-    other:
-      item && firstImage?.url
-        ? {}
-        : {
-            "fc:frame": "vNext",
-            "fc:frame:image": ogImage,
-            "fc:frame:button:1": "View proposal",
-            "fc:frame:button:1:action": "link",
-            "fc:frame:button:1:target": canonicalUrl,
-          },
+    }
   };
 }
 
