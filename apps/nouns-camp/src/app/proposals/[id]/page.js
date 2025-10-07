@@ -81,6 +81,22 @@ export async function generateMetadata(props) {
       : (firstImage?.url ??
         `${metaConfig.canonicalAppBasename}/api/og?proposal=${params.id}`);
 
+  // Farcaster miniapp configuration
+  const miniappConfig = {
+    version: "1",
+    imageUrl: ogImage,
+    button: {
+      title: metaConfig.miniappButtonTitle,
+      action: {
+        type: "launch_miniapp",
+        url: canonicalUrl,
+        name: metaConfig.miniappName,
+        splashImageUrl: `${metaConfig.canonicalAppBasename}/apple-icon.png`,
+        splashBackgroundColor: metaConfig.miniappSplashBackgroundColor,
+      }
+    }
+  };
+
   return {
     title,
     description,
@@ -97,7 +113,10 @@ export async function generateMetadata(props) {
       description,
       url: canonicalUrl,
       images: ogImage,
-    }
+    },
+    other: {
+      "fc:miniapp": JSON.stringify(miniappConfig),
+    },
   };
 }
 
