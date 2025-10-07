@@ -2,10 +2,6 @@
 
 This document outlines the testing approach for the Nouners application.
 
-## Fork Notice
-
-Nouners is a community-maintained fork of the Nouns Camp project. This fork emphasizes experimentation and rapid iteration, and we welcome community feedback and contributions across testing and tooling.
-
 ## Overview
 
 The testing strategy includes:
@@ -131,7 +127,3 @@ src/
 3. Use mocks sparingly, prefer realistic testing scenarios
 4. Keep tests focused and independent
 5. Follow the AAA pattern: Arrange, Act, Assert
-
-## License
-
-This documentation and associated test utilities are covered by the repository’s GPL-3.0 license. See the root `LICENSE` file for details.
