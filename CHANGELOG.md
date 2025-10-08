@@ -1,3 +1,16 @@
+## [1.0.0-alpha.20] - 2025-10-08
+
+### 📚 Documentation
+
+- *(readme)* Update project description and license details
+
+### ⚙️ Miscellaneous Tasks
+
+- *(ci)* Add Dependabot config for npm and actions
+
+### ◀️ Revert
+
+- Clarify fork from Nouns Camp, invite contributions, and make licensing explicit
 ## [1.0.0-alpha.19] - 2025-10-07
 
 ### 🚜 Refactor
