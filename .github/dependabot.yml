@@ -76,6 +76,11 @@ updates:
           - "@types/react-dom"
     # List of packages to ignore for specific update types
     ignore:
+      # Disable ALL semver-major updates for npm dependencies
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-major"
+      # Additional package-specific rules
       - dependency-name: "eslint"
         update-types:
           - "version-update:semver-major"

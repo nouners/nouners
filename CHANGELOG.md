@@ -1,3 +1,8 @@
+## [1.0.0-alpha.21] - 2025-10-08
+
+### ⚙️ Miscellaneous Tasks
+
+- *(dependabot)* Disable major npm upgrades
 ## [1.0.0-alpha.20] - 2025-10-08
 
 ### 📚 Documentation
