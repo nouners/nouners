@@ -144,8 +144,8 @@ importers:
         specifier: ^3.0.0
         version: 3.0.0
       use-debounce:
-        specifier: ^10.0.4
-        version: 10.0.4(react@19.1.0)
+        specifier: ^10.0.6
+        version: 10.0.6(react@19.1.0)
       viem:
         specifier: ^2.22.17
         version: 2.22.17(bufferutil@4.0.8)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@3.25.76)
@@ -8239,8 +8239,8 @@ packages:
   urlpattern-polyfill@10.1.0:
     resolution: {integrity: sha512-IGjKp/o0NL3Bso1PymYURCJxMPNAf/ILOpendP9f5B6e1rTJgdgiOvgfoT8VxCAdY+Wisb9uhGaJJf3yZ2V9nw==}
 
-  use-debounce@10.0.4:
-    resolution: {integrity: sha512-6Cf7Yr7Wk7Kdv77nnJMf6de4HuDE4dTxKij+RqE9rufDsI6zsbjyAxcH5y2ueJCQAnfgKbzXbZHYlkFwmBlWkw==}
+  use-debounce@10.0.6:
+    resolution: {integrity: sha512-C5OtPyhAZgVoteO9heXMTdW7v/IbFI+8bSVKYCJrSmiWWCLsbUxiBSp4t9v0hNBTGY97bT72ydDIDyGSFWfwXg==}
     engines: {node: '>= 16.0.0'}
     peerDependencies:
       react: '*'
@@ -19301,7 +19301,7 @@ snapshots:
 
   urlpattern-polyfill@10.1.0: {}
 
-  use-debounce@10.0.4(react@19.1.0):
+  use-debounce@10.0.6(react@19.1.0):
     dependencies:
       react: 19.1.0
 
