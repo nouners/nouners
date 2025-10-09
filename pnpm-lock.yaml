@@ -153,8 +153,8 @@ importers:
         specifier: 2.17.5
         version: 2.17.5(@tanstack/query-core@5.66.0)(@tanstack/react-query@5.66.0(react@19.2.0))(@types/react@19.2.2)(@vercel/kv@2.0.0)(aws4fetch@1.0.20)(bufferutil@4.0.8)(immer@10.1.1)(react@19.2.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem@2.22.17(bufferutil@4.0.8)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.1.12))(zod@4.1.12)
       zustand:
-        specifier: ^4.5.5
-        version: 4.5.5(@types/react@19.2.2)(immer@10.1.1)(react@19.2.0)
+        specifier: ^4.5.7
+        version: 4.5.7(@types/react@19.2.2)(immer@10.1.1)(react@19.2.0)
     devDependencies:
       '@cloudflare/workers-types':
         specifier: ^4.20251004.0
@@ -8581,11 +8581,6 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
 
-  use-sync-external-store@1.2.2:
-    resolution: {integrity: sha512-PElTlVMwpblvbNqQ82d2n6RjStvdSoNe9FG28kNfz3WiXilJm4DdNkEzRhCZuIDwY8U08WVihhGR5iRqAwfDiw==}
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0
-
   use-sync-external-store@1.4.0:
     resolution: {integrity: sha512-9WXSPC5fMv61vaupRkCKCxsPxBocVnwakBEkMIHHpkTTg6icbJtg6jzgtLDm4bl3cSHAca52rYWih0k4K3PfHw==}
     peerDependencies:
@@ -9016,8 +9011,8 @@ packages:
   zod@4.1.5:
     resolution: {integrity: sha512-rcUUZqlLJgBC33IT3PNMgsCq6TzLQEG/Ei/KTCU0PedSWRMAXoOUN+4t/0H+Q8bdnLPdqUYnvboJT0bn/229qg==}
 
-  zustand@4.5.5:
-    resolution: {integrity: sha512-+0PALYNJNgK6hldkgDq2vLrw5f6g/jCInz52n9RTpropGgeAf/ioFUCdtsjCqu4gNhW9D01rUQBROoRjdzyn2Q==}
+  zustand@4.5.7:
+    resolution: {integrity: sha512-CHOUy7mu3lbD6o6LJLfllpjkzhHXSBlX8B9+qPddUsIfeF5S/UZ5q0kmCsnRqT1UHFQZchNFDDzMbQsuesHWlw==}
     engines: {node: '>=12.7.0'}
     peerDependencies:
       '@types/react': '>=16.8'
@@ -20715,10 +20710,6 @@ snapshots:
     dependencies:
       react: 19.2.0
 
-  use-sync-external-store@1.2.2(react@19.2.0):
-    dependencies:
-      react: 19.2.0
-
   use-sync-external-store@1.4.0(react@19.2.0):
     dependencies:
       react: 19.2.0
@@ -21323,9 +21314,9 @@ snapshots:
 
   zod@4.1.5: {}
 
-  zustand@4.5.5(@types/react@19.2.2)(immer@10.1.1)(react@19.2.0):
+  zustand@4.5.7(@types/react@19.2.2)(immer@10.1.1)(react@19.2.0):
     dependencies:
-      use-sync-external-store: 1.2.2(react@19.2.0)
+      use-sync-external-store: 1.6.0(react@19.2.0)
     optionalDependencies:
       '@types/react': 19.2.2
       immer: 10.1.1
