@@ -8,10 +8,10 @@
     "lint": "turbo lint",
     "format": "pnpm -r run --if-present format"
   },
-  "packageManager": "pnpm@10.18.0",
+  "packageManager": "pnpm@10.18.1",
   "devDependencies": {
     "prettier": "^3.4.2",
-    "turbo": "^2.5.3"
+    "turbo": "^2.5.8"
   },
-  "version": "1.0.0-alpha.21"
+  "version": "1.0.0-alpha.22"
 }
