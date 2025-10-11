@@ -46,7 +46,7 @@ importers:
         version: 0.4.0(bufferutil@4.0.8)(ethers@6.13.2(bufferutil@4.0.8)(utf-8-validate@5.0.10))(utf-8-validate@5.0.10)
       '@opennextjs/cloudflare':
         specifier: ^1.9.2
-        version: 1.9.2(wrangler@4.16.1(@cloudflare/workers-types@4.20251004.0)(bufferutil@4.0.8)(utf-8-validate@5.0.10))
+        version: 1.9.2(wrangler@4.16.1(@cloudflare/workers-types@4.20251008.0)(bufferutil@4.0.8)(utf-8-validate@5.0.10))
       '@radix-ui/react-toolbar':
         specifier: ^1.1.11
         version: 1.1.11(@types/react-dom@19.2.1(@types/react@19.2.2))(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
@@ -157,8 +157,8 @@ importers:
         version: 4.5.7(@types/react@19.2.2)(immer@10.1.3)(react@19.2.0)
     devDependencies:
       '@cloudflare/workers-types':
-        specifier: ^4.20251004.0
-        version: 4.20251004.0
+        specifier: ^4.20251008.0
+        version: 4.20251008.0
       '@eslint/eslintrc':
         specifier: ^3.3.1
         version: 3.3.1
@@ -218,7 +218,7 @@ importers:
         version: 2.1.9(@types/node@20.19.19)(@vitest/ui@2.1.9)(jsdom@24.1.3(bufferutil@4.0.8)(utf-8-validate@5.0.10))(lightningcss@1.30.1)(terser@5.44.0)
       wrangler:
         specifier: 4.16.1
-        version: 4.16.1(@cloudflare/workers-types@4.20251004.0)(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+        version: 4.16.1(@cloudflare/workers-types@4.20251008.0)(bufferutil@4.0.8)(utf-8-validate@5.0.10)
 
   packages/common:
     devDependencies:
@@ -793,8 +793,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@cloudflare/workers-types@4.20251004.0':
-    resolution: {integrity: sha512-FkTBHEyOBwphbW4SLQ2XLCgNntD2wz0v1Si7NwJeN0JAPW/39/w6zhsKy3rsh+203tuSfBgsoP34+Os4RaySOw==}
+  '@cloudflare/workers-types@4.20251008.0':
+    resolution: {integrity: sha512-dZLkO4PbCL0qcCSKzuW7KE4GYe49lI12LCfQ5y9XeSwgYBoAUbwH4gmJ6A0qUIURiTJTkGkRkhVPqpq2XNgYRA==}
 
   '@coinbase/wallet-sdk@3.9.3':
     resolution: {integrity: sha512-N/A2DRIf0Y3PHc1XAMvbBUu4zisna6qAdqABMZwBMNEfWrXpAwx16pZGkYCLGE+Rvv1edbcB2LYDRnACNcmCiw==}
@@ -4108,6 +4108,9 @@ packages:
 
   '@types/node@20.19.19':
     resolution: {integrity: sha512-pb1Uqj5WJP7wrcbLU7Ru4QtA0+3kAXrkutGiD26wUKzSMgNNaPARTUDQmElUXp64kh3cWdou3Q0C7qwwxqSFmg==}
+
+  '@types/node@20.19.20':
+    resolution: {integrity: sha512-2Q7WS25j4pS1cS8yw3d6buNCVJukOTeQ39bAnwR6sOJbaxvyCGebzTMypDFN82CxBLnl+lSWVdCCWbRY6y9yZQ==}
 
   '@types/node@22.5.4':
     resolution: {integrity: sha512-FDuKUJQm/ju9fT/SeX/6+gBzoPzlVCzfzmGkwKvRHQVxi4BntVbyIwf6a4Xn62mrvndLiml6z/UBXIdEVjQLXg==}
@@ -9986,7 +9989,7 @@ snapshots:
   '@cloudflare/workerd-windows-64@1.20250508.0':
     optional: true
 
-  '@cloudflare/workers-types@4.20251004.0': {}
+  '@cloudflare/workers-types@4.20251008.0': {}
 
   '@coinbase/wallet-sdk@3.9.3':
     dependencies:
@@ -11321,7 +11324,7 @@ snapshots:
       - aws-crt
       - supports-color
 
-  '@opennextjs/cloudflare@1.9.2(wrangler@4.16.1(@cloudflare/workers-types@4.20251004.0)(bufferutil@4.0.8)(utf-8-validate@5.0.10))':
+  '@opennextjs/cloudflare@1.9.2(wrangler@4.16.1(@cloudflare/workers-types@4.20251008.0)(bufferutil@4.0.8)(utf-8-validate@5.0.10))':
     dependencies:
       '@dotenvx/dotenvx': 1.31.0
       '@opennextjs/aws': 3.8.1
@@ -11329,7 +11332,7 @@ snapshots:
       enquirer: 2.4.1
       glob: 11.0.3
       ts-tqdm: 0.8.6
-      wrangler: 4.16.1(@cloudflare/workers-types@4.20251004.0)(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      wrangler: 4.16.1(@cloudflare/workers-types@4.20251008.0)(bufferutil@4.0.8)(utf-8-validate@5.0.10)
       yargs: 18.0.0
     transitivePeerDependencies:
       - aws-crt
@@ -14469,6 +14472,10 @@ snapshots:
       undici-types: 5.26.5
 
   '@types/node@20.19.19':
+    dependencies:
+      undici-types: 6.21.0
+
+  '@types/node@20.19.20':
     dependencies:
       undici-types: 6.21.0
 
@@ -17779,7 +17786,7 @@ snapshots:
 
   jest-worker@27.5.1:
     dependencies:
-      '@types/node': 20.19.19
+      '@types/node': 20.19.20
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
@@ -20340,7 +20347,7 @@ snapshots:
       '@cloudflare/workerd-linux-arm64': 1.20250508.0
       '@cloudflare/workerd-windows-64': 1.20250508.0
 
-  wrangler@4.16.1(@cloudflare/workers-types@4.20251004.0)(bufferutil@4.0.8)(utf-8-validate@5.0.10):
+  wrangler@4.16.1(@cloudflare/workers-types@4.20251008.0)(bufferutil@4.0.8)(utf-8-validate@5.0.10):
     dependencies:
       '@cloudflare/kv-asset-handler': 0.4.0
       '@cloudflare/unenv-preset': 2.3.2(unenv@2.0.0-rc.17)(workerd@1.20250508.0)
@@ -20351,7 +20358,7 @@ snapshots:
       unenv: 2.0.0-rc.17
       workerd: 1.20250508.0
     optionalDependencies:
-      '@cloudflare/workers-types': 4.20251004.0
+      '@cloudflare/workers-types': 4.20251008.0
       fsevents: 2.3.3
       sharp: 0.33.5
     transitivePeerDependencies:
