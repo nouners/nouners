@@ -17,11 +17,11 @@
     "test:e2e:ui": "playwright test --ui"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20251004.0",
+    "@cloudflare/workers-types": "^4.20251008.0",
     "@eslint/eslintrc": "^3.3.1",
     "@playwright/test": "^1.56.0",
     "@tailwindcss/postcss": "^4.1.14",
-    "@testing-library/jest-dom": "^6.4.0",
+    "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^14.1.2",
     "@types/node": "^20.19.19",
     "@types/react": "^19.2.2",
@@ -44,7 +44,7 @@
     "@emotion/react": "^11.14.0",
     "@farcaster/core": "^0.18.8",
     "@farcaster/miniapp-sdk": "^0.1.10",
-    "@farcaster/miniapp-wagmi-connector": "^1.0.0",
+    "@farcaster/miniapp-wagmi-connector": "^1.1.0",
     "@noble/ed25519": "^2.3.0",
     "@nomonouns/assets": "^0.12.0",
     "@nouns/contracts": "^0.3.0",
@@ -79,12 +79,12 @@
     "react-stately": "^3.42.0",
     "slate": "^0.118.1",
     "slate-history": "^0.113.1",
-    "slate-react": "^0.112.1",
+    "slate-react": "^0.117.4",
     "sonner": "^2.0.7",
     "tinykeys": "^3.0.0",
     "use-debounce": "^10.0.6",
     "viem": "^2.38.0",
-    "wagmi": "2.17.5",
+    "wagmi": "2.18.0",
     "zustand": "^4.5.7"
   }
 }
