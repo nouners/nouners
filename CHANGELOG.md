@@ -1,3 +1,8 @@
+## [1.0.0-alpha.28] - 2025-10-14
+
+### 🐛 Bug Fixes
+
+- *(activity-feed)* Simplify conditional rendering
 ## [1.0.0-alpha.27] - 2025-10-14
 
 ### 🐛 Bug Fixes
