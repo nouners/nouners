@@ -8,7 +8,7 @@
     "lint": "turbo lint",
     "format": "pnpm -r run --if-present format"
   },
-  "packageManager": "pnpm@10.18.1",
+  "packageManager": "pnpm@10.18.3",
   "devDependencies": {
     "prettier": "^3.4.2",
     "turbo": "^2.5.8"
