@@ -1,3 +1,14 @@
+## [1.0.0-alpha.27] - 2025-10-14
+
+### 🐛 Bug Fixes
+
+- *(activity-feed)* Improve conditional rendering format
+
+### ◀️ Revert
+
+- Update pnpm lockfile
+- Bump viem from 2.38.0 to 2.38.1 (#56)
+- Bump @types/node from 20.19.20 to 20.19.21 (#54)
 ## [1.0.0-alpha.26] - 2025-10-14
 
 ### 🐛 Bug Fixes
