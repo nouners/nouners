@@ -1823,11 +1823,7 @@ const NounTransferItem = ({ item, isOnScreen }) => {
       <React.Fragment key={a}>
         {i > 0 && (
           <>
-            {as.length === 2
-              ? " and"
-              : i === as.length - 1
-                ? ", and"
-                : ", "}{" "}
+            {as.length === 2 ? " and" : i === as.length - 1 ? ", and" : ", "}{" "}
           </>
         )}
         <AccountPreviewPopoverTrigger showAvatar accountAddress={a} />
