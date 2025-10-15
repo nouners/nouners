@@ -24,8 +24,8 @@ importers:
         specifier: ^11.14.0
         version: 11.14.0(@types/react@19.2.2)(react@19.2.0)
       '@farcaster/core':
-        specifier: ^0.18.8
-        version: 0.18.8(bufferutil@4.0.9)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.1.12)
+        specifier: ^0.18.9
+        version: 0.18.9(bufferutil@4.0.9)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.1.12)
       '@farcaster/miniapp-sdk':
         specifier: ^0.2.0
         version: 0.2.0(bufferutil@4.0.9)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.1.12)
@@ -1330,8 +1330,8 @@ packages:
     resolution: {integrity: sha512-XK6BTq1NDMo9Xqw/YkYyGjSsg44fbNwYRx7QK2CuoQgyy+f1rrTDHoExVM5PsyXCtfl2vs2vVJ0MN0yN6LppRw==}
     engines: {node: '>=14.0.0', npm: '>=6.0.0'}
 
-  '@farcaster/core@0.18.8':
-    resolution: {integrity: sha512-hNcjnhnKgFxGVsHhhlfvb4n62tGGYBdbn9lLqaOUllJ6Z2VSTz9ZnUih38wE09lAsbCHpin+4lK9t2Nx44ud4w==}
+  '@farcaster/core@0.18.9':
+    resolution: {integrity: sha512-qwqTJXhaCJIKL6joHzXgMpWQaVxj0dri3hac0hcPsiHiJiKZw+vRpklXYrdfv53ZM3J5a5y7In41y+g5wc/IZQ==}
 
   '@farcaster/miniapp-core@0.4.0':
     resolution: {integrity: sha512-bjaDVCwVvQrG+dV+94xsjYWQvTGw3bpPf5xoEPLZjrBadNzsCoRLvvES1y8JEULyBse5FqgC6Lvk32f+ss3W8g==}
@@ -10606,7 +10606,7 @@ snapshots:
 
   '@faker-js/faker@7.6.0': {}
 
-  '@farcaster/core@0.18.8(bufferutil@4.0.9)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.1.12)':
+  '@farcaster/core@0.18.9(bufferutil@4.0.9)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.1.12)':
     dependencies:
       '@faker-js/faker': 7.6.0
       '@noble/curves': 1.9.7
