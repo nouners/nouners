@@ -1,3 +1,8 @@
+## [1.0.0-alpha.30] - 2025-10-21
+
+### ⚙️ Miscellaneous Tasks
+
+- *(config)* Pin pnpm workspace dependencies
 ## [1.0.0-alpha.29] - 2025-10-18
 
 ### 🐛 Bug Fixes
