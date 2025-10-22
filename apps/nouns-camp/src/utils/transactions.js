@@ -741,6 +741,21 @@ export const buildActions = (transactions) => {
       };
     }
 
+    const wethTransferTx = transactionsLeft.find(
+      (t) => t.type === "weth-transfer",
+    );
+
+    if (wethTransferTx != null) {
+      transactionsLeft = transactionsLeft.filter((t) => t !== wethTransferTx);
+      return {
+        type: "one-time-payment",
+        target: wethTransferTx.receiverAddress,
+        currency: "weth",
+        amount: formatUnits(wethTransferTx.wethAmount, decimalsByCurrency.weth),
+        firstTransactionIndex: getTransactionIndex(wethTransferTx),
+      };
+    }
+
     const mEthTransferTx = transactionsLeft.find(
       (t) => t.type === "meth-transfer",
     );
@@ -899,6 +914,15 @@ export const resolveAction = (a) => {
                 type: "transfer",
                 target: a.target,
                 value: parseEther(a.amount),
+              },
+            ];
+
+          case "weth":
+            return [
+              {
+                type: "weth-transfer",
+                receiverAddress: a.target,
+                wethAmount: parseUnits(a.amount, decimalsByCurrency.weth),
               },
             ];
 
