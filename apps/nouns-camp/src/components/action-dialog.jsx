@@ -831,6 +831,7 @@ const formConfigByActionType = {
             currency={state.currency}
             setCurrency={(currency) => setState({ currency })}
             currencyOptions={[
+              { value: "weth", label: "WETH" },
               { value: "eth", label: "ETH" },
               { value: "steth", label: "stETH" },
               { value: "reth", label: "rETH" },
@@ -1728,7 +1729,7 @@ const AmountWithCurrencyInput = ({
     amount !== "" && parseFloat(amount) > 0 && parseFloat(amount) < Infinity;
 
   const convertedEthToUsdValue =
-    !["eth", "meth", "steth", "reth"].includes(currency) ||
+    !["eth", "weth", "meth", "steth", "reth"].includes(currency) ||
     ethToUsdRate == null ||
     !hasAmount
       ? null
