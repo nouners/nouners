@@ -169,7 +169,8 @@ test("toMessageBlocks - image with HTML entities in caption", () => {
 });
 
 test("unwrapLineBreaks - unwraps simple wrapped paragraphs", () => {
-  const wrapped = "This is a line that\nwraps onto the next line without spacing.";
+  const wrapped =
+    "This is a line that\nwraps onto the next line without spacing.";
   expect(unwrapLineBreaks(wrapped)).toBe(
     "This is a line that wraps onto the next line without spacing.",
   );
@@ -191,18 +192,20 @@ test("unwrapLineBreaks - preserves markdown structures", () => {
     "```",
   ].join("\n");
 
-  expect(unwrapLineBreaks(text)).toBe([
-    "Heading",
-    "====",
-    "",
-    "- List item that",
-    "continues on next line",
-    "",
-    "> Blockquote line 1",
-    "> Blockquote line 2",
-    "",
-    "```",
-    "code",
-    "```",
-  ].join("\n"));
+  expect(unwrapLineBreaks(text)).toBe(
+    [
+      "Heading",
+      "====",
+      "",
+      "- List item that",
+      "continues on next line",
+      "",
+      "> Blockquote line 1",
+      "> Blockquote line 2",
+      "",
+      "```",
+      "code",
+      "```",
+    ].join("\n"),
+  );
 });
