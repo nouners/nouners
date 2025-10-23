@@ -1,7 +1,7 @@
 import getDateYear from "date-fns/getYear";
 import datesDifferenceInMonths from "date-fns/differenceInCalendarMonths";
 import { formatAbiParameters } from "abitype";
-import { formatEther, formatUnits } from "viem";
+import { formatUnits } from "viem";
 import React from "react";
 import { css } from "@emotion/react";
 import { ethereum as ethereumUtils } from "@shades/common/utils";
@@ -622,7 +622,11 @@ export const TransactionExplanation = ({ transaction: t }) => {
           <em>
             <FormattedEthWithConditionalTooltip
               value={t.wethAmount}
+              currency="weth"
               tokenSymbol="WETH"
+              decimals={2}
+              truncationDots={false}
+              localeFormatting
             />
           </em>{" "}
           to{" "}
@@ -694,7 +698,11 @@ export const TransactionExplanation = ({ transaction: t }) => {
           <em>
             <FormattedEthWithConditionalTooltip
               value={t.wethAmount}
+              currency="weth"
               tokenSymbol="WETH"
+              decimals={2}
+              truncationDots={false}
+              localeFormatting
             />
           </em>
         </>
@@ -705,7 +713,13 @@ export const TransactionExplanation = ({ transaction: t }) => {
         <>
           Deposit{" "}
           <em>
-            <FormattedEthWithConditionalTooltip value={t.value} />
+            <FormattedEthWithConditionalTooltip
+              value={t.value}
+              currency="weth"
+              decimals={2}
+              truncationDots={false}
+              localeFormatting
+            />
           </em>{" "}
           to the{" "}
           <em>
@@ -870,6 +884,45 @@ export const TransactionExplanation = ({ transaction: t }) => {
   }
 };
 
+const formatValueForCurrency = (value, currency) => {
+  const decimals = decimalsByCurrency[currency];
+
+  if (decimals == null) throw new Error(`Unsupported currency: "${currency}"`);
+
+  return formatUnits(value, decimals);
+};
+
+const buildFormattedAmount = ({
+  value,
+  currency,
+  localeFormatting,
+  truncate,
+  decimals,
+  truncationDots,
+}) => {
+  const amountString = formatValueForCurrency(value, currency);
+  let [integerPart = "", fractionalPart = ""] = amountString.split(".");
+
+  if (localeFormatting && integerPart !== "")
+    integerPart = Number(integerPart).toLocaleString();
+
+  const shouldTruncateDecimals = truncate && fractionalPart.length > decimals;
+
+  const truncatedFractional = shouldTruncateDecimals
+    ? `${fractionalPart.slice(0, decimals)}${truncationDots ? "..." : ""}`
+    : fractionalPart;
+
+  const truncatedAmountString = [integerPart, truncatedFractional]
+    .filter(Boolean)
+    .join(".");
+
+  return {
+    truncatedAmountString,
+    fullAmountString: amountString,
+    shouldTruncateDecimals,
+  };
+};
+
 export const FormattedEthWithConditionalTooltip = ({
   value,
   currency = "eth",
@@ -881,37 +934,21 @@ export const FormattedEthWithConditionalTooltip = ({
   localeFormatting = false,
   tooltip,
 }) => {
-  const ethString = (() => {
-    switch (currency) {
-      case "eth":
-        return formatEther(value);
-      case "usdc":
-        return formatUnits(value, 6);
-      default:
-        throw new Error();
-    }
-  })();
-  let [integerPart, fractionalPart] = ethString.split(".");
-
-  if (localeFormatting) integerPart = parseFloat(integerPart).toLocaleString();
-
-  const truncateDecimals =
-    truncate && fractionalPart != null && fractionalPart.length > decimals;
-
-  const truncatedEthString = [
-    integerPart,
-    truncateDecimals
-      ? `${fractionalPart.slice(0, decimals)}${truncationDots ? "..." : ""}`
-      : fractionalPart,
-  ]
-    .filter(Boolean)
-    .join(".");
+  const { truncatedAmountString, fullAmountString, shouldTruncateDecimals } =
+    buildFormattedAmount({
+      value,
+      currency,
+      localeFormatting,
+      truncate,
+      decimals,
+      truncationDots,
+    });
 
   const formattedString = !tokenSymbol
-    ? truncatedEthString
-    : `${truncatedEthString} ${tokenSymbol}`;
+    ? truncatedAmountString
+    : `${truncatedAmountString} ${tokenSymbol}`;
 
-  if (tooltip === false || !truncateDecimals) return formattedString;
+  if (tooltip === false || !shouldTruncateDecimals) return formattedString;
 
   return (
     <Tooltip.Root>
@@ -921,7 +958,7 @@ export const FormattedEthWithConditionalTooltip = ({
       <Tooltip.Content side="top" sideOffset={6} portal={portal}>
         {tooltip ?? (
           <>
-            {ethString} {tokenSymbol}
+            {fullAmountString} {tokenSymbol}
           </>
         )}
       </Tooltip.Content>
