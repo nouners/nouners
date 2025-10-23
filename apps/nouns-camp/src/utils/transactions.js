@@ -24,6 +24,56 @@ const decimalsByCurrency = {
   reth: 18,
 };
 
+const treasuryTokenConfigs = [
+  {
+    key: "weth",
+    contractId: "weth-token",
+    amountField: "wethAmount",
+    actionCurrency: "weth",
+    aggregateTypes: ["weth-transfer", "weth-approval", "weth-stream-funding"],
+    supportsStreamFunding: true,
+  },
+  {
+    key: "meth",
+    contractId: "meth-token",
+    amountField: "methAmount",
+    actionCurrency: "meth",
+  },
+  {
+    key: "reth",
+    contractId: "reth-token",
+    amountField: "rethAmount",
+    actionCurrency: "reth",
+  },
+  {
+    key: "steth",
+    contractId: "steth-token",
+    amountField: "stethAmount",
+    actionCurrency: "steth",
+  },
+];
+
+const getTreasuryTokenContracts = () => {
+  const tokens = treasuryTokenConfigs.map((config) => {
+    const contract = resolveIdentifier(config.contractId);
+    return {
+      ...config,
+      contract,
+      address: contract?.address?.toLowerCase(),
+    };
+  });
+
+  return {
+    tokens,
+    byKey: Object.fromEntries(tokens.map((config) => [config.key, config])),
+    byAddress: Object.fromEntries(
+      tokens
+        .map((config) => [config.address, config])
+        .filter(([address]) => address != null),
+    ),
+  };
+};
+
 export const createSignature = ({ functionName, inputTypes }) => {
   const stringifyTuple = ({ components }) =>
     `(${components.map(stringifyType).join(",")})`;
@@ -65,11 +115,11 @@ export const parse = (data) => {
   const nounsTokenBuyerContract = resolveIdentifier("token-buyer");
   const nounsExecutorContract = resolveIdentifier("executor");
   const nounsTokenContract = resolveIdentifier("token");
-  const wethTokenContract = resolveIdentifier("weth-token");
-  const stethTokenContract = resolveIdentifier("steth-token");
-  const rethTokenContract = resolveIdentifier("reth-token");
-  const methTokenContract = resolveIdentifier("meth-token");
   const usdcTokenContract = resolveIdentifier("usdc-token");
+  const treasuryTokenContracts = getTreasuryTokenContracts();
+  const { byKey: treasuryTokensByKey, byAddress: treasuryTokensByAddress } =
+    treasuryTokenContracts;
+  const wethTokenContract = treasuryTokensByKey.weth?.contract;
 
   const transactions = data.targets.map((target, i) => ({
     target: target.toLowerCase(),
@@ -137,7 +187,11 @@ export const parse = (data) => {
       };
     }
 
-    if (target === wethTokenContract.address && functionName === "deposit") {
+    if (
+      wethTokenContract?.address != null &&
+      target === wethTokenContract.address.toLowerCase() &&
+      functionName === "deposit"
+    ) {
       return {
         type: "weth-deposit",
         target,
@@ -148,7 +202,11 @@ export const parse = (data) => {
       };
     }
 
-    if (target === wethTokenContract.address && functionName === "approve") {
+    if (
+      wethTokenContract?.address != null &&
+      target === wethTokenContract.address.toLowerCase() &&
+      functionName === "approve"
+    ) {
       return {
         type: "weth-approval",
         target,
@@ -160,72 +218,29 @@ export const parse = (data) => {
       };
     }
 
-    if (
-      target === wethTokenContract.address &&
-      signature === "transfer(address,uint256)"
-    ) {
-      const receiverAddress = functionInputs[0].toLowerCase();
-      const isStreamFunding = predictedStreamContractAddresses.some(
-        (a) => a === receiverAddress,
-      );
+    if (signature === "transfer(address,uint256)") {
+      const tokenConfig = treasuryTokensByAddress[target];
+      if (tokenConfig != null) {
+        const receiverAddress = functionInputs[0];
+        const amount = BigInt(functionInputs[1]);
+        const isStreamFunding =
+          tokenConfig.supportsStreamFunding &&
+          predictedStreamContractAddresses.some(
+            (a) => a === receiverAddress.toLowerCase(),
+          );
 
-      return {
-        type: isStreamFunding ? "weth-stream-funding" : "weth-transfer",
-        target,
-        functionName,
-        functionInputs,
-        functionInputTypes,
-        receiverAddress: functionInputs[0],
-        wethAmount: BigInt(functionInputs[1]),
-      };
-    }
-
-    if (
-      stethTokenContract?.address != null &&
-      target === stethTokenContract.address &&
-      signature === "transfer(address,uint256)"
-    ) {
-      return {
-        type: "steth-transfer",
-        target,
-        functionName,
-        functionInputs,
-        functionInputTypes,
-        receiverAddress: functionInputs[0],
-        stethAmount: BigInt(functionInputs[1]),
-      };
-    }
-
-    if (
-      rethTokenContract?.address != null &&
-      target === rethTokenContract.address &&
-      signature === "transfer(address,uint256)"
-    ) {
-      return {
-        type: "reth-transfer",
-        target,
-        functionName,
-        functionInputs,
-        functionInputTypes,
-        receiverAddress: functionInputs[0],
-        rethAmount: BigInt(functionInputs[1]),
-      };
-    }
-
-    if (
-      methTokenContract?.address != null &&
-      target === methTokenContract.address &&
-      signature === "transfer(address,uint256)"
-    ) {
-      return {
-        type: "meth-transfer",
-        target,
-        functionName,
-        functionInputs,
-        functionInputTypes,
-        receiverAddress: functionInputs[0],
-        methAmount: BigInt(functionInputs[1]),
-      };
+        return {
+          type: isStreamFunding
+            ? `${tokenConfig.key}-stream-funding`
+            : `${tokenConfig.key}-transfer`,
+          target,
+          functionName,
+          functionInputs,
+          functionInputTypes,
+          receiverAddress,
+          [tokenConfig.amountField]: amount,
+        };
+      }
     }
 
     if (
@@ -338,14 +353,19 @@ export const unparse = (transactions) => {
   const nounsGovernanceContract = resolveIdentifier("dao");
   const nounsExecutorContract = resolveIdentifier("executor");
   const nounsTokenContract = resolveIdentifier("token");
-  const wethTokenContract = resolveIdentifier("weth-token");
-  const stethTokenContract = resolveIdentifier("steth-token");
-  const rethTokenContract = resolveIdentifier("reth-token");
-  const methTokenContract = resolveIdentifier("meth-token");
   const usdcTokenContract = resolveIdentifier("usdc-token");
   const nounsPayerContract = resolveIdentifier("payer");
   const nounsTokenBuyerContract = resolveIdentifier("token-buyer");
   const nounsStreamFactoryContract = resolveIdentifier("stream-factory");
+  const treasuryTokenContracts = getTreasuryTokenContracts();
+  const { byKey: treasuryTokensByKey } = treasuryTokenContracts;
+  const wethTokenContract = treasuryTokensByKey.weth?.contract;
+  const tokenConfigsByType = new Map();
+  for (const config of treasuryTokenContracts.tokens) {
+    tokenConfigsByType.set(`${config.key}-transfer`, config);
+    if (config.supportsStreamFunding)
+      tokenConfigsByType.set(`${config.key}-stream-funding`, config);
+  }
 
   return transactions.reduce(
     (acc, t) => {
@@ -355,6 +375,30 @@ export const unparse = (transactions) => {
         signatures: [...acc.signatures, t.signature],
         calldatas: [...acc.calldatas, t.calldata],
       });
+
+      const erc20TransferConfig = tokenConfigsByType.get(t.type);
+      if (erc20TransferConfig != null) {
+        const tokenContract = erc20TransferConfig.contract;
+        if (tokenContract?.address == null)
+          throw new Error(
+            `${erc20TransferConfig.key.toUpperCase()} token contract is not configured`,
+          );
+        const amount = t[erc20TransferConfig.amountField];
+        if (amount == null)
+          throw new Error(
+            `Missing ${erc20TransferConfig.amountField} for transaction type "${t.type}"`,
+          );
+
+        return append({
+          target: tokenContract.address,
+          value: "0",
+          signature: "transfer(address,uint256)",
+          calldata: encodeAbiParameters(
+            [{ type: "address" }, { type: "uint256" }],
+            [t.receiverAddress, amount],
+          ),
+        });
+      }
 
       switch (t.type) {
         case "transfer": {
@@ -387,60 +431,13 @@ export const unparse = (transactions) => {
           });
 
         case "weth-deposit":
+          if (wethTokenContract?.address == null)
+            throw new Error("WETH token contract is not configured");
           return append({
             target: wethTokenContract.address,
             value: t.value,
             signature: "deposit()",
             calldata: "0x",
-          });
-
-        case "weth-transfer":
-        case "weth-stream-funding":
-          return append({
-            target: wethTokenContract.address,
-            value: "0",
-            signature: "transfer(address,uint256)",
-            calldata: encodeAbiParameters(
-              [{ type: "address" }, { type: "uint256" }],
-              [t.receiverAddress, t.wethAmount],
-            ),
-          });
-
-        case "steth-transfer":
-          return append({
-            target: stethTokenContract.address,
-            value: "0",
-            signature: "transfer(address,uint256)",
-            calldata: encodeAbiParameters(
-              [{ type: "address" }, { type: "uint256" }],
-              [t.receiverAddress, t.stethAmount],
-            ),
-          });
-
-        case "reth-transfer":
-          if (rethTokenContract?.address == null)
-            throw new Error("rETH token contract is not configured");
-          return append({
-            target: rethTokenContract.address,
-            value: "0",
-            signature: "transfer(address,uint256)",
-            calldata: encodeAbiParameters(
-              [{ type: "address" }, { type: "uint256" }],
-              [t.receiverAddress, t.rethAmount],
-            ),
-          });
-
-        case "meth-transfer":
-          if (methTokenContract?.address == null)
-            throw new Error("mETH token contract is not configured");
-          return append({
-            target: methTokenContract.address,
-            value: "0",
-            signature: "transfer(address,uint256)",
-            calldata: encodeAbiParameters(
-              [{ type: "address" }, { type: "uint256" }],
-              [t.receiverAddress, t.methAmount],
-            ),
           });
 
         case "stream": {
@@ -579,25 +576,6 @@ export const extractAmounts = (parsedTransactions) => {
       t.type !== "weth-deposit" &&
       t.value != null,
   );
-  const wethTransfers = parsedTransactions.filter(
-    (t) =>
-      t.type === "weth-transfer" ||
-      t.type === "weth-approval" ||
-      t.type === "weth-stream-funding",
-  );
-
-  const stEthTransfers = parsedTransactions.filter(
-    (t) => t.type === "steth-transfer",
-  );
-
-  const rEthTransfers = parsedTransactions.filter(
-    (t) => t.type === "reth-transfer",
-  );
-
-  const mEthTransfers = parsedTransactions.filter(
-    (t) => t.type === "meth-transfer",
-  );
-
   const usdcTransfers = parsedTransactions.filter(
     (t) =>
       t.type === "usdc-approval" ||
@@ -617,24 +595,16 @@ export const extractAmounts = (parsedTransactions) => {
     (sum, t) => sum + t.value,
     BigInt(0),
   );
-  const wethAmount = wethTransfers.reduce(
-    (sum, t) => sum + t.wethAmount,
-    BigInt(0),
-  );
-  const stEthAmount = stEthTransfers.reduce(
-    (sum, t) => sum + t.stethAmount,
-    BigInt(0),
-  );
+  const erc20TokenAmounts = treasuryTokenConfigs.map((config) => {
+    const relevantTypes = config.aggregateTypes ?? [`${config.key}-transfer`];
+    const amount = parsedTransactions.reduce((sum, transaction) => {
+      if (!relevantTypes.includes(transaction.type)) return sum;
+      const value = transaction[config.amountField];
+      return value != null ? sum + value : sum;
+    }, BigInt(0));
 
-  const rEthAmount = rEthTransfers.reduce(
-    (sum, t) => sum + t.rethAmount,
-    BigInt(0),
-  );
-
-  const mEthAmount = mEthTransfers.reduce(
-    (sum, t) => sum + t.methAmount,
-    BigInt(0),
-  );
+    return { currency: config.actionCurrency ?? config.key, amount };
+  });
 
   const usdcAmount = usdcTransfers.reduce(
     (sum, t) => sum + t.usdcAmount,
@@ -643,10 +613,7 @@ export const extractAmounts = (parsedTransactions) => {
 
   return [
     { currency: "eth", amount: ethAmount },
-    { currency: "weth", amount: wethAmount },
-    { currency: "steth", amount: stEthAmount },
-    { currency: "reth", amount: rEthAmount },
-    { currency: "meth", amount: mEthAmount },
+    ...erc20TokenAmounts,
     { currency: "usdc", amount: usdcAmount },
     {
       currency: "nouns",
@@ -741,67 +708,28 @@ export const buildActions = (transactions) => {
       };
     }
 
-    const wethTransferTx = transactionsLeft.find(
-      (t) => t.type === "weth-transfer",
-    );
+    for (const config of treasuryTokenConfigs) {
+      const transferTx = transactionsLeft.find(
+        (t) => t.type === `${config.key}-transfer`,
+      );
 
-    if (wethTransferTx != null) {
-      transactionsLeft = transactionsLeft.filter((t) => t !== wethTransferTx);
-      return {
-        type: "one-time-payment",
-        target: wethTransferTx.receiverAddress,
-        currency: "weth",
-        amount: formatUnits(wethTransferTx.wethAmount, decimalsByCurrency.weth),
-        firstTransactionIndex: getTransactionIndex(wethTransferTx),
-      };
-    }
+      if (transferTx != null) {
+        const amount = transferTx[config.amountField];
+        if (amount == null)
+          throw new Error(
+            `Missing ${config.amountField} for transaction type "${config.key}-transfer"`,
+          );
 
-    const mEthTransferTx = transactionsLeft.find(
-      (t) => t.type === "meth-transfer",
-    );
-
-    if (mEthTransferTx != null) {
-      transactionsLeft = transactionsLeft.filter((t) => t !== mEthTransferTx);
-      return {
-        type: "one-time-payment",
-        target: mEthTransferTx.receiverAddress,
-        currency: "meth",
-        amount: formatUnits(mEthTransferTx.methAmount, decimalsByCurrency.meth),
-        firstTransactionIndex: getTransactionIndex(mEthTransferTx),
-      };
-    }
-
-    const rEthTransferTx = transactionsLeft.find(
-      (t) => t.type === "reth-transfer",
-    );
-
-    if (rEthTransferTx != null) {
-      transactionsLeft = transactionsLeft.filter((t) => t !== rEthTransferTx);
-      return {
-        type: "one-time-payment",
-        target: rEthTransferTx.receiverAddress,
-        currency: "reth",
-        amount: formatUnits(rEthTransferTx.rethAmount, decimalsByCurrency.reth),
-        firstTransactionIndex: getTransactionIndex(rEthTransferTx),
-      };
-    }
-
-    const stEthTransferTx = transactionsLeft.find(
-      (t) => t.type === "steth-transfer",
-    );
-
-    if (stEthTransferTx != null) {
-      transactionsLeft = transactionsLeft.filter((t) => t !== stEthTransferTx);
-      return {
-        type: "one-time-payment",
-        target: stEthTransferTx.receiverAddress,
-        currency: "steth",
-        amount: formatUnits(
-          stEthTransferTx.stethAmount,
-          decimalsByCurrency.steth,
-        ),
-        firstTransactionIndex: getTransactionIndex(stEthTransferTx),
-      };
+        transactionsLeft = transactionsLeft.filter((t) => t !== transferTx);
+        const currency = config.actionCurrency ?? config.key;
+        return {
+          type: "one-time-payment",
+          target: transferTx.receiverAddress,
+          currency,
+          amount: formatUnits(amount, decimalsByCurrency[currency]),
+          firstTransactionIndex: getTransactionIndex(transferTx),
+        };
+      }
     }
 
     const usdcTransferTx = transactionsLeft.find(
