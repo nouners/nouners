@@ -1597,7 +1597,11 @@ const RequestedAmounts = ({ amounts }) => (
             return (
               <FormattedEthWithConditionalTooltip
                 value={amount}
+                currency="weth"
+                decimals={2}
+                truncationDots={false}
                 tokenSymbol="WETH"
+                localeFormatting
               />
             );
 
@@ -1702,7 +1706,11 @@ const StreamStatus = ({ transaction }) => {
         return (
           <FormattedEthWithConditionalTooltip
             value={Number(vestedAmount)}
+            currency="weth"
+            decimals={2}
+            truncationDots={false}
             tokenSymbol="WETH"
+            localeFormatting
           />
         );
       case usdcTokenContract:

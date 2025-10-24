@@ -493,7 +493,11 @@ const FormattedAmount = React.memo(
             return (
               <FormattedEthWithConditionalTooltip
                 value={Number(amount)}
+                currency="weth"
+                decimals={2}
+                truncationDots={false}
                 tokenSymbol="WETH"
+                localeFormatting
               />
             );
           case usdcTokenContract:
