@@ -20,10 +20,10 @@
     "@cloudflare/workers-types": "^4.20251014.0",
     "@eslint/eslintrc": "^3.3.1",
     "@playwright/test": "^1.56.1",
-    "@tailwindcss/postcss": "^4.1.15",
+    "@tailwindcss/postcss": "^4.1.16",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^14.1.2",
-    "@types/node": "^20.19.23",
+    "@types/node": "^20.19.24",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
     "@vitejs/plugin-react": "^4.7.0",
@@ -34,7 +34,7 @@
     "eslint-config-next": "15.5.6",
     "eslint-config-prettier": "^9.1.2",
     "jsdom": "^24.0.0",
-    "tailwindcss": "^4.1.15",
+    "tailwindcss": "^4.1.16",
     "typescript": "^5.8.3",
     "vitest": "^2.1.9",
     "wrangler": "4.16.1"
@@ -79,12 +79,12 @@
     "react-stately": "^3.42.0",
     "slate": "^0.118.1",
     "slate-history": "^0.113.1",
-    "slate-react": "^0.117.4",
+    "slate-react": "^0.118.2",
     "sonner": "^2.0.7",
     "tinykeys": "^3.0.0",
     "use-debounce": "^10.0.6",
-    "viem": "^2.38.3",
-    "wagmi": "2.18.2",
+    "viem": "^2.38.5",
+    "wagmi": "2.19.0",
     "zustand": "^4.5.7"
   }
 }
