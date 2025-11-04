@@ -1,3 +1,8 @@
+## [1.0.0-alpha.33] - 2025-11-04
+
+### ⚙️ Miscellaneous Tasks
+
+- *(root)* Mark package private
 ## [1.0.0-alpha.32] - 2025-11-04
 
 ### 🐛 Bug Fixes
