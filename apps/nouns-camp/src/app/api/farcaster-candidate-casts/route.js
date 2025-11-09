@@ -24,7 +24,10 @@ const createCanonicalCandidateUrl = async (candidateId) => {
       }`,
   });
 
-  if (proposalCandidate == null) throw new Error();
+  if (proposalCandidate == null)
+    throw new Error(
+      "Cannot create candidate URL for unknown proposal candidate",
+    );
 
   return createTransactionReceiptUri(
     CHAIN_ID,

@@ -888,7 +888,7 @@ export const FormattedEthWithConditionalTooltip = ({
       case "usdc":
         return formatUnits(value, 6);
       default:
-        throw new Error();
+        throw new Error("Unsupported currency for formatted ETH display");
     }
   })();
   let [integerPart, fractionalPart] = ethString.split(".");

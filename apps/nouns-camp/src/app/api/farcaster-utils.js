@@ -27,7 +27,7 @@ const fetchAccounts = async (fids) => {
 
   if (!response.ok) {
     console.error(await response.text());
-    throw new Error();
+    throw new Error("Failed to fetch Farcaster accounts from Neynar");
   }
 
   const { users } = await response.json();
@@ -57,7 +57,7 @@ export const fetchNounerLikesByTargetUrl = async (targetUrl) => {
 
   if (!response.ok) {
     console.error(await response.text());
-    throw new Error();
+    throw new Error("Failed to fetch Farcaster reactions by target URL");
   }
 
   const { messages } = await response.json();
@@ -100,7 +100,7 @@ export const fetchNounerLikesByCast = async (hash) => {
 
   if (!response.ok) {
     console.error(await response.text());
-    throw new Error();
+    throw new Error("Failed to fetch Farcaster reactions for cast");
   }
 
   const { reactions } = await response.json();
@@ -144,7 +144,7 @@ export const fetchCastReplies = async (hash) => {
 
   if (!response.ok) {
     console.error(await response.text());
-    throw new Error();
+    throw new Error("Failed to fetch Farcaster conversation from Neynar");
   }
 
   const { conversation } = await response.json();
@@ -206,7 +206,7 @@ const submitMessage = async (
           body.details.startsWith("invalid signer")
         )
           throw new Error("invalid-account-key");
-        throw new Error();
+        throw new Error("Failed to submit Farcaster message to Neynar");
       }
 
       if (
@@ -360,7 +360,7 @@ export const fetchCastsByParentUrl = async (
 
   if (!response.ok) {
     console.error(await response.text());
-    throw new Error();
+    throw new Error("Failed to fetch Farcaster feed by parent URL");
   }
 
   const { casts: rawCasts } = await response.json();

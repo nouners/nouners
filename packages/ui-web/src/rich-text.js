@@ -608,7 +608,8 @@ const RichText = React.forwardRef(
 
     if (raw) {
       // Passing ref in `raw` mode isn’t allowed
-      if (ref != null) throw new Error();
+      if (ref != null)
+        throw new Error("RichText raw mode does not support forwarding refs");
       return render(blocks);
     }
 

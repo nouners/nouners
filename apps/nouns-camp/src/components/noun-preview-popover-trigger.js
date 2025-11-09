@@ -422,7 +422,7 @@ const NounTransferEvent = ({ event }) => {
 
           case "fork-escrow-withdrawal":
           default:
-            throw new Error();
+            throw new Error("Unsupported noun transfer meta type for preview");
         }
       })()}
     </div>

@@ -56,7 +56,7 @@ const simplifiedProposalStatesByCategory = arrayUtils.groupBy((s) => {
     case "expired":
       return "failed";
     default:
-      throw new Error();
+      throw new Error("Unknown simplified proposal state category");
   }
 }, simplifiedProposalStates);
 

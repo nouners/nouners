@@ -53,7 +53,8 @@ const Provider = ({ initialSession, children }) => {
           body: JSON.stringify({ message, signature }),
         });
 
-        if (!authRes.ok) throw new Error();
+        if (!authRes.ok)
+          throw new Error("Failed to create authenticated session");
 
         const session = await authRes.json();
         setState({ session, createSessionState: "idle" });

@@ -69,7 +69,7 @@ const createSignedKeyRequest = async (publicKey) => {
 
   if (!response.ok) {
     console.error(body);
-    throw new Error();
+    throw new Error("Failed to create Farcaster signed key request");
   }
 
   return {
@@ -95,7 +95,7 @@ const fetchAccountKey = async (publicKey) => {
 
   if (!response.ok) {
     console.error(body);
-    throw new Error();
+    throw new Error("Failed to fetch Farcaster signer account key");
   }
 
   return {

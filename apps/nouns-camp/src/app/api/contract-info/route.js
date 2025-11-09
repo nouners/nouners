@@ -25,7 +25,7 @@ const fetchAbi = async (address) => {
   const responseBody = await response.json();
 
   if (responseBody.status !== "1") {
-    const error = new Error();
+    const error = new Error("Implementation ABI not available on Etherscan");
     error.code = "implementation-abi-not-found";
     return Promise.reject(error);
   }
@@ -49,16 +49,20 @@ const fetchContractInfo = async (address_) => {
   const responseBody = await response.json();
 
   if (responseBody.status !== "1" || responseBody.result.length === 0)
-    throw new Error();
+    throw new Error(
+      "Failed to load contract source information from Etherscan",
+    );
 
   if (responseBody.result[0]["ABI"] === "Contract source code not verified") {
-    const error = new Error();
+    const error = new Error(
+      "Contract source code is not verified on Etherscan",
+    );
     error.code = "source-code-not-verified";
     return Promise.reject(error);
   }
 
   if (responseBody.result[0]["SourceCode"] === "") {
-    const error = new Error();
+    const error = new Error("No contract source code returned for address");
     error.code = "contract-address-required";
     return Promise.reject(error);
   }

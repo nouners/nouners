@@ -880,7 +880,7 @@ export const buildActions = (transactions) => {
       continue;
     }
 
-    throw new Error();
+    throw new Error("Unable to classify proposal transaction set");
   }
 
   return arrayUtils.sortBy("firstTransactionIndex", actions);
@@ -939,7 +939,7 @@ export const resolveAction = (a) => {
             ];
 
           default:
-            throw new Error();
+            throw new Error("Unsupported currency for one-time payment action");
         }
       }
 
@@ -980,7 +980,9 @@ export const resolveAction = (a) => {
             ];
 
           default:
-            throw new Error();
+            throw new Error(
+              "Unsupported currency for streaming payment action",
+            );
         }
       }
 
@@ -1032,7 +1034,7 @@ export const resolveAction = (a) => {
       }
 
       default:
-        throw new Error();
+        throw new Error("Unsupported proposal action type in resolver");
     }
   };
 

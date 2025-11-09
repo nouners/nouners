@@ -5,7 +5,8 @@ export const fitInsideBounds = (dimensions, bounds) => {
   const aspectRatio = width / height;
 
   if (maybeMaxWidth == null) {
-    if (maybeMaxHeight == null) throw new Error();
+    if (maybeMaxHeight == null)
+      throw new Error("fitInsideBounds requires width or height constraints");
     const fittedWidth =
       maybeMaxHeight > height ? width : maybeMaxHeight * aspectRatio;
     return { width: fittedWidth, height: fittedWidth / aspectRatio };

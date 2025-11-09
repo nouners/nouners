@@ -590,7 +590,8 @@ const AccountPreview = React.forwardRef(({ accountAddress, close }, ref) => {
                   const farcasterAccount = farcasterAccounts.find(
                     (a) => String(a.fid) === fid,
                   );
-                  if (farcasterAccount == null) throw new Error();
+                  if (farcasterAccount == null)
+                    throw new Error("Selected Warpcast account was not found");
                   window.open(
                     `https://warpcast.com/${farcasterAccount.username}`,
                     "_blank",

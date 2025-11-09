@@ -220,7 +220,9 @@ const Content = ({ proposalId, titleProps, dismiss }) => {
         case 2:
           return [for_, [...abstain, v], against];
         default:
-          throw new Error();
+          throw new Error(
+            "Unknown vote support value in proposal vote breakdown",
+          );
       }
     },
     [[], [], []],
@@ -244,7 +246,7 @@ const Content = ({ proposalId, titleProps, dismiss }) => {
         );
 
       default:
-        throw new Error();
+        throw new Error("Unknown proposal vote sort strategy");
     }
   };
 

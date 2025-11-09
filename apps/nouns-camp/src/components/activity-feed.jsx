@@ -121,7 +121,7 @@ const ActivityFeed = ({
           });
         } else {
           console.error("Invalid like target", item);
-          throw new Error();
+          throw new Error("Activity item is missing a like target identifier");
         }
       } catch (e) {
         console.error(e);
@@ -682,7 +682,7 @@ const FeedItem = React.memo(
             },
           ];
 
-        throw new Error();
+        throw new Error("Unsupported activity item type for reply action");
       })();
 
       const enableReplyAction = !item.isPending;
@@ -1170,7 +1170,7 @@ const ItemTitle = ({ item, variant, context, hasBeenOnScreen }) => {
       );
     }
 
-    throw new Error();
+    throw new Error("Activity feed item is missing a navigable destination");
   };
 
   const author = (
@@ -1534,7 +1534,7 @@ const ItemTitle = ({ item, variant, context, hasBeenOnScreen }) => {
                   : "commented";
             }
             default:
-              throw new Error();
+              throw new Error("Unsupported activity item type for signal text");
           }
         })();
         return (
@@ -2059,7 +2059,7 @@ const NounTransferItem = ({ item, isOnScreen }) => {
       );
 
     default:
-      throw new Error();
+      throw new Error("Unsupported noun transfer type in activity feed");
   }
 };
 
@@ -2459,7 +2459,10 @@ const FeedItemActionDropdown = ({
         break;
 
       case "copy-link": {
-        if (!["vote", "feedback-post"].includes(item.type)) throw new Error();
+        if (!["vote", "feedback-post"].includes(item.type))
+          throw new Error(
+            "Copy link action only supports votes or feedback posts",
+          );
 
         const pathname =
           item.candidateId != null

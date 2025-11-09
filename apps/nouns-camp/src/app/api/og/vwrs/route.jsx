@@ -105,7 +105,7 @@ export async function GET(request) {
         return "commented";
       }
       default:
-        throw new Error();
+        throw new Error("Unsupported vote or feedback type for OG image");
     }
   })();
 

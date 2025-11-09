@@ -382,7 +382,7 @@ const ProposalCandidateScreenContent = ({
         break;
 
       default:
-        throw new Error();
+        throw new Error("Unsupported candidate form action type");
     }
 
     clearPost();
@@ -896,7 +896,7 @@ const ProposalCandidateScreenContent = ({
                   break;
 
                 default:
-                  throw new Error();
+                  throw new Error("Unknown candidate quick action key");
               }
             }}
           />
@@ -2065,7 +2065,7 @@ const AdminDropdown = React.memo(({ candidateId }) => {
               break;
 
             default:
-              throw new Error();
+              throw new Error("Unknown candidate management menu action");
           }
         }}
       >

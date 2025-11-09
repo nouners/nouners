@@ -213,7 +213,7 @@ const parseAmount = (amount, currency) => {
     case "usdc":
       return parseUnits(amount.toString(), decimalsByCurrency[currency]);
     default:
-      throw new Error();
+      throw new Error("Unsupported currency in action dialog amount parser");
   }
 };
 
