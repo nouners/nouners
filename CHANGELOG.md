@@ -1,3 +1,8 @@
+## [1.0.0-alpha.34] - 2025-11-09
+
+### 🐛 Bug Fixes
+
+- Solve some minor issues and update dependencies
 ## [1.0.0-alpha.33] - 2025-11-04
 
 ### ⚙️ Miscellaneous Tasks

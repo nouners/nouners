@@ -17,10 +17,10 @@
     "test:e2e:ui": "playwright test --ui"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20251014.0",
+    "@cloudflare/workers-types": "^4.20251106.1",
     "@eslint/eslintrc": "^3.3.1",
     "@playwright/test": "^1.56.1",
-    "@tailwindcss/postcss": "^4.1.16",
+    "@tailwindcss/postcss": "^4.1.17",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^14.1.2",
     "@types/node": "^20.19.24",
@@ -34,7 +34,7 @@
     "eslint-config-next": "15.5.6",
     "eslint-config-prettier": "^9.1.2",
     "jsdom": "^24.0.0",
-    "tailwindcss": "^4.1.16",
+    "tailwindcss": "^4.1.17",
     "typescript": "^5.8.3",
     "vitest": "^2.1.9",
     "wrangler": "4.16.1"
@@ -49,7 +49,7 @@
     "@nomonouns/assets": "^0.12.0",
     "@nouns/contracts": "^0.3.0",
     "@nouns/sdk": "^0.4.0",
-    "@opennextjs/cloudflare": "^1.11.0",
+    "@opennextjs/cloudflare": "^1.11.1",
     "@radix-ui/react-toolbar": "^1.1.11",
     "@radix-ui/react-tooltip": "^1.2.8",
     "@sentry/nextjs": "^8.55.0",
@@ -58,7 +58,7 @@
     "@serwist/sw": "^9.2.1",
     "@shades/common": "workspace:0.0.0",
     "@shades/ui-web": "workspace:0.0.0",
-    "@tanstack/react-query": "^5.90.5",
+    "@tanstack/react-query": "^5.90.7",
     "@vercel/analytics": "^1.5.0",
     "@vercel/kv": "^2.0.0",
     "@vercel/og": "^0.8.5",
@@ -84,7 +84,7 @@
     "tinykeys": "^3.0.0",
     "use-debounce": "^10.0.6",
     "viem": "^2.38.5",
-    "wagmi": "2.19.0",
+    "wagmi": "2.19.2",
     "zustand": "^4.5.7"
   }
 }
