@@ -129,7 +129,8 @@ const ProposalActionForm = ({
     }
   })();
 
-  if (mode == null) throw new Error();
+  if (mode == null)
+    throw new Error("Proposal action form requires a defined mode");
 
   const renderHelpText = () => {
     if (!isConnectedToTargetChainId)
@@ -479,7 +480,7 @@ const ProposalActionForm = ({
                     case "farcaster-comment":
                       return "Farcaster comment";
                     default:
-                      throw new Error();
+                      throw new Error("Unknown proposal action mode in picker");
                   }
                 }}
                 // size="tiny"
@@ -747,7 +748,9 @@ const ProposalActionForm = ({
                                   return "Submit comment";
                                 }
                                 default:
-                                  throw new Error();
+                                  throw new Error(
+                                    "Unsupported proposal action mode for submit label",
+                                  );
                               }
                             })()}
                           </Button>
@@ -831,7 +834,9 @@ const ProposalActionForm = ({
                   }
 
                   default:
-                    throw new Error();
+                    throw new Error(
+                      "Unsupported proposal action mode for footer controls",
+                    );
                 }
               })()}
             </div>

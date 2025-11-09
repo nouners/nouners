@@ -151,7 +151,8 @@ const useImageDialog = ({ editorRef }) => {
       const editor = editorRef.current;
       const at = at_ ?? editor.selection;
 
-      if (at == null) throw new Error();
+      if (at == null)
+        throw new Error("Image dialog cannot open without a valid selection");
 
       const [node] = editor.node(at) ?? [];
 
@@ -562,7 +563,7 @@ const RichTextEditor = React.forwardRef(
                 }
 
                 default:
-                  throw new Error();
+                  throw new Error("Unsupported rich text trigger type");
               }
             }
           }}
@@ -995,7 +996,7 @@ export const Toolbar = ({ disabled: disabled_, onFocus, onBlur, ...props }) => {
               };
 
             default:
-              throw new Error();
+              throw new Error("Unknown block transform action key");
           }
         };
 
@@ -1046,7 +1047,7 @@ export const Toolbar = ({ disabled: disabled_, onFocus, onBlur, ...props }) => {
                 }
 
                 default:
-                  new Error();
+                  throw new Error("Unhandled block transform selection change");
               }
 
               setStoredSelectionRangeRef(null);
@@ -1194,7 +1195,7 @@ export const Toolbar = ({ disabled: disabled_, onFocus, onBlur, ...props }) => {
         );
 
       default:
-        throw new Error();
+        throw new Error("Unsupported toolbar action key");
     }
   };
 

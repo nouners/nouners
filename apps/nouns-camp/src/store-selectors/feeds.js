@@ -575,7 +575,7 @@ const buildNounTransferAndDelegationItems = (
         };
 
       default:
-        throw new Error();
+        throw new Error("Unknown noun feed aggregation group type");
     }
   });
 

@@ -102,7 +102,7 @@ const PromoteCandidateDialog = ({ isOpen, candidateId, dismiss }) => {
             });
 
           default:
-            throw new Error();
+            throw new Error("Unknown proposal submission target type");
         }
       })
       .then(

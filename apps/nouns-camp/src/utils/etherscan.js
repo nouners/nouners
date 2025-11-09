@@ -10,7 +10,7 @@ const getEtherscanLinkHost = (chainId) => {
     case base.id:
       return "https://basescan.org";
     default:
-      throw new Error();
+      throw new Error("Unsupported chain id for Etherscan host");
   }
 };
 

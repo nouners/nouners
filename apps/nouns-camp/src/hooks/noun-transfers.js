@@ -162,7 +162,9 @@ export const useTransferMeta = (transactionHash, { enabled = true } = {}) => {
           };
         default:
           console.log("Unexpected event", forkEvent);
-          throw new Error();
+          throw new Error(
+            "Unsupported fork event type in noun transfer parser",
+          );
       }
     }
 

@@ -23,7 +23,8 @@ const createCanonicalProposalUrl = async (proposalId) => {
       }`,
   });
 
-  if (proposal == null) throw new Error();
+  if (proposal == null)
+    throw new Error("Cannot create proposal URL for unknown proposal");
 
   return createTransactionReceiptUri(CHAIN_ID, proposal.createdTransactionHash);
 };

@@ -23,7 +23,7 @@ const isFiltered = (filter, cast) => {
     case "disabled":
       return true;
     default:
-      throw new Error();
+      throw new Error("Unknown Farcaster cast filter mode");
   }
 };
 
@@ -72,7 +72,8 @@ export const useAccountsWithVerifiedEthAddress = (address, queryOptions) => {
     queryKey: ["verified-farcaster-accounts", address],
     queryFn: async () => {
       const res = await fetch(`/api/farcaster-accounts?eth-address=${address}`);
-      if (!res.ok) throw new Error();
+      if (!res.ok)
+        throw new Error("Failed to fetch Farcaster accounts for address");
       const { accounts } = await res.json();
       return accounts;
     },
@@ -357,7 +358,8 @@ export const useSubmitTransactionLike = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
-      if (!response.ok) throw new Error();
+      if (!response.ok)
+        throw new Error("Failed to submit Farcaster transaction like");
     },
     onMutate: ({ fid, transactionHash, action }) => {
       queryClient.setQueryData(
@@ -397,7 +399,7 @@ export const useSubmitCastLike = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
-      if (!response.ok) throw new Error();
+      if (!response.ok) throw new Error("Failed to submit Farcaster cast like");
     },
     onMutate: ({ fid, targetCastId, action }) => {
       queryClient.setQueryData(
@@ -513,7 +515,7 @@ export const useSubmitCastReply = () => {
       if (!response.ok) {
         console.error(await response.text());
         alert("Ops, looks like something went wrong!");
-        throw new Error();
+        throw new Error("Failed to submit Farcaster reply");
       }
 
       return response.json();
