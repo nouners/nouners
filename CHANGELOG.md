@@ -1,3 +1,8 @@
+## [1.0.0-alpha.35] - 2025-11-09
+
+### 🐛 Bug Fixes
+
+- Add descriptive error messages (#99)
 ## [1.0.0-alpha.34] - 2025-11-09
 
 ### 🐛 Bug Fixes
