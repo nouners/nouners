@@ -28,7 +28,8 @@ const useImageLinkDialog = ({ editorRef }) => {
   const open = React.useCallback(
     (at) => {
       const editor = editorRef.current;
-      if (at == null) throw new Error();
+      if (at == null)
+        throw new Error("Image link dialog requires a valid editor location");
       const [node] = editor.node(at) ?? [];
       if (node == null) return;
       setState({ url: node?.url, caption: node?.caption, at });

@@ -134,7 +134,7 @@ const Content = ({ titleProps, dismiss }) => {
                 case "verifying-signature":
                   return <>Verifying signature...</>;
                 default:
-                  throw new Error();
+                  throw new Error("Unknown authentication state in dialog");
               }
             })()}
           </p>

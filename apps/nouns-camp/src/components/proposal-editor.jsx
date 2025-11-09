@@ -936,7 +936,7 @@ const ActionListItem = ({
 
       case "unparsed-function-call":
       case "unparsed-payable-function-call":
-        throw new Error();
+        throw new Error("Cannot render summary for unparsed transaction type");
 
       default:
         throw new Error(`Unknown transaction type: "${t.type}"`);

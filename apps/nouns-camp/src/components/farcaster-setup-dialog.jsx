@@ -23,7 +23,7 @@ const createFarcasterAccountKey = async () => {
   if (!res.ok) {
     const body = await res.text();
     console.error(body);
-    throw new Error();
+    throw new Error("Failed to initiate Farcaster account key request");
   }
   return res.json();
 };
@@ -33,7 +33,7 @@ const getFarcasterAccountKey = async (publicKey) => {
   if (!res.ok) {
     const body = await res.text();
     console.error(body);
-    throw new Error();
+    throw new Error("Failed to fetch Farcaster account key status");
   }
   return res.json();
 };

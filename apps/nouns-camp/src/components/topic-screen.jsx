@@ -270,7 +270,7 @@ const TopicScreenContent = ({ candidateId }) => {
         break;
 
       default:
-        throw new Error();
+        throw new Error("Unsupported topic form action type");
     }
 
     setPendingComment("");
@@ -310,7 +310,8 @@ const TopicScreenContent = ({ candidateId }) => {
     submitInlineReply: async (targetItemId, data) => {
       const targetItem = feedItems.find((i) => i.id === targetItemId);
 
-      if (targetItem == null) throw new Error();
+      if (targetItem == null)
+        throw new Error("Inline reply target item could not be found");
 
       // Edge case for when a submit is triggered from a target which is not the
       // "active" one. Should be very uncommon.
@@ -319,7 +320,7 @@ const TopicScreenContent = ({ candidateId }) => {
           ...s,
           activeReplyTargetItemId: targetItemId,
         }));
-        throw new Error();
+        throw new Error("Inline reply was submitted for a non-active target");
       }
 
       if (targetItem.type === "farcaster-cast") {
@@ -739,7 +740,7 @@ const AdminDropdown = React.memo(({ candidateId }) => {
               break;
 
             default:
-              throw new Error();
+              throw new Error("Unknown topic management menu action");
           }
         }}
       >

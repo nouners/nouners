@@ -2,7 +2,7 @@ const hasNativeLocksSupport =
   typeof navigator !== "undefined" && navigator?.locks?.request != null;
 
 export const create = (key) => {
-  if (key == null) throw new Error();
+  if (key == null) throw new Error("lock key is required to create a lock");
 
   let lock = null;
 

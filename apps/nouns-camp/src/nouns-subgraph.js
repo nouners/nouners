@@ -525,7 +525,8 @@ export const subgraphFetch = async ({
     return CLIENT_URL;
   })();
 
-  if (url == null) throw new Error();
+  if (url == null)
+    throw new Error("Subgraph endpoint is not configured for the current env");
 
   const response = await fetch(url, {
     method: "POST",

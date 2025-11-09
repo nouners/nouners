@@ -111,7 +111,8 @@ const useScreenContext = () => React.useContext(ScreenContext);
 const nameBySupport = { 0: "against", 1: "for", 2: "abstain" };
 
 const supportToString = (n) => {
-  if (nameBySupport[n] == null) throw new Error();
+  if (nameBySupport[n] == null)
+    throw new Error("Unknown support index for proposal vote");
   return nameBySupport[n];
 };
 
@@ -415,7 +416,7 @@ const ProposalMainSection = ({ proposalId, scrollContainerRef }) => {
       case "objection-period":
         return <ClockIcon aria-hidden="true" style={{ width: "2rem" }} />;
       default:
-        throw new Error();
+        throw new Error("Unknown proposal state when rendering state icon");
     }
   };
 
@@ -580,7 +581,7 @@ const ProposalMainSection = ({ proposalId, scrollContainerRef }) => {
         return <>Voting ends in {Math.round(hours / 24)} days</>;
       }
       default:
-        throw new Error();
+        throw new Error("Unknown proposal state when rendering status text");
     }
   };
 
@@ -606,7 +607,7 @@ const ProposalMainSection = ({ proposalId, scrollContainerRef }) => {
         break;
 
       default:
-        throw new Error();
+        throw new Error("Unsupported proposal action form mode");
     }
 
     clearPost();
@@ -994,7 +995,7 @@ const ProposalMainSection = ({ proposalId, scrollContainerRef }) => {
                     break;
 
                   default:
-                    throw new Error();
+                    throw new Error("Unknown proposal quick action key");
                 }
               }}
               actionMenuFooterNote={(() => {
@@ -1200,7 +1201,9 @@ export const ProposalHeader = ({
           case "nouns":
             return sum;
           default:
-            throw new Error();
+            throw new Error(
+              "Unsupported currency in treasury impact calculation",
+            );
         }
       },
       0n,
@@ -1641,7 +1644,9 @@ const RequestedAmounts = ({ amounts }) => (
             );
 
           default:
-            throw new Error();
+            throw new Error(
+              "Unsupported requested amount currency for summary",
+            );
         }
       };
 
@@ -2513,7 +2518,7 @@ const AdminDropdown = React.memo(({ proposalId }) => {
               break;
 
             default:
-              throw new Error();
+              throw new Error("Unknown proposal management menu action");
           }
         }}
       >

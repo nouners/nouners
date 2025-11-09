@@ -102,7 +102,7 @@ const FormattedAmount = ({
       case "usdc":
         return formatUnits(value, 6);
       default:
-        throw new Error();
+        throw new Error("Unsupported currency for formatted amount");
     }
   })();
   let [integerPart, fractionalPart] = ethString.split(".");
@@ -159,7 +159,7 @@ const RequestedAmounts = ({ amounts }) => (
             );
 
           default:
-            throw new Error();
+            throw new Error("Unsupported requested amount currency");
         }
       };
 
@@ -471,7 +471,9 @@ const renderProposalStateText = ({ proposal, latestBlockNumber }) => {
       return <>Voting ends in {Math.round(hours / 24)} days</>;
     }
     default: {
-      throw new Error();
+      throw new Error(
+        "Unexpected proposal state when formatting time remaining",
+      );
     }
   }
 };

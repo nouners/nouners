@@ -51,7 +51,9 @@ export const comparator = (...sortValueExtractors) => {
   const invert = (n) => {
     if (n === 1) return -1;
     if (n === -1) return 1;
-    throw new Error();
+    throw new Error(
+      "comparator invert received an unexpected comparison result",
+    );
   };
 
   return (e1, e2) => {

@@ -2016,7 +2016,7 @@ export const useProposals = ({
             }
 
             default:
-              throw new Error();
+              throw new Error("Unknown proposal filter in useProposals");
           }
         }, []);
 

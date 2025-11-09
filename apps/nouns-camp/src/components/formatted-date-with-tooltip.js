@@ -16,7 +16,8 @@ const FormattedDateWithTooltip = React.memo(
     children,
     ...props
   }) => {
-    if (value == null) throw new Error();
+    if (value == null)
+      throw new Error("FormattedDateWithTooltip requires a date value");
 
     const format = () => {
       const valueDate = new Date(value);

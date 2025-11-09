@@ -19,7 +19,7 @@ const VotingBar = ({
         case 2:
           return [for_, abstain + power, against];
         default:
-          throw new Error();
+          throw new Error("Unknown vote support value in VotingBar");
       }
     },
     [0, 0, 0],

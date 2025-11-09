@@ -153,7 +153,7 @@ export async function GET() {
         const res = await fetch(
           "https://eth-api.lido.fi/v1/protocol/steth/apr/sma",
         );
-        if (!res.ok) throw new Error();
+        if (!res.ok) throw new Error("Failed to fetch Lido APR data");
         const { data } = await res.json();
         return ["lidoApr", data.smaApr / 100];
       })(),
@@ -161,14 +161,14 @@ export async function GET() {
         const res = await fetch(
           "https://api.rocketpool.net/api/mainnet/payload",
         );
-        if (!res.ok) throw new Error();
+        if (!res.ok) throw new Error("Failed to fetch Rocket Pool APR data");
         const { rethAPR } = await res.json();
         return ["rocketPoolApr", Number(rethAPR) / 100];
       })(),
       (async () => {
         try {
           const res = await fetch("https://app.methprotocol.xyz/api/stats/apy");
-          if (!res.ok) throw new Error();
+          if (!res.ok) throw new Error("Failed to fetch Mantle mETH APR data");
           const payload = await res.json();
           const entry = Array.isArray(payload?.data) ? payload.data[0] : null;
           const aprValue =
