@@ -84,7 +84,7 @@
     "tinykeys": "^3.0.0",
     "use-debounce": "^10.0.6",
     "viem": "^2.39.3",
-    "wagmi": "2.19.4",
+    "wagmi": "2.19.5",
     "zustand": "^4.5.7"
   }
 }
