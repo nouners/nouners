@@ -57,14 +57,14 @@ importers:
         specifier: ^8.55.0
         version: 8.55.0(@opentelemetry/context-async-hooks@1.30.1(@opentelemetry/api@1.9.0))(@opentelemetry/core@1.30.1(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.57.2(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.30.1(@opentelemetry/api@1.9.0))(next@15.3.5(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.56.1)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(react@19.2.0)(webpack@5.94.0)
       '@serwist/next':
-        specifier: ^9.2.1
-        version: 9.2.1(next@15.3.5(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.56.1)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(typescript@5.9.3)(webpack@5.94.0)
+        specifier: ^9.2.3
+        version: 9.2.3(next@15.3.5(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.56.1)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(typescript@5.9.3)(webpack@5.94.0)
       '@serwist/precaching':
-        specifier: ^9.2.1
-        version: 9.2.1(typescript@5.9.3)
+        specifier: ^9.2.3
+        version: 9.2.3(typescript@5.9.3)
       '@serwist/sw':
-        specifier: ^9.2.1
-        version: 9.2.1(typescript@5.9.3)
+        specifier: ^9.2.3
+        version: 9.2.3(typescript@5.9.3)
       '@shades/common':
         specifier: workspace:0.0.0
         version: link:../../packages/common
@@ -3405,8 +3405,8 @@ packages:
     peerDependencies:
       webpack: '>=4.40.0'
 
-  '@serwist/build@9.2.1':
-    resolution: {integrity: sha512-mMCBZi82jVCxIhOu/D3ifkfmiuhdFHuelWK1zRlASLbkogH7YsS6qvGTl37vWBTVAWNKcKfVWLR6tq9AUB7BSg==}
+  '@serwist/build@9.2.3':
+    resolution: {integrity: sha512-UU38GDsTerzoCRDIT5v62W/CcTMLfGZm/tAa+u8XLBU0y0f2aJ2GCfsHnI1eXhEuWvt4Y7Imx/uG2ww2KWIBWQ==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       typescript: '>=5.0.0'
@@ -3414,8 +3414,8 @@ packages:
       typescript:
         optional: true
 
-  '@serwist/next@9.2.1':
-    resolution: {integrity: sha512-CCTvZYSWK1hCmANViGLd7LvVc9r9wd4aaVX4Uk0F6fC0/Xn05GY52di7LGZ2NveGr1g+NjQvQSBhfxCQK95NIg==}
+  '@serwist/next@9.2.3':
+    resolution: {integrity: sha512-sbStIaen8H6ZhNCtfxAuZ2haujJe8nPFRBiq5KQFYYi5iyFrDGLpYICmRTBP6Oc1pQBmsAqbBZzIjjC60d+7zg==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       next: '>=14.0.0'
@@ -3424,24 +3424,24 @@ packages:
       typescript:
         optional: true
 
-  '@serwist/precaching@9.2.1':
-    resolution: {integrity: sha512-n3Atq6QcOvycj1CanC/kDvhRssb1Tx4IvXNbf3o3iQ6qGL2XYsxe8E6dKtr+XTf13mEvvmZLQJWAh+haNAJN9Q==}
+  '@serwist/precaching@9.2.3':
+    resolution: {integrity: sha512-8wgJwhVX6qEdLc4vaahN9GK9Lb2tE90YET7vQOM7xju2DSYdMut0c+LpRUj3PV61yYiW/TW2rayeezUwy7ToNQ==}
     peerDependencies:
       typescript: '>=5.0.0'
     peerDependenciesMeta:
       typescript:
         optional: true
 
-  '@serwist/sw@9.2.1':
-    resolution: {integrity: sha512-SQygNDTB4w4HRjKiGH+Ybme+dy2rynt6RPFHw27SANQRK1rEzqYUZ1S4SyKjiwJgIoy+mQOA7+T23OqAfW7Eqg==}
+  '@serwist/sw@9.2.3':
+    resolution: {integrity: sha512-79LYI3XOOJ8Sa0TXgGLsalF0aSkm81Ykhol+yr0Xv7vH6KBPzzgffPtxse77GWaxZ87kPE3pNpQPv2WgTe6RKA==}
     peerDependencies:
       typescript: '>=5.0.0'
     peerDependenciesMeta:
       typescript:
         optional: true
 
-  '@serwist/webpack-plugin@9.2.1':
-    resolution: {integrity: sha512-tBVlKifGP96aV7A8HD0xXIJAu6/sTyfRc827LFuLajNaX2d/dpo/0sMxO45jEI+GS7vaUdTcSl5DqcaRkkQ9wQ==}
+  '@serwist/webpack-plugin@9.2.3':
+    resolution: {integrity: sha512-y1Ag1a7LARo/LtPVRSrfGO5PG4BZdc1NiMGAq+CGlBH/PJa7RQimo4iq9C94pjxusEsP4yHnsDQ06+GVTQ6gww==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       typescript: '>=5.0.0'
@@ -3452,8 +3452,8 @@ packages:
       webpack:
         optional: true
 
-  '@serwist/window@9.2.1':
-    resolution: {integrity: sha512-XkfV7+crhT4ArJCMcRle9AmzrxDjMRS6ExJwSPGmCqdb4JH/VyhcmJZljwoEpuZ1zh0cNvnWC8xEQ4p85jhxnQ==}
+  '@serwist/window@9.2.3':
+    resolution: {integrity: sha512-6bK01QAaFI+oXTmDSQHvsw0kTTNlj79PFkox+0Z9XYNqTVLoXY9C6BFmZNvxNxEinOqCSm7cms4I5V54E9/1XA==}
     peerDependencies:
       typescript: '>=5.0.0'
     peerDependenciesMeta:
@@ -5086,8 +5086,8 @@ packages:
     resolution: {integrity: sha512-GM9c0cWWR8Ga7//Ves/9KRgTS8nLausCkP3CGiFLrnwA2CDUluXgaQqvrULoR2Ujrd/mz/lkX87F5BHFsNr5sQ==}
     hasBin: true
 
-  baseline-browser-mapping@2.8.30:
-    resolution: {integrity: sha512-aTUKW4ptQhS64+v2d6IkPzymEzzhw+G0bA1g3uBRV3+ntkH+svttKseW5IOR4Ed6NUVKqnY7qT3dKvzQ7io4AA==}
+  baseline-browser-mapping@2.8.31:
+    resolution: {integrity: sha512-a28v2eWrrRWPpJSzxc+mKwm0ZtVx/G8SepdQZDArnXYU/XS+IF6mp8aB/4E+hH1tyGCoDo3KlUCdlSxGDsRkAw==}
     hasBin: true
 
   bech32@1.1.4:
@@ -5232,10 +5232,6 @@ packages:
   chalk@4.1.2:
     resolution: {integrity: sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==}
     engines: {node: '>=10'}
-
-  chalk@5.6.0:
-    resolution: {integrity: sha512-46QrSQFyVSEyYAgQ22hQ+zDa60YHA4fBstHmtSApj1Y5vKtG27fWowW03jCk5KcbXEWPZUIR894aARCA/G1kfQ==}
-    engines: {node: ^12.17.0 || ^14.13 || >=16.0.0}
 
   chalk@5.6.2:
     resolution: {integrity: sha512-7NzBL0rN6fMUW+f7A6Io4h40qQlG+xGmtMxfbnH/K7TAtt8JQWVQK+6g0UXKMeVJoyV5EkkNsErQ8pVD3bLHbA==}
@@ -6235,8 +6231,8 @@ packages:
   glob-to-regexp@0.4.1:
     resolution: {integrity: sha512-lkX1HJXwyMcprw/5YUZc2s7DrpAiHB21/V+E1rHUrVNokkvB6bqMzT0VfV6/86ZNabt1k14YOIaT7nDvOX3Iiw==}
 
-  glob@10.4.5:
-    resolution: {integrity: sha512-7Bv8RF0k6xjo7d4A/PxYLbUCfb6c+Vpd2/mB2yRDlew7Jb5hEXiCD9ibfO7wpk8i4sevK6DFny9h7EYbM3/sHg==}
+  glob@10.5.0:
+    resolution: {integrity: sha512-DfXN8DfhJ7NH3Oe7cFmu3NCu1wKbkReJ8TorzSAFbSKrlNaQSKfIzqYqVY8zlbs2NLBbWpRiU52GX2PbaBVNkg==}
     hasBin: true
 
   glob@11.0.3:
@@ -7895,8 +7891,8 @@ packages:
     resolution: {integrity: sha512-61g9pCh0Vnh7IutZjtLGGpTA355+OPn2TyDv/6ivP2h/AdAVX9azsoxmg2/M6nZeQZNYBEwIcsne1mJd9oQItQ==}
     engines: {node: '>= 18'}
 
-  serwist@9.2.1:
-    resolution: {integrity: sha512-icp1GQB3h9q1OqYeSw+iTTY0OZ3io+fzNG0Ot3p6Xe5DEZlSRn61FmGx9mq76q0CeMtZYBmmuw4tyIS1O76Lbw==}
+  serwist@9.2.3:
+    resolution: {integrity: sha512-menorUH09SpLvU7R25TvG0TuQ12MUDpQ5NKGohbtREF8YI+0D++Abn59XCmvvMp2n740rBizIkeqWq0m6U+++g==}
     peerDependencies:
       typescript: '>=5.0.0'
     peerDependenciesMeta:
@@ -9003,9 +8999,6 @@ packages:
 
   zod@4.1.12:
     resolution: {integrity: sha512-JInaHOamG8pt5+Ey8kGmdcAcg3OL9reK8ltczgHTAwNhMys/6ThXHityHxVV2p3fkw/c+MAvBHFVYHFZDmjMCQ==}
-
-  zod@4.1.5:
-    resolution: {integrity: sha512-rcUUZqlLJgBC33IT3PNMgsCq6TzLQEG/Ei/KTCU0PedSWRMAXoOUN+4t/0H+Q8bdnLPdqUYnvboJT0bn/229qg==}
 
   zustand@4.5.7:
     resolution: {integrity: sha512-CHOUy7mu3lbD6o6LJLfllpjkzhHXSBlX8B9+qPddUsIfeF5S/UZ5q0kmCsnRqT1UHFQZchNFDDzMbQsuesHWlw==}
@@ -11513,7 +11506,7 @@ snapshots:
       '@noble/hashes': 1.8.0
       '@scure/base': 1.2.6
       '@types/debug': 4.1.12
-      debug: 4.4.3
+      debug: 4.3.4
       pony-cause: 2.1.11
       semver: 7.7.3
       uuid: 9.0.1
@@ -13906,56 +13899,56 @@ snapshots:
       - encoding
       - supports-color
 
-  '@serwist/build@9.2.1(typescript@5.9.3)':
+  '@serwist/build@9.2.3(typescript@5.9.3)':
     dependencies:
       common-tags: 1.8.2
-      glob: 10.4.5
+      glob: 10.5.0
       pretty-bytes: 6.1.1
       source-map: 0.8.0-beta.0
-      zod: 4.1.5
+      zod: 4.1.12
     optionalDependencies:
       typescript: 5.9.3
 
-  '@serwist/next@9.2.1(next@15.3.5(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.56.1)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(typescript@5.9.3)(webpack@5.94.0)':
+  '@serwist/next@9.2.3(next@15.3.5(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.56.1)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(typescript@5.9.3)(webpack@5.94.0)':
     dependencies:
-      '@serwist/build': 9.2.1(typescript@5.9.3)
-      '@serwist/webpack-plugin': 9.2.1(typescript@5.9.3)(webpack@5.94.0)
-      '@serwist/window': 9.2.1(typescript@5.9.3)
-      chalk: 5.6.0
-      glob: 10.4.5
+      '@serwist/build': 9.2.3(typescript@5.9.3)
+      '@serwist/webpack-plugin': 9.2.3(typescript@5.9.3)(webpack@5.94.0)
+      '@serwist/window': 9.2.3(typescript@5.9.3)
+      chalk: 5.6.2
+      glob: 10.5.0
       next: 15.3.5(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.56.1)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      serwist: 9.2.1(typescript@5.9.3)
-      zod: 4.1.5
+      serwist: 9.2.3(typescript@5.9.3)
+      zod: 4.1.12
     optionalDependencies:
       typescript: 5.9.3
     transitivePeerDependencies:
       - webpack
 
-  '@serwist/precaching@9.2.1(typescript@5.9.3)':
+  '@serwist/precaching@9.2.3(typescript@5.9.3)':
     dependencies:
-      serwist: 9.2.1(typescript@5.9.3)
+      serwist: 9.2.3(typescript@5.9.3)
     optionalDependencies:
       typescript: 5.9.3
 
-  '@serwist/sw@9.2.1(typescript@5.9.3)':
+  '@serwist/sw@9.2.3(typescript@5.9.3)':
     dependencies:
-      serwist: 9.2.1(typescript@5.9.3)
+      serwist: 9.2.3(typescript@5.9.3)
     optionalDependencies:
       typescript: 5.9.3
 
-  '@serwist/webpack-plugin@9.2.1(typescript@5.9.3)(webpack@5.94.0)':
+  '@serwist/webpack-plugin@9.2.3(typescript@5.9.3)(webpack@5.94.0)':
     dependencies:
-      '@serwist/build': 9.2.1(typescript@5.9.3)
+      '@serwist/build': 9.2.3(typescript@5.9.3)
       pretty-bytes: 6.1.1
-      zod: 4.1.5
+      zod: 4.1.12
     optionalDependencies:
       typescript: 5.9.3
       webpack: 5.94.0
 
-  '@serwist/window@9.2.1(typescript@5.9.3)':
+  '@serwist/window@9.2.3(typescript@5.9.3)':
     dependencies:
       '@types/trusted-types': 2.0.7
-      serwist: 9.2.1(typescript@5.9.3)
+      serwist: 9.2.3(typescript@5.9.3)
     optionalDependencies:
       typescript: 5.9.3
 
@@ -16490,7 +16483,7 @@ snapshots:
 
   baseline-browser-mapping@2.8.14: {}
 
-  baseline-browser-mapping@2.8.30: {}
+  baseline-browser-mapping@2.8.31: {}
 
   bech32@1.1.4: {}
 
@@ -16553,7 +16546,7 @@ snapshots:
 
   browserslist@4.28.0:
     dependencies:
-      baseline-browser-mapping: 2.8.30
+      baseline-browser-mapping: 2.8.31
       caniuse-lite: 1.0.30001756
       electron-to-chromium: 1.5.259
       node-releases: 2.0.27
@@ -16658,8 +16651,6 @@ snapshots:
     dependencies:
       ansi-styles: 4.3.0
       supports-color: 7.2.0
-
-  chalk@5.6.0: {}
 
   chalk@5.6.2: {}
 
@@ -18038,7 +18029,7 @@ snapshots:
 
   glob-to-regexp@0.4.1: {}
 
-  glob@10.4.5:
+  glob@10.5.0:
     dependencies:
       foreground-child: 3.3.1
       jackspeak: 3.4.3
@@ -19880,7 +19871,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  serwist@9.2.1(typescript@5.9.3):
+  serwist@9.2.3(typescript@5.9.3):
     dependencies:
       idb: 8.0.3
     optionalDependencies:
@@ -20316,7 +20307,7 @@ snapshots:
   test-exclude@7.0.1:
     dependencies:
       '@istanbuljs/schema': 0.1.3
-      glob: 10.4.5
+      glob: 10.5.0
       minimatch: 9.0.5
 
   text-encoding-utf-8@1.0.2: {}
@@ -21225,8 +21216,6 @@ snapshots:
   zod@3.25.76: {}
 
   zod@4.1.12: {}
-
-  zod@4.1.5: {}
 
   zustand@4.5.7(@types/react@19.2.6)(immer@10.1.3)(react@19.2.0):
     dependencies:
