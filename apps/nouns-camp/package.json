@@ -17,7 +17,7 @@
     "test:e2e:ui": "playwright test --ui"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20251118.0",
+    "@cloudflare/workers-types": "^4.20251121.0",
     "@eslint/eslintrc": "^3.3.1",
     "@playwright/test": "^1.56.1",
     "@tailwindcss/postcss": "^4.1.17",
@@ -53,16 +53,16 @@
     "@radix-ui/react-toolbar": "^1.1.11",
     "@radix-ui/react-tooltip": "^1.2.8",
     "@sentry/nextjs": "^8.55.0",
-    "@serwist/next": "^9.2.1",
-    "@serwist/precaching": "^9.2.1",
-    "@serwist/sw": "^9.2.1",
+    "@serwist/next": "^9.2.3",
+    "@serwist/precaching": "^9.2.3",
+    "@serwist/sw": "^9.2.3",
     "@shades/common": "workspace:0.0.0",
     "@shades/ui-web": "workspace:0.0.0",
-    "@tanstack/react-query": "^5.90.8",
+    "@tanstack/react-query": "^5.90.10",
     "@vercel/analytics": "^1.5.0",
     "@vercel/kv": "^2.0.0",
     "@vercel/og": "^0.8.5",
-    "abitype": "^1.1.2",
+    "abitype": "^1.2.0",
     "date-fns": "^2.29.3",
     "diff": "^5.2.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
@@ -83,8 +83,8 @@
     "sonner": "^2.0.7",
     "tinykeys": "^3.0.0",
     "use-debounce": "^10.0.6",
-    "viem": "^2.39.0",
-    "wagmi": "2.19.4",
+    "viem": "^2.40.0",
+    "wagmi": "2.19.5",
     "zustand": "^4.5.7"
   }
 }
