@@ -469,6 +469,81 @@ const asideExtension = {
 
 marked.use({ extensions: [asideExtension, insExtension] });
 
+const shouldPreserveLine = (line, { inFence }) => {
+  const trimmed = line.trim();
+  if (trimmed === "") return true;
+  if (inFence) return true;
+
+  const isHeading = /^ {0,3}#{1,6} /.test(trimmed);
+  const isSetextUnderline = /^ {0,3}(=|-){3,}\s*$/.test(trimmed);
+  const isListItem = /^ {0,3}(?:[-*+]\s+|\d+\.\s+)/.test(trimmed);
+  const isBlockquote = /^>/.test(trimmed);
+  const isHorizontalRule = /^ {0,3}(?:[-*_]\s*){3,}$/.test(trimmed);
+  const isTableRow = /^\s*\|.+\|\s*$/.test(line);
+  const isIndentedCode = /^(?:\s{4}|\t)/.test(line);
+
+  return (
+    isHeading ||
+    isSetextUnderline ||
+    isListItem ||
+    isBlockquote ||
+    isHorizontalRule ||
+    isTableRow ||
+    isIndentedCode
+  );
+};
+
+export const unwrapLineBreaks = (text) => {
+  if (typeof text !== "string") return text;
+
+  const lines = text.split(/\r?\n/);
+  const result = [];
+  let buffer = [];
+  let inFence = false;
+
+  const flushBuffer = () => {
+    if (buffer.length === 0) return;
+    result.push(buffer.join(" "));
+    buffer = [];
+  };
+
+  for (const line of lines) {
+    const trimmed = line.trim();
+    const isFenceDelimiter = /^ {0,3}(?:```|~~~)/.test(trimmed);
+
+    if (isFenceDelimiter) {
+      flushBuffer();
+      inFence = !inFence;
+      result.push(line);
+      continue;
+    }
+
+    if (shouldPreserveLine(line, { inFence })) {
+      flushBuffer();
+      result.push(line);
+      continue;
+    }
+
+    if (/\s{2}$/.test(line)) {
+      buffer.push(line.trimEnd());
+      flushBuffer();
+      continue;
+    }
+
+    if (trimmed === "") {
+      flushBuffer();
+      result.push("");
+      continue;
+    }
+
+    buffer.push(trimmed);
+  }
+
+  flushBuffer();
+
+  return result.join("\n");
+};
+
 export const toMessageBlocks = (text, { displayImages = true } = {}) => {
   const tokens = marked.lexer(text);
   return tokens
