@@ -73,7 +73,7 @@
     "next": "15.3.8",
     "qrcode": "^1.5.4",
     "react": "19.2.3",
-    "react-aria": "^3.44.0",
+    "react-aria": "^3.45.0",
     "react-aria-components": "1.14.0",
     "react-dom": "19.2.3",
     "react-stately": "^3.42.0",
