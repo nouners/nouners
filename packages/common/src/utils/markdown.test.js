@@ -1,5 +1,10 @@
 import { expect, test } from "vitest";
-import { blockquote, unquote, toMessageBlocks } from "./markdown.js";
+import {
+  blockquote,
+  unquote,
+  toMessageBlocks,
+  unwrapLineBreaks,
+} from "./markdown.js";
 
 test("blockquote()", () => {
   expect(blockquote("foo")).toBe("> foo");
@@ -161,4 +166,46 @@ test("toMessageBlocks - image with HTML entities in caption", () => {
     '![Alt text](https://example.com/image.jpg "Caption with &amp; and &lt; entities")';
   const blocks = toMessageBlocks(text);
   expect(blocks[0].children[0].caption).toBe("Caption with & and < entities");
+});
+
+test("unwrapLineBreaks - unwraps simple wrapped paragraphs", () => {
+  const wrapped =
+    "This is a line that\nwraps onto the next line without spacing.";
+  expect(unwrapLineBreaks(wrapped)).toBe(
+    "This is a line that wraps onto the next line without spacing.",
+  );
+});
+
+test("unwrapLineBreaks - preserves markdown structures", () => {
+  const text = [
+    "Heading",
+    "====",
+    "",
+    "- List item that",
+    "continues on next line",
+    "",
+    "> Blockquote line 1",
+    "> Blockquote line 2",
+    "",
+    "```",
+    "code",
+    "```",
+  ].join("\n");
+
+  expect(unwrapLineBreaks(text)).toBe(
+    [
+      "Heading",
+      "====",
+      "",
+      "- List item that",
+      "continues on next line",
+      "",
+      "> Blockquote line 1",
+      "> Blockquote line 2",
+      "",
+      "```",
+      "code",
+      "```",
+    ].join("\n"),
+  );
 });
