@@ -1,3 +1,8 @@
+## [1.0.0-alpha.47] - 2025-12-30
+
+### ◀️ Revert
+
+- Bump @opennextjs/cloudflare from 1.12.0 to 1.14.6 (#175)
 ## [1.0.0-alpha.46] - 2025-12-30
 
 ### 🐛 Bug Fixes
