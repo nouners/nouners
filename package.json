@@ -2,7 +2,8 @@
   "private": true,
   "name": "nouners",
   "engines": {
-    "node": ">=22.11.0"
+    "node": "^24",
+    "pnpm": "^10"
   },
   "scripts": {
     "build": "turbo build",
