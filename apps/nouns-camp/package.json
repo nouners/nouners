@@ -71,7 +71,7 @@
     "lodash.throttle": "^4.1.1",
     "marked": "^14.1.4",
     "next": "15.3.8",
-    "qrcode": "^1.5.4",
+    "qrcode": "1.5.4",
     "react": "19.2.3",
     "react-aria": "3.45.0",
     "react-aria-components": "1.14.0",
