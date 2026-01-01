@@ -74,7 +74,7 @@ const RichTextEditor = React.forwardRef((props, externalRef) => {
                 maxHeight={props.imagesMaxHeight}
                 onClick={() => {
                   const nodePath = ReactEditor.findPath(
-                    editorRef.curent,
+                    editorRef.current,
                     element,
                   );
                   imageLinkDialogActions.open(nodePath);
