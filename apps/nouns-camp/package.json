@@ -17,7 +17,7 @@
     "test:e2e:ui": "playwright test --ui"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20251221.0",
+    "@cloudflare/workers-types": "^4.20251231.0",
     "@eslint/eslintrc": "^3.3.3",
     "@playwright/test": "^1.57.0",
     "@tailwindcss/postcss": "^4.1.18",
@@ -53,12 +53,12 @@
     "@radix-ui/react-toolbar": "^1.1.11",
     "@radix-ui/react-tooltip": "^1.2.8",
     "@sentry/nextjs": "^8.55.0",
-    "@serwist/next": "^9.3.0",
-    "@serwist/precaching": "^9.3.0",
-    "@serwist/sw": "^9.3.0",
+    "@serwist/next": "^9.4.2",
+    "@serwist/precaching": "^9.4.2",
+    "@serwist/sw": "^9.4.2",
     "@shades/common": "workspace:0.0.0",
     "@shades/ui-web": "workspace:0.0.0",
-    "@tanstack/react-query": "^5.90.11",
+    "@tanstack/react-query": "^5.90.16",
     "@vercel/analytics": "^1.6.1",
     "@vercel/kv": "^2.0.0",
     "@vercel/og": "^0.8.6",
@@ -83,7 +83,7 @@
     "sonner": "^2.0.7",
     "tinykeys": "^3.0.0",
     "use-debounce": "^10.0.6",
-    "viem": "^2.43.2",
+    "viem": "^2.43.4",
     "wagmi": "2.19.5",
     "zustand": "^4.5.7"
   }
