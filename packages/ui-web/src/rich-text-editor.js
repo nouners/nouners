@@ -595,9 +595,10 @@ const RichTextEditor = React.forwardRef(
               setSelection(editor.selection);
               onFocus?.(e, editor);
             }}
+            {...props}
             css={(theme) => {
               const styles = createRichTextCss(theme);
-              return css({
+              const internalStyles = css({
                 ...styles,
                 outline: "none",
                 "a:hover": { textDecoration: "none" },
@@ -617,10 +618,14 @@ const RichTextEditor = React.forwardRef(
                   top: 0,
                 },
               });
+
+              const externalStyles =
+                typeof props.css === "function" ? props.css(theme) : props.css;
+
+              return [internalStyles, externalStyles];
             }}
             readOnly={disabled}
             data-disabled={disabled || undefined}
-            {...props}
           />
         </Slate>
 
@@ -772,9 +777,8 @@ const VoidTable = ({ attributes, children, element }) => {
   const isFocused = selected && focused;
 
   return (
-    <div>
+    <div {...attributes}>
       <table
-        {...attributes}
         contentEditable={false}
         data-focused={isFocused}
         css={(t) =>

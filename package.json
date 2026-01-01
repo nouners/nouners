@@ -1,19 +1,17 @@
 {
-  "private": true,
   "name": "nouners",
   "engines": {
-    "node": "^24",
-    "pnpm": "^10"
+    "node": ">=22.11.0"
   },
   "scripts": {
     "build": "turbo build",
     "lint": "turbo lint",
     "format": "pnpm -r run --if-present format"
   },
-  "packageManager": "pnpm@10.25.0",
+  "packageManager": "pnpm@10.18.0",
   "devDependencies": {
     "prettier": "^3.4.2",
-    "turbo": "^2.7.2"
+    "turbo": "^2.5.3"
   },
-  "version": "1.0.0-alpha.48"
+  "version": "1.0.0-alpha.20"
 }
