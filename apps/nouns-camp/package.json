@@ -37,6 +37,7 @@
     "typescript": "^5.8.3",
     "vitest": "^2.1.9",
     "jsdom": "27.4.0",
+    "webpack": "5.104.1",
     "wrangler": "4.56.0"
   },
   "dependencies": {
