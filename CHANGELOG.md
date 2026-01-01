@@ -1,3 +1,9 @@
+## [1.0.0-alpha.49] - 2026-01-01
+
+### 🐛 Bug Fixes
+
+- *(rich-text-editor)* Correct typo in `editorRef.current`
+- *(rich-text-editor)* Improve style handling logic
 ## [1.0.0-alpha.48] - 2026-01-01
 
 ### 🐛 Bug Fixes
