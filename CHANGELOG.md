@@ -1,3 +1,8 @@
+## [1.0.0-alpha.51] - 2026-01-05
+
+### 🐛 Bug Fixes
+
+- Solve some minor issues and update dependencies
 ## [1.0.0-alpha.50] - 2026-01-05
 
 ### ⚙️ Miscellaneous Tasks
