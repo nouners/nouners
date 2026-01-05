@@ -1,3 +1,8 @@
+## [1.0.0-alpha.50] - 2026-01-05
+
+### ⚙️ Miscellaneous Tasks
+
+- *(package)* Mark project as private
 ## [1.0.0-alpha.49] - 2026-01-01
 
 ### 🐛 Bug Fixes
