@@ -79,7 +79,7 @@
     "react-stately": "^3.37.0",
     "slate": "^0.120.0",
     "slate-history": "^0.110.3",
-    "slate-react": "^0.112.1",
+    "slate-react": "^0.120.0",
     "sonner": "^2.0.7",
     "tinykeys": "^3.0.0",
     "use-debounce": "^10.0.4",
