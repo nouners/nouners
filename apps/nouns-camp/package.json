@@ -20,7 +20,7 @@
     "@cloudflare/workers-types": "^4.20260103.0",
     "@eslint/eslintrc": "^3.3.3",
     "@playwright/test": "^1.42.0",
-    "@tailwindcss/postcss": "^4.1.14",
+    "@tailwindcss/postcss": "^4.1.18",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^14.1.2",
     "@types/node": "^20.19.19",
