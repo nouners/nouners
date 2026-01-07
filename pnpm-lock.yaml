@@ -153,8 +153,8 @@ importers:
         specifier: 2.14.9
         version: 2.14.9(@tanstack/query-core@5.90.16)(@tanstack/react-query@5.90.16(react@19.2.3))(@types/react@19.2.7)(@upstash/redis@1.34.0)(@vercel/kv@2.0.0)(bufferutil@4.0.8)(immer@10.1.1)(react@19.2.3)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem@2.22.17(bufferutil@4.0.8)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@3.25.76))(zod@3.25.76)
       zustand:
-        specifier: ^4.5.5
-        version: 4.5.5(@types/react@19.2.7)(immer@10.1.1)(react@19.2.3)
+        specifier: ^4.5.7
+        version: 4.5.7(@types/react@19.2.7)(immer@10.1.1)(react@19.2.3)
     devDependencies:
       '@cloudflare/workers-types':
         specifier: ^4.20260103.0
@@ -7501,8 +7501,8 @@ packages:
   preact@10.25.4:
     resolution: {integrity: sha512-jLdZDb+Q+odkHJ+MpW/9U5cODzqnB+fy2EiHSZES7ldV5LK7yjlVzTp7R8Xy6W6y75kfK8iWYtFVH7lvjwrCMA==}
 
-  preact@10.28.1:
-    resolution: {integrity: sha512-u1/ixq/lVQI0CakKNvLDEcW5zfCjUQfZdK9qqWuIJtsezuyG6pk9TWj75GMuI/EzRSZB/VAE43sNWWZfiy8psw==}
+  preact@10.28.2:
+    resolution: {integrity: sha512-lbteaWGzGHdlIuiJ0l2Jq454m6kcpI1zNje6d8MlGAFlYvP2GO4ibnat7P74Esfz4sPTdM6UxtTwh/d3pwM9JA==}
 
   prelude-ls@1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
@@ -8526,11 +8526,6 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
 
-  use-sync-external-store@1.2.2:
-    resolution: {integrity: sha512-PElTlVMwpblvbNqQ82d2n6RjStvdSoNe9FG28kNfz3WiXilJm4DdNkEzRhCZuIDwY8U08WVihhGR5iRqAwfDiw==}
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0
-
   use-sync-external-store@1.4.0:
     resolution: {integrity: sha512-9WXSPC5fMv61vaupRkCKCxsPxBocVnwakBEkMIHHpkTTg6icbJtg6jzgtLDm4bl3cSHAca52rYWih0k4K3PfHw==}
     peerDependencies:
@@ -8950,8 +8945,8 @@ packages:
   zod@4.3.5:
     resolution: {integrity: sha512-k7Nwx6vuWx1IJ9Bjuf4Zt1PEllcwe7cls3VNzm4CQ1/hgtFUK2bRNG3rvnpPUhFjmqJKAKtjV576KnUkHocg/g==}
 
-  zustand@4.5.5:
-    resolution: {integrity: sha512-+0PALYNJNgK6hldkgDq2vLrw5f6g/jCInz52n9RTpropGgeAf/ioFUCdtsjCqu4gNhW9D01rUQBROoRjdzyn2Q==}
+  zustand@4.5.7:
+    resolution: {integrity: sha512-CHOUy7mu3lbD6o6LJLfllpjkzhHXSBlX8B9+qPddUsIfeF5S/UZ5q0kmCsnRqT1UHFQZchNFDDzMbQsuesHWlw==}
     engines: {node: '>=12.7.0'}
     peerDependencies:
       '@types/react': '>=16.8'
@@ -10234,7 +10229,7 @@ snapshots:
       eth-json-rpc-filters: 6.0.1
       eventemitter3: 5.0.1
       keccak: 3.0.4
-      preact: 10.28.1
+      preact: 10.28.2
       sha.js: 2.4.12
     transitivePeerDependencies:
       - supports-color
@@ -11194,7 +11189,7 @@ snapshots:
   '@metamask/json-rpc-engine@8.0.2':
     dependencies:
       '@metamask/rpc-errors': 6.3.1
-      '@metamask/safe-event-emitter': 3.1.1
+      '@metamask/safe-event-emitter': 3.1.2
       '@metamask/utils': 8.5.0
     transitivePeerDependencies:
       - supports-color
@@ -11202,7 +11197,7 @@ snapshots:
   '@metamask/json-rpc-middleware-stream@7.0.2':
     dependencies:
       '@metamask/json-rpc-engine': 8.0.2
-      '@metamask/safe-event-emitter': 3.1.1
+      '@metamask/safe-event-emitter': 3.1.2
       '@metamask/utils': 8.5.0
       readable-stream: 3.6.2
     transitivePeerDependencies:
@@ -18618,7 +18613,7 @@ snapshots:
 
   preact@10.25.4: {}
 
-  preact@10.28.1: {}
+  preact@10.28.2: {}
 
   prelude-ls@1.2.1: {}
 
@@ -19927,10 +19922,6 @@ snapshots:
     dependencies:
       react: 19.2.3
 
-  use-sync-external-store@1.2.2(react@19.2.3):
-    dependencies:
-      react: 19.2.3
-
   use-sync-external-store@1.4.0(react@19.2.3):
     dependencies:
       react: 19.2.3
@@ -20448,9 +20439,9 @@ snapshots:
 
   zod@4.3.5: {}
 
-  zustand@4.5.5(@types/react@19.2.7)(immer@10.1.1)(react@19.2.3):
+  zustand@4.5.7(@types/react@19.2.7)(immer@10.1.1)(react@19.2.3):
     dependencies:
-      use-sync-external-store: 1.2.2(react@19.2.3)
+      use-sync-external-store: 1.6.0(react@19.2.3)
     optionalDependencies:
       '@types/react': 19.2.7
       immer: 10.1.1
