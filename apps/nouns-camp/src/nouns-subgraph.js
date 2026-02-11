@@ -1,6 +1,7 @@
 import {
   array as arrayUtils,
   object as objectUtils,
+  markdown as markdownUtils,
 } from "@shades/common/utils";
 import { parse as parseTransactions } from "@/utils/transactions";
 import { matchTopicTransactions } from "@/utils/candidates";
@@ -206,7 +207,7 @@ export const parseFeedbackPost = (post) => ({
   createdBlock: BigInt(post.createdBlock),
   createdTimestamp: parseTimestamp(post.createdTimestamp),
   createdTransactionHash: post.id.split("-")?.[0],
-  reason: post.reason,
+  reason: markdownUtils.unwrapLineBreaks(post.reason),
   support: post.supportDetailed,
   votes: post.votes == null ? undefined : Number(post.votes),
   voterId: post.voter.id,
@@ -223,7 +224,7 @@ export const parseProposalVote = (v) => ({
   createdTimestamp:
     v.blockTimestamp == null ? undefined : parseTimestamp(v.blockTimestamp),
   createdTransactionHash: v.transactionHash,
-  reason: v.reason,
+  reason: markdownUtils.unwrapLineBreaks(v.reason),
   support: v.supportDetailed,
   votes: v.votes == null ? undefined : Number(v.votes),
   voterId: v.voter?.id,
